@@ -1,7 +1,18 @@
 {
   "name": "musiku",
+  "description": "Your favorite music player",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "author": {
+    "name": "Kadek Nova Cahaya Putra",
+    "email": "kadeknovacahayaputra@gmail.com"
+  },
+  "keywords": [
+    "music-player",
+    "mobile-app",
+    "music"
+  ],
+  "license": "MIT",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
