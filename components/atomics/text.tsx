@@ -1,21 +1,14 @@
-import {
-  ColorSchemeName,
-  Text as NativeText,
-  StyleSheet,
-  useColorScheme,
-} from "react-native";
+import { Text as NativeText, StyleSheet, TextProps } from "react-native";
 import React from "react";
 import colors from "@/constants/colors";
+import { isLightTheme } from "@/utils/app-theme";
 
-export default function Text(
-  props: React.ComponentProps<"p">
-): React.JSX.Element {
-  const appTheme: ColorSchemeName = useColorScheme();
+export default function Text(props: TextProps): React.JSX.Element {
+  const themeStyle = isLightTheme() ? styles.light : styles.dark;
 
-  if (appTheme == "dark")
-    return <NativeText style={styles.dark}>{props.children}</NativeText>;
-
-  return <NativeText style={styles.light}>{props.children}</NativeText>;
+  return (
+    <NativeText style={[themeStyle, props.style]}>{props.children}</NativeText>
+  );
 }
 
 const styles = StyleSheet.create({
