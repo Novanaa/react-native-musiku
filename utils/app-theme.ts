@@ -1,4 +1,4 @@
-import { Appearance, ColorSchemeName } from "react-native";
+import { Appearance } from "react-native";
 
 export function isDarkTheme(): boolean {
   return Appearance.getColorScheme() == "dark";
