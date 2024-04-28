@@ -1,16 +1,11 @@
+import { Appearance, StyleSheet, View } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
-import {
-  Appearance,
-  ColorSchemeName,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from "react-native";
 import colors from "@/constants/colors";
+import { isLightTheme } from "@/utils/app-theme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,9 +29,9 @@ export default function RootLayout() {
   );
 }
 
-const appTheme: ColorSchemeName = Appearance.getColorScheme();
-const backgroundColor: string =
-  appTheme == "light" ? colors.light.background : colors.dark.background;
+const backgroundColor: string = isLightTheme()
+  ? colors.light.background
+  : colors.dark.background;
 
 const styles = StyleSheet.create({
   container: {
