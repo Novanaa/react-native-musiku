@@ -1,9 +1,13 @@
+import React from "react";
 import fonts from "@/constants/fonts";
+import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
-import React from "react";
+import { Appearance } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
+
+Appearance.setColorScheme(useDefaultTheme());
 
 export default function RootLayout() {
   const [loaded, error] = useFonts(fonts);
