@@ -3,10 +3,9 @@ import React from "react";
 import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
-import { SplashScreen, Tabs } from "expo-router";
-import colors from "@/constants/colors";
-import { isLightTheme } from "@/utils/app-theme";
-import BottomTabs from "@/components/molecules/botton-tabs";
+import { SplashScreen } from "expo-router";
+import { backgroundColor } from "@/constants/colors";
+import BottomTabs from "@/components/molecules/bottom-tabs";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,10 +28,6 @@ export default function RootLayout() {
     </View>
   );
 }
-
-const backgroundColor: string = isLightTheme()
-  ? colors.light.background
-  : colors.dark.background;
 
 const styles = StyleSheet.create({
   container: {
