@@ -1,11 +1,10 @@
-import { Appearance, StyleSheet, View } from "react-native";
+import { Appearance, StyleSheet } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
-import { SplashScreen } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { backgroundColor } from "@/constants/colors";
-import BottomTabs from "@/components/molecules/bottom-tabs";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,9 +22,9 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <View style={styles.container}>
-      <BottomTabs />
-    </View>
+    <Stack screenOptions={{ contentStyle: styles.container }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
   );
 }
 
