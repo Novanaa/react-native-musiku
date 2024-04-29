@@ -3,9 +3,10 @@ import React from "react";
 import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen } from "expo-router";
+import { SplashScreen, Tabs } from "expo-router";
 import colors from "@/constants/colors";
 import { isLightTheme } from "@/utils/app-theme";
+import BottomTabs from "@/components/molecules/botton-tabs";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,7 +25,7 @@ export default function RootLayout() {
 
   return (
     <View style={styles.container}>
-      <Slot />
+      <BottomTabs />
     </View>
   );
 }
