@@ -1,11 +1,10 @@
-import { Appearance, StyleSheet, View } from "react-native";
+import { Appearance, StyleSheet } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen } from "expo-router";
-import colors from "@/constants/colors";
-import { isLightTheme } from "@/utils/app-theme";
+import { SplashScreen, Stack } from "expo-router";
+import { backgroundColor } from "@/constants/colors";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,15 +22,11 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <View style={styles.container}>
-      <Slot />
-    </View>
+    <Stack screenOptions={{ contentStyle: styles.container }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
   );
 }
-
-const backgroundColor: string = isLightTheme()
-  ? colors.light.background
-  : colors.dark.background;
 
 const styles = StyleSheet.create({
   container: {
