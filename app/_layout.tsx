@@ -4,7 +4,7 @@ import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import colors, { backgroundColor } from "@/constants/colors";
+import { backgroundColor } from "@/constants/colors";
 import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
