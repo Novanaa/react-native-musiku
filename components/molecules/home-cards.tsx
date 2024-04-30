@@ -9,7 +9,11 @@ export default function HomeCards(): React.JSX.Element {
     <FlatList
       data={cardsData}
       renderItem={({ item }) => (
-        <Card title={item.title} onPress={() => Linking.openURL(item.link)} />
+        <Card
+          title={item.title}
+          onPress={() => Linking.openURL(item.link)}
+          description={item.description}
+        />
       )}
       horizontal
       contentContainerStyle={{ gap: rowsGap }}
