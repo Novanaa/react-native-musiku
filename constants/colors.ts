@@ -30,6 +30,6 @@ export const tabIconSelectedColor: string = colors.dark.tabIconSelected;
 
 export const tabIconDefaultColor: string = colors.dark.tabIconDefault;
 
-export const borderColor: string = "#3a3a3d";
+export const borderColor: string = "#656569";
 
 export default colors;
