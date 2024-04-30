@@ -4,7 +4,8 @@ import fonts from "@/constants/fonts";
 import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import { backgroundColor } from "@/constants/colors";
+import colors, { backgroundColor } from "@/constants/colors";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,9 +23,12 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <Stack screenOptions={{ contentStyle: styles.container }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <StatusBar style="dark" />
+      <Stack screenOptions={{ contentStyle: styles.container }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 }
 
