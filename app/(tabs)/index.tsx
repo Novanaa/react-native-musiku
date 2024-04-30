@@ -1,13 +1,13 @@
-import Text from "@/components/atomics/text";
-import { View } from "react-native";
 import { backgroundColor } from "@/constants/colors";
 import Header from "@/components/molecules/header";
+import Container from "@/components/atomics/container";
+import HomeCards from "@/components/molecules/home-cards";
 
 export default function Home() {
   return (
-    <View style={{ backgroundColor, flex: 1 }}>
+    <Container style={{ backgroundColor, flex: 1 }}>
       <Header />
-      <Text>Hello, World!</Text>
-    </View>
+      <HomeCards />
+    </Container>
   );
 }
