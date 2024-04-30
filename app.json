@@ -14,13 +14,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "icon": "./assets/images/icon.png"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/musiku.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#121212"
-      }
+      },
+      "icon": "./assets/images/icon.png"
     },
     "web": {
       "bundler": "metro",
