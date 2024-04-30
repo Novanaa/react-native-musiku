@@ -1,6 +1,6 @@
 <div align="center">
   <a href="/"> 
-    <img src="./assets//icons/dark/musiku.png" height="190">
+    <img src="./assets//icons/musiku.png" height="190">
     <h1 align="center">Musiku</h1>
   </a>
 </div>
