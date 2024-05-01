@@ -28,5 +28,5 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
 }
 
 export function DrawerWrapper(props: ViewProps): React.JSX.Element {
-  return <View style={[{ padding: 20 }, props.style]}>{props.children}</View>;
+  return <View style={[{ padding: 15 }, props.style]}>{props.children}</View>;
 }
