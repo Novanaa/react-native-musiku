@@ -8,6 +8,9 @@ export default function HomeCards(): React.JSX.Element {
   return (
     <FlatList
       data={homeCardsData}
+      style={{
+        flexGrow: 0,
+      }}
       renderItem={({ item }) => (
         <Card
           title={item.title}

@@ -8,5 +8,6 @@ export default {
     commandLine: require("../assets/icons/command-line.png"),
     heart: require("../assets/icons/heart.png"),
     sparkles: require("../assets/icons/sparkles.png"),
+    listOptions: require("../assets/icons/list-options.png"),
   },
 };
