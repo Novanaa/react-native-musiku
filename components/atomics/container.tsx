@@ -1,4 +1,5 @@
 import React from "react";
+import { backgroundColor } from "@/constants/colors";
 import { StyleSheet, View, ViewProps } from "react-native";
 
 export default function Container({
@@ -11,5 +12,7 @@ export default function Container({
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
+    backgroundColor,
+    flex: 1,
   },
 });

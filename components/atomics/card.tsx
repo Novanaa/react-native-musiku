@@ -19,7 +19,11 @@ interface CardProps extends TouchableOpacityProps {
 
 export default function Card(props: CardProps): React.JSX.Element {
   return (
-    <TouchableOpacity style={styles.container} onPress={props.onPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={props.onPress}
+      activeOpacity={0.65}
+    >
       <View>
         <Image source={props.icon} />
         <Text style={styles.title}>{props.title}</Text>
