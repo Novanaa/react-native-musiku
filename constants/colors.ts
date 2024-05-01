@@ -32,4 +32,6 @@ export const tabIconDefaultColor: string = colors.dark.tabIconDefault;
 
 export const borderColor: string = "#656569";
 
+export const inputBackgroundColor: string = "#333336";
+
 export default colors;
