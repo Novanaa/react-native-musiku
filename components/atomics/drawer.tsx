@@ -1,7 +1,7 @@
 import React from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import { modalBackgroundColor } from "@/constants/colors";
+import colors, { modalBackgroundColor } from "@/constants/colors";
 import { View, ViewProps } from "react-native";
 
 export interface DrawerProps extends React.ComponentProps<"div"> {
@@ -21,6 +21,7 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
       backgroundStyle={{
         backgroundColor: modalBackgroundColor,
       }}
+      handleIndicatorStyle={{ backgroundColor: colors.light.background }}
     >
       {props.children}
     </BottomSheetModal>
