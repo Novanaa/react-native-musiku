@@ -6,11 +6,12 @@ import { View, ViewProps } from "react-native";
 
 export interface DrawerProps extends React.ComponentProps<"div"> {
   modalRef: React.MutableRefObject<null | BottomSheetModalMethods>;
+  snapPoints?: Array<string>;
 }
 
 export default function Drawer(props: DrawerProps): React.JSX.Element {
   const bottomSheetIndex: number = 0;
-  const bottomSheetSnapPoint: Array<string> = ["50%"];
+  const bottomSheetSnapPoint: Array<string> = props.snapPoints || ["50%"];
 
   return (
     <BottomSheetModal
