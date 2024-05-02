@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { Appearance, StyleSheet } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
@@ -6,6 +7,8 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { backgroundColor } from "@/constants/colors";
 import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,10 +27,14 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="dark" />
-      <Stack screenOptions={{ contentStyle: styles.container }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <StatusBar style="dark" />
+          <Stack screenOptions={{ contentStyle: styles.container }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </>
   );
 }
