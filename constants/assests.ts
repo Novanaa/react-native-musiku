@@ -12,4 +12,7 @@ export default {
     musicOptions: require("../assets/icons/music-options.png"),
     music: require("../assets/icons/music.png"),
   },
+  images: {
+    musicDisc: require("../assets/images/music-disc.png"),
+  },
 };
