@@ -9,5 +9,7 @@ export default {
     heart: require("../assets/icons/heart.png"),
     sparkles: require("../assets/icons/sparkles.png"),
     listOptions: require("../assets/icons/list-options.png"),
+    musicOptions: require("../assets/icons/music-options.png"),
+    music: require("../assets/icons/music.png"),
   },
 };
