@@ -1,8 +1,12 @@
 import React from "react";
 import Music from "../atomics/music";
 import { FlatList, StyleSheet } from "react-native";
+import { MusicNotDetected } from "./not-found";
 
 export default function MusicList(): React.JSX.Element {
+  // Validate if user songs is not detected
+  if (true) return <MusicNotDetected />;
+
   return (
     <FlatList
       // User songs data goes here!
