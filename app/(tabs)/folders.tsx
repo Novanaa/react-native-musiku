@@ -1,11 +1,11 @@
-import Container from "@/components/atomics/container";
-import Text from "@/components/atomics/text";
 import React from "react";
+import Container from "@/components/atomics/container";
+import FolderList from "@/components/molecules/folder-list";
 
 export default function FoldersScreen(): React.JSX.Element {
   return (
     <Container>
-      <Text>Folders</Text>
+      <FolderList />
     </Container>
   );
 }
