@@ -2,7 +2,8 @@ import React from "react";
 import Text from "../atomics/text";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Router, useRouter } from "expo-router";
-import assests from "@/constants/assests";
+import assests, { svgAssests } from "@/constants/assests";
+import SvgUri from "react-native-svg-uri";
 
 export function MusicNotDetected(): React.JSX.Element {
   const router: Router = useRouter();
@@ -32,6 +33,28 @@ export function MusicSearchNotFound(): React.JSX.Element {
       </Text>
       <Text style={musicSearchNotFoundStyles.messege}>
         Requested music cannot be found, try searching something else.
+      </Text>
+    </View>
+  );
+}
+
+export function EmptyMusic(): React.JSX.Element {
+  return (
+    <View style={emptyMusicStyles.container}>
+      <View style={{ top: 10 }}>
+        <SvgUri
+          svgXmlData={svgAssests.boxOpen}
+          width={110}
+          height={110}
+          fill="#FEFEFE"
+        />
+      </View>
+      <Text style={emptyMusicStyles.headerText}>
+        Got any tunes on your phone?
+      </Text>
+      <Text style={emptyMusicStyles.messege}>
+        How about we add some tunes to your phone? It's feeling a bit too quiet
+        in here!
       </Text>
     </View>
   );
@@ -77,6 +100,25 @@ const musicSearchNotFoundStyles = StyleSheet.create({
   messege: {
     textAlign: "center",
     width: "70%",
+    opacity: 0.8,
+  },
+});
+
+const emptyMusicStyles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    gap: 3,
+    opacity: 0.85,
+  },
+  headerText: {
+    fontFamily: "bold",
+    fontSize: 16,
+  },
+  messege: {
+    textAlign: "center",
+    width: "80%",
     opacity: 0.8,
   },
 });
