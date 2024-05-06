@@ -1,18 +1,18 @@
+import { ImageSourcePropType } from "react-native";
+
+const iconsStaticDirectory: string = "../assets/icons/";
+const imagesStaticDirectory: string = "../assets/images/";
+
+export interface Assets {
+  icons: Record<string, ImageSourcePropType>;
+  images: Record<string, ImageSourcePropType>;
+}
+
 export default {
   icons: {
-    folder: require("../assets/icons/folder.png"),
-    home: require("../assets/icons/home.png"),
-    search: require("../assets/icons/magnifying-glass.png"),
-    app: require("../assets/icons/musiku.png"),
-    scanMusic: require("../assets/icons/scan-music.png"),
-    commandLine: require("../assets/icons/command-line.png"),
-    heart: require("../assets/icons/heart.png"),
-    sparkles: require("../assets/icons/sparkles.png"),
-    listOptions: require("../assets/icons/list-options.png"),
-    musicOptions: require("../assets/icons/music-options.png"),
-    music: require("../assets/icons/music.png"),
+    app: require(iconsStaticDirectory + "musiku.png"),
   },
   images: {
-    musicDisc: require("../assets/images/music-disc.png"),
+    musicDisc: require(imagesStaticDirectory + "music-disc.png"),
   },
-};
+} satisfies Assets;
