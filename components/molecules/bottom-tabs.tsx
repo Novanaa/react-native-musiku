@@ -5,6 +5,7 @@ import * as colors from "@/constants/colors";
 import { StyleSheet } from "react-native";
 import { svgAssests } from "@/constants/assests";
 import SvgUri from "react-native-svg-uri";
+import { IconButton } from "../atomics/button";
 
 export default function BottomTabs(): React.JSX.Element {
   return (
@@ -44,6 +45,12 @@ export default function BottomTabs(): React.JSX.Element {
             color: colors.textColor,
           },
           title: "Playlist",
+          headerRight: () => (
+            <IconButton
+              icon={svgAssests.musicOptions}
+              style={{ paddingRight: 13 }}
+            />
+          ),
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon={svgAssests.music} />
           ),
@@ -60,6 +67,12 @@ export default function BottomTabs(): React.JSX.Element {
           title: "Directories",
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon={svgAssests.folder} />
+          ),
+          headerRight: () => (
+            <IconButton
+              icon={svgAssests.musicOptions}
+              style={{ paddingRight: 13 }}
+            />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
