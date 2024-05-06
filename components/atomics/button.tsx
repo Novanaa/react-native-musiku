@@ -1,8 +1,9 @@
 import React from "react";
-import { Image, ImageSourcePropType, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
+import SvgUri from "react-native-svg-uri";
 
 interface IconButtonProps extends React.ComponentProps<"image"> {
-  icon: ImageSourcePropType;
+  icon: string;
   width?: number;
   height?: number;
   alt?: string;
@@ -18,7 +19,7 @@ export function IconButton({
 }: IconButtonProps): React.JSX.Element {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Image alt={alt} source={icon} height={height} width={width} />
+      <SvgUri svgXmlData={icon} height={height} width={width} />
     </TouchableOpacity>
   );
 }

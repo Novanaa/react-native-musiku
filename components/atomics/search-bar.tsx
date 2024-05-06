@@ -1,17 +1,16 @@
-import assests from "@/constants/assests";
+import { svgAssests } from "@/constants/assests";
 import colors, { inputBackgroundColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
 import React from "react";
-import { Image, StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
+import SvgUri from "react-native-svg-uri";
 
 export default function SearchBar(): React.JSX.Element {
   return (
     <View style={styles.wrapper}>
-      <Image
-        source={assests.icons.search}
-        alt="search-icon"
-        style={styles.searchIcon}
-      />
+      <View style={styles.searchIcon}>
+        <SvgUri svgXmlData={svgAssests.search} />
+      </View>
       <TextInput
         style={styles.searchInput}
         placeholder="What are you looking for?"
