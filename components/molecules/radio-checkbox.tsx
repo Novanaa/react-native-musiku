@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars*/
+
 import { StyleProp, TextStyle, View, ViewProps, ViewStyle } from "react-native";
 import React from "react";
 import { RadioCheckboxButton } from "../atomics/radio-button";
