@@ -40,6 +40,21 @@ export default function BottomTabs(): React.JSX.Element {
         }}
       />
       <Tabs.Screen
+        name="playlist"
+        options={{
+          headerShown: false,
+          title: "Playlist",
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              focused={focused}
+              name="Playlist"
+              icon={assests.icons.music}
+            />
+          ),
+          tabBarActiveTintColor: colors.textColor,
+        }}
+      />
+      <Tabs.Screen
         name="folders"
         options={{
           headerShown: false,
