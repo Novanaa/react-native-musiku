@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import Text from "../atomics/text";
-import assests from "@/constants/assests";
+import { svgAssests } from "@/constants/assests";
 import { IconButton } from "../atomics/button";
 import { Router, useRouter } from "expo-router";
 
@@ -11,7 +11,7 @@ export default function Header(): React.JSX.Element {
     <View style={styles.container}>
       <Text style={styles.appName}>Musiku</Text>
       <IconButton
-        icon={assests.icons.scanMusic}
+        icon={svgAssests.scanMusic}
         alt="Scan your music"
         onPress={() => router.push("/scan")}
       />

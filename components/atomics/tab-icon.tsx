@@ -1,9 +1,10 @@
 import React from "react";
-import { Image, ImageSourcePropType, View } from "react-native";
+import { Image, View } from "react-native";
 import Text from "./text";
+import SvgUri from "react-native-svg-uri";
 
 interface TabIconParam {
-  icon: ImageSourcePropType;
+  icon: string;
   name: string;
   focused: boolean;
 }
@@ -21,7 +22,7 @@ export default function TabIcon({
         alignItems: "center",
       }}
     >
-      <Image source={icon} alt={name} />
+      <SvgUri svgXmlData={icon} />
       <Text
         style={{
           fontSize: 10,

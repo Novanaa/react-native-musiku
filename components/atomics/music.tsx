@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import React from "react";
 import Text from "./text";
-import assests from "@/constants/assests";
+import { svgAssests } from "@/constants/assests";
 import { borderRadius } from "@/constants/styles";
 import colors from "@/constants/colors";
+import SvgUri from "react-native-svg-uri";
 
 interface MusicProps extends TouchableHighlightProps {
   title: string;
@@ -28,7 +29,7 @@ export default function Music(props: MusicProps): React.JSX.Element {
     >
       <View style={styles.wrapper}>
         <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-          <Image source={assests.icons.music} alt="test" style={styles.icon} />
+          <SvgUri svgXmlData={svgAssests.music} width={28} height={28} />
           <View style={styles.metadata}>
             <Text style={styles.title} numberOfLines={1}>
               {props.title}
@@ -39,12 +40,7 @@ export default function Music(props: MusicProps): React.JSX.Element {
           </View>
         </View>
         <TouchableOpacity>
-          <Image
-            alt="options"
-            source={assests.icons.musicOptions}
-            width={40}
-            height={40}
-          />
+          <SvgUri svgXmlData={svgAssests.musicOptions} />
         </TouchableOpacity>
       </View>
     </TouchableHighlight>

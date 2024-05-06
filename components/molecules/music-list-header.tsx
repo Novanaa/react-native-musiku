@@ -1,11 +1,12 @@
 import React from "react";
 import Text from "../atomics/text";
-import assests from "@/constants/assests";
+import assests, { svgAssests } from "@/constants/assests";
 import { borderColor } from "@/constants/colors";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Drawer, { DrawerProps, DrawerWrapper } from "../atomics/drawer";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { RadioCheckbox, RadioCheckboxData } from "./radio-checkbox";
+import SvgUri from "react-native-svg-uri";
 
 export default function MusicListHeader(): React.JSX.Element {
   const bottomSheetRef: React.MutableRefObject<BottomSheetModalMethods | null> =
@@ -19,7 +20,7 @@ export default function MusicListHeader(): React.JSX.Element {
           activeOpacity={0.6}
           onPress={() => bottomSheetRef.current?.present()}
         >
-          <Image source={assests.icons.listOptions} alt="options" />
+          <SvgUri svgXmlData={svgAssests.listOptions} />
         </TouchableOpacity>
       </View>
       <View style={styles.bottomBorder}></View>
