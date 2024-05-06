@@ -53,8 +53,11 @@ export default function BottomTabs(): React.JSX.Element {
       <Tabs.Screen
         name="folders"
         options={{
-          headerShown: false,
-          title: "Folders",
+          headerStyle: { backgroundColor: colors.headerBackgoundColor },
+          headerTitleStyle: {
+            color: colors.textColor,
+          },
+          title: "Directories",
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon={svgAssests.folder} />
           ),
