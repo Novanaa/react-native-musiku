@@ -4,6 +4,7 @@ import TabIcon from "../atomics/tab-icon";
 import * as colors from "@/constants/colors";
 import { StyleSheet } from "react-native";
 import { svgAssests } from "@/constants/assests";
+import SvgUri from "react-native-svg-uri";
 
 export default function BottomTabs(): React.JSX.Element {
   return (
@@ -38,7 +39,10 @@ export default function BottomTabs(): React.JSX.Element {
       <Tabs.Screen
         name="playlist"
         options={{
-          headerShown: false,
+          headerStyle: { backgroundColor: colors.headerBackgoundColor },
+          headerTitleStyle: {
+            color: colors.textColor,
+          },
           title: "Playlist",
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon={svgAssests.music} />
