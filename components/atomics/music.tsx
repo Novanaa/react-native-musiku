@@ -10,7 +10,7 @@ import React from "react";
 import Text from "./text";
 import { svgAssests } from "@/constants/assests";
 import { borderRadius } from "@/constants/styles";
-import colors from "@/constants/colors";
+import { underlayColor } from "@/constants/colors";
 import SvgUri from "react-native-svg-uri";
 
 interface MusicProps extends TouchableHighlightProps {
@@ -22,7 +22,7 @@ export default function Music(props: MusicProps): React.JSX.Element {
   return (
     <TouchableHighlight
       activeOpacity={0.6}
-      underlayColor={colors.light.background + "50"}
+      underlayColor={underlayColor}
       style={styles.container}
       // Music player action
       onPress={() => "test"}
