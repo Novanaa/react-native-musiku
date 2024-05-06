@@ -38,4 +38,6 @@ export const modalBackgroundColor: string = "#282828";
 
 export const headerBackgoundColor: string = "#191919";
 
+export const underlayColor: string = colors.light.background + "50";
+
 export default colors;
