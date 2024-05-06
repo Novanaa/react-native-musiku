@@ -3,7 +3,7 @@ import React from "react";
 import TabIcon from "../atomics/tab-icon";
 import * as colors from "@/constants/colors";
 import { StyleSheet } from "react-native";
-import assests from "@/constants/assests";
+import { svgAssests } from "@/constants/assests";
 
 export default function BottomTabs(): React.JSX.Element {
   return (
@@ -19,7 +19,7 @@ export default function BottomTabs(): React.JSX.Element {
           headerShown: false,
           title: "Home",
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} name="Home" icon={assests.icons.home} />
+            <TabIcon focused={focused} name="Home" icon={svgAssests.home} />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
@@ -30,11 +30,7 @@ export default function BottomTabs(): React.JSX.Element {
           headerShown: false,
           title: "Search",
           tabBarIcon: ({ focused }) => (
-            <TabIcon
-              focused={focused}
-              name="Search"
-              icon={assests.icons.search}
-            />
+            <TabIcon focused={focused} name="Search" icon={svgAssests.search} />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
@@ -48,7 +44,7 @@ export default function BottomTabs(): React.JSX.Element {
             <TabIcon
               focused={focused}
               name="Playlist"
-              icon={assests.icons.music}
+              icon={svgAssests.music}
             />
           ),
           tabBarActiveTintColor: colors.textColor,
@@ -63,7 +59,7 @@ export default function BottomTabs(): React.JSX.Element {
             <TabIcon
               focused={focused}
               name="Folders"
-              icon={assests.icons.folder}
+              icon={svgAssests.folder}
             />
           ),
           tabBarActiveTintColor: colors.textColor,
