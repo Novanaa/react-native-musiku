@@ -36,4 +36,6 @@ export const inputBackgroundColor: string = "#333336";
 
 export const modalBackgroundColor: string = "#282828";
 
+export const headerBackgoundColor: string = "#191919";
+
 export default colors;
