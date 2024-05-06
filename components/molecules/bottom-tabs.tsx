@@ -19,7 +19,7 @@ export default function BottomTabs(): React.JSX.Element {
           headerShown: false,
           title: "Home",
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} name="Home" icon={svgAssests.home} />
+            <TabIcon focused={focused} icon={svgAssests.home} />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
@@ -30,7 +30,7 @@ export default function BottomTabs(): React.JSX.Element {
           headerShown: false,
           title: "Search",
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} name="Search" icon={svgAssests.search} />
+            <TabIcon focused={focused} icon={svgAssests.search} />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
@@ -41,11 +41,7 @@ export default function BottomTabs(): React.JSX.Element {
           headerShown: false,
           title: "Playlist",
           tabBarIcon: ({ focused }) => (
-            <TabIcon
-              focused={focused}
-              name="Playlist"
-              icon={svgAssests.music}
-            />
+            <TabIcon focused={focused} icon={svgAssests.music} />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
@@ -56,11 +52,7 @@ export default function BottomTabs(): React.JSX.Element {
           headerShown: false,
           title: "Folders",
           tabBarIcon: ({ focused }) => (
-            <TabIcon
-              focused={focused}
-              name="Folders"
-              icon={svgAssests.folder}
-            />
+            <TabIcon focused={focused} icon={svgAssests.folder} />
           ),
           tabBarActiveTintColor: colors.textColor,
         }}
