@@ -1,5 +1,4 @@
 import {
-  Image,
   StyleSheet,
   View,
   TouchableHighlight,
