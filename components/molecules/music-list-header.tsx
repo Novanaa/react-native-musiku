@@ -1,6 +1,6 @@
 import React from "react";
 import Text from "../atomics/text";
-import assests, { svgAssests } from "@/constants/assests";
+import { svgAssests } from "@/constants/assests";
 import { borderColor } from "@/constants/colors";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Drawer, { DrawerProps, DrawerWrapper } from "../atomics/drawer";
