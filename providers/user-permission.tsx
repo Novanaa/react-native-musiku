@@ -10,7 +10,7 @@ import Text from "../components/atomics/text";
 import { Button } from "@/components/atomics/button";
 import getPermission from "@/utils/get-permission";
 
-interface UserPermissionContextData {
+export interface UserPermissionContextData {
   ref: React.MutableRefObject<null | BottomSheetModalMethods> | null;
   permission: null | MediaLibrary.PermissionResponse;
 }
