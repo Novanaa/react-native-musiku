@@ -4,17 +4,32 @@ import Text from "../atomics/text";
 import { svgAssests } from "@/constants/assests";
 import { IconButton } from "../atomics/button";
 import { Router, useRouter } from "expo-router";
+import {
+  UserPermissionContext,
+  UserPermissionContextData,
+} from "@/providers/user-permission";
 
 export default function Header(): React.JSX.Element {
   const router: Router = useRouter();
+  const permissionContext: UserPermissionContextData = React.useContext(
+    UserPermissionContext
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.appName}>Musiku</Text>
-      <IconButton
-        icon={svgAssests.scanMusic}
-        alt="Scan your music"
-        onPress={() => router.push("/scan")}
-      />
+      <View style={styles.iconWrapper}>
+        {!permissionContext.permission?.granted ? (
+          <IconButton
+            icon={svgAssests.folderDownArrow}
+            onPress={() => permissionContext.ref?.current?.present()}
+          />
+        ) : null}
+        <IconButton
+          icon={svgAssests.scanMusic}
+          onPress={() => router.push("/scan")}
+        />
+      </View>
     </View>
   );
 }
@@ -31,5 +46,9 @@ const styles = StyleSheet.create({
   appName: {
     fontFamily: "bold",
     fontSize: 18,
+  },
+  iconWrapper: {
+    flexDirection: "row",
+    gap: 10,
   },
 });
