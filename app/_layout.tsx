@@ -9,6 +9,7 @@ import { backgroundColor } from "@/constants/colors";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { UserPermissionProvider } from "@/providers/user-permission";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,16 +27,16 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheetModalProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <UserPermissionProvider>
           <StatusBar style="dark" />
           <Stack screenOptions={{ contentStyle: styles.container }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </>
+        </UserPermissionProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
