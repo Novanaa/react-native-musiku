@@ -4,6 +4,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Router, useRouter } from "expo-router";
 import assests, { svgAssests } from "@/constants/assests";
 import SvgUri from "react-native-svg-uri";
+import colors from "@/constants/colors";
 
 export function MusicNotDetected(): React.JSX.Element {
   const router: Router = useRouter();
@@ -79,6 +80,9 @@ const musicNotDetectedStyles = StyleSheet.create({
   },
   cta: {
     fontFamily: "bold",
+    borderBottomColor: colors.light.background,
+    borderBottomWidth: 1,
+    paddingBottom: 1,
   },
 });
 
