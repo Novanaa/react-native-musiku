@@ -9,22 +9,25 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import Text from "../components/atomics/text";
 import { Button } from "@/components/atomics/button";
 import getPermission from "@/utils/get-permission";
+import colors, { modalBackgroundColor } from "@/constants/colors";
 
-export interface UserPermissionContextData {
-  ref: React.MutableRefObject<null | BottomSheetModalMethods> | null;
-  permission: null | MediaLibrary.PermissionResponse;
+export type UserPermissionContextData = boolean;
+
+interface UserPermissionProvider extends ViewProps {}
+
+interface UserPermissionAlertProps extends DrawerProps {
+  setIsAllowedTo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const UserPermissionContext =
-  React.createContext<UserPermissionContextData>({
-    permission: null,
-    ref: null,
-  });
+  React.createContext<UserPermissionContextData>(false);
 
-export function UserPermissionProvider(props: ViewProps): React.ReactNode {
+export function UserPermissionProvider(
+  props: UserPermissionProvider
+): React.ReactNode {
+  const [isAllowedTo, setIsAllowedTo] = React.useState<boolean>(false);
   const [permission] = MediaLibrary.usePermissions();
-  const [userPermission, setUserPermission] =
-    React.useState<null | MediaLibrary.PermissionResponse>(null);
+  const isGranted: boolean = permission?.granted || isAllowedTo;
   const drawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
     React.useRef(null);
 
@@ -34,27 +37,32 @@ export function UserPermissionProvider(props: ViewProps): React.ReactNode {
 
     if (!permission?.granted && permission?.canAskAgain)
       drawerRef.current?.present();
-
-    setUserPermission(permission);
   }, []);
 
-  return (
-    <>
-      <UserPermissionContext.Provider
-        value={{ permission: userPermission, ref: drawerRef }}
-      >
+  return isGranted ? (
+    <>{props.children}</>
+  ) : (
+    <View style={{ backgroundColor: colors.dark.background }}>
+      <UserPermissionContext.Provider value={isGranted}>
         {props.children}
       </UserPermissionContext.Provider>
-      <UserPermissionAlert modalRef={drawerRef} />
-    </>
+      <UserPermissionAlert
+        modalRef={drawerRef}
+        setIsAllowedTo={setIsAllowedTo}
+      />
+    </View>
   );
 }
 
 export default function UserPermissionAlert(
-  props: DrawerProps
+  props: UserPermissionAlertProps
 ): React.JSX.Element {
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["38%"]}>
+    <Drawer
+      modalRef={props.modalRef}
+      snapPoints={["38%"]}
+      handleIndicatorStyle={{ backgroundColor: modalBackgroundColor }}
+    >
       <DrawerWrapper style={styles.wrapper}>
         <Text style={styles.headerText}>Before Using This App</Text>
         <Text style={styles.headerDescription}>
@@ -62,7 +70,9 @@ export default function UserPermissionAlert(
           granting access to your device's music library,
         </Text>
         <View style={styles.buttonWrapper}>
-          <Button onPress={() => getPermission()}>Accept</Button>
+          <Button onPress={() => getPermission(props.setIsAllowedTo)}>
+            Accept
+          </Button>
           <Button
             textStyle={{ color: "#fc4949" }}
             onPress={() => BackHandler.exitApp()}
