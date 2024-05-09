@@ -10,6 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { UserPermissionProvider } from "@/providers/user-permission";
+import MusicProvider from "@/providers/music-provider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,10 +33,12 @@ export default function RootLayout() {
     >
       <BottomSheetModalProvider>
         <UserPermissionProvider>
-          <StatusBar style="dark" />
-          <Stack screenOptions={{ contentStyle: styles.container }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
+          <MusicProvider>
+            <StatusBar style="dark" />
+            <Stack screenOptions={{ contentStyle: styles.container }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </MusicProvider>
         </UserPermissionProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
