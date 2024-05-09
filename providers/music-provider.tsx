@@ -4,14 +4,13 @@ import getMusic from "@/utils/get-music";
 import { ViewProps } from "react-native";
 
 export type MusicContextData =
-  | Array<never>
-  | MediaLibrary.PagedInfo<MediaLibrary.Asset>;
+  MediaLibrary.PagedInfo<MediaLibrary.Asset> | null;
 
 export const MusicContext: React.Context<MusicContextData> =
-  React.createContext<MusicContextData>([]);
+  React.createContext<MusicContextData>(null);
 
 export default function MusicProvider(props: ViewProps): React.JSX.Element {
-  const [music, setMusic] = React.useState<MusicContextData>([]);
+  const [music, setMusic] = React.useState<MusicContextData>(null);
 
   React.useEffect(() => {
     getMusic().then((state) => setMusic(state));
