@@ -2,11 +2,13 @@ import React from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import colors, { modalBackgroundColor } from "@/constants/colors";
-import { View, ViewProps } from "react-native";
+import { StyleProp, View, ViewProps, ViewStyle } from "react-native";
 
-export interface DrawerProps extends React.ComponentProps<"div"> {
+export interface DrawerProps extends ViewProps {
   modalRef: React.MutableRefObject<null | BottomSheetModalMethods>;
   snapPoints?: Array<string>;
+  enablePanDownToClose?: boolean;
+  handleIndicatorStyle?: StyleProp<ViewStyle>;
 }
 
 export default function Drawer(props: DrawerProps): React.JSX.Element {
@@ -22,6 +24,7 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
         backgroundColor: modalBackgroundColor,
       }}
       handleIndicatorStyle={{ backgroundColor: colors.light.background }}
+      {...props}
     >
       {props.children}
     </BottomSheetModal>
