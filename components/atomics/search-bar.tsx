@@ -5,7 +5,11 @@ import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import SvgUri from "react-native-svg-uri";
 
-export default function SearchBar(): React.JSX.Element {
+interface SearchBarProps {
+  onChangeText: (text: string) => void;
+}
+
+export default function SearchBar(props: SearchBarProps): React.JSX.Element {
   return (
     <View style={styles.wrapper}>
       <View style={styles.searchIcon}>
@@ -14,6 +18,7 @@ export default function SearchBar(): React.JSX.Element {
       <TextInput
         style={styles.searchInput}
         placeholder="What are you looking for?"
+        onChangeText={(text) => props.onChangeText(text)}
         placeholderTextColor={colors.dark.text}
       />
     </View>

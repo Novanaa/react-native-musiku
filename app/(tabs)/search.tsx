@@ -1,16 +1,16 @@
 import Container from "@/components/atomics/container";
 import SearchBar from "@/components/atomics/search-bar";
-import { MusicSearchNotFound } from "@/components/molecules/not-found";
+import SearchList from "@/components/molecules/search-list";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 export default function SearchScreen(): React.JSX.Element {
+  const [keyword, setkeyword] = React.useState<string>("");
+
   return (
     <Container style={styles.container}>
-      <SearchBar />
-      {/* Change it later on! */}
-      <MusicSearchNotFound />
-      {/* Change it later on! */}
+      <SearchBar onChangeText={(text: string) => setkeyword(text)} />
+      <SearchList keyword={keyword} />
     </Container>
   );
 }
