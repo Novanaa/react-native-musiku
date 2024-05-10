@@ -13,7 +13,7 @@ import colors, { modalBackgroundColor } from "@/constants/colors";
 
 export type UserPermissionContextData = boolean;
 
-interface UserPermissionProvider extends ViewProps {}
+interface UserPermissionProviderProps extends ViewProps {}
 
 interface UserPermissionAlertProps extends DrawerProps {
   setIsAllowedTo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ export const UserPermissionContext =
   React.createContext<UserPermissionContextData>(false);
 
 export function UserPermissionProvider(
-  props: UserPermissionProvider
+  props: UserPermissionProviderProps
 ): React.ReactNode {
   const [isAllowedTo, setIsAllowedTo] = React.useState<boolean>(false);
   const [permission] = MediaLibrary.usePermissions();

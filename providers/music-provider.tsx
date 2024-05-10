@@ -1,23 +1,22 @@
 import React from "react";
 import * as MediaLibrary from "expo-media-library";
-import getMusic from "@/utils/get-music";
 import { ViewProps } from "react-native";
 
 export type MusicContextData =
   MediaLibrary.PagedInfo<MediaLibrary.Asset> | null;
 
+interface MusicProviderProps extends ViewProps {
+  music: MediaLibrary.PagedInfo<MediaLibrary.Asset> | null;
+}
+
 export const MusicContext: React.Context<MusicContextData> =
   React.createContext<MusicContextData>(null);
 
-export default function MusicProvider(props: ViewProps): React.JSX.Element {
-  const [music, setMusic] = React.useState<MusicContextData>(null);
-
-  React.useEffect(() => {
-    getMusic().then((state) => setMusic(state));
-  }, []);
-
+export default function MusicProvider(
+  props: MusicProviderProps
+): React.JSX.Element {
   return (
-    <MusicContext.Provider value={music}>
+    <MusicContext.Provider value={props.music}>
       {props.children}
     </MusicContext.Provider>
   );
