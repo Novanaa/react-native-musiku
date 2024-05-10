@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected, MusicSearchNotFound } from "./not-found";
 import { MusicContext, MusicContextData } from "@/providers/music-provider";
 import * as MediaLibrary from "expo-media-library";
+import { useDebounce } from "use-debounce";
 
 interface SearchListProps {
   keyword: string;
@@ -11,6 +12,7 @@ interface SearchListProps {
 
 export default function SearchList(props: SearchListProps): React.JSX.Element {
   const musicContext: MusicContextData = React.useContext(MusicContext);
+  const [keyword] = useDebounce<string>(props.keyword, 300);
 
   // Validate if user songs is not detected
   if (musicContext == null) return <MusicNotDetected />;
@@ -19,7 +21,7 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
   if (!musicContext.totalCount) return <EmptyMusic />;
 
   const filteredMusic: Array<MediaLibrary.Asset> = musicContext.assets.filter(
-    (item) => item.filename.toLowerCase().includes(props.keyword.toLowerCase())
+    (item) => item.filename.toLowerCase().includes(keyword.toLowerCase())
   );
 
   if (!filteredMusic.length) return <MusicSearchNotFound />;
