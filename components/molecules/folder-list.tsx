@@ -15,9 +15,9 @@ export default function FolderList(): React.JSX.Element {
 
   return (
     <ScrollView style={styles.container}>
-      {folderContext.map((item, i) => (
-        <View style={styles.wrapper}>
-          <Folder title={item.folderName} description={item.path} key={i} />
+      {folderContext.map((item) => (
+        <View style={styles.wrapper} key={item.path}>
+          <Folder title={item.folderName} description={item.path} />
         </View>
       ))}
     </ScrollView>
