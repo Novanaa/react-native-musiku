@@ -1,6 +1,6 @@
 import React from "react";
 import Music from "../atomics/music";
-import { ScrollView, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected } from "./not-found";
 import { MusicContext, MusicContextData } from "@/providers/music-provider";
 
@@ -14,15 +14,16 @@ export default function MusicList(): React.JSX.Element {
   if (!musicContext.totalCount) return <EmptyMusic />;
 
   return (
-    <ScrollView style={styles.container}>
-      {musicContext.assets.map((item) => (
+    <FlatList
+      data={musicContext.assets}
+      style={styles.container}
+      renderItem={(data) => (
         <Music
-          key={item.id}
           description="Unknown Artist - Unknown Album"
-          title={item.filename}
+          title={data.item.filename}
         />
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 }
 
