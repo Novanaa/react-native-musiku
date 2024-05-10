@@ -1,6 +1,6 @@
 import React from "react";
 import Music from "../atomics/music";
-import { ScrollView, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected, MusicSearchNotFound } from "./not-found";
 import { MusicContext, MusicContextData } from "@/providers/music-provider";
 import * as MediaLibrary from "expo-media-library";
@@ -27,15 +27,16 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
   if (!filteredMusic.length) return <MusicSearchNotFound />;
 
   return (
-    <ScrollView style={styles.container}>
-      {filteredMusic.map((item) => (
+    <FlatList
+      data={filteredMusic}
+      style={styles.container}
+      renderItem={(data) => (
         <Music
-          key={item.id}
           description="Unknown Artist - Unknown Album"
-          title={item.filename}
+          title={data.item.filename}
         />
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 }
 
