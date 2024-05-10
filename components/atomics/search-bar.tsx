@@ -6,6 +6,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 import SvgUri from "react-native-svg-uri";
 
 interface SearchBarProps {
+  /* eslint-disable no-unused-vars */
   onChangeText: (text: string) => void;
 }
 
