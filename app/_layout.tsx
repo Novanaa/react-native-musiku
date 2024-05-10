@@ -13,6 +13,7 @@ import { UserPermissionProvider } from "@/providers/user-permission";
 import MusicProvider from "@/providers/music-provider";
 import getMusic from "@/utils/get-music";
 import * as MediaLibrary from "expo-media-library";
+import FolderProvider from "@/providers/folder-provider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,10 +43,12 @@ export default function RootLayout() {
       <BottomSheetModalProvider>
         <UserPermissionProvider>
           <MusicProvider music={music}>
-            <StatusBar style="dark" />
-            <Stack screenOptions={{ contentStyle: styles.container }}>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
+            <FolderProvider>
+              <StatusBar style="dark" />
+              <Stack screenOptions={{ contentStyle: styles.container }}>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              </Stack>
+            </FolderProvider>
           </MusicProvider>
         </UserPermissionProvider>
       </BottomSheetModalProvider>
