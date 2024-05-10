@@ -27,7 +27,9 @@ export default function Folder(props: FolderProps): React.JSX.Element {
             <Text style={styles.headerTitle} numberOfLines={1}>
               {props.title}
             </Text>
-            <Text style={styles.headerDescription}>{props.description}</Text>
+            <Text style={styles.headerDescription} numberOfLines={1}>
+              {props.description}
+            </Text>
           </View>
         </View>
         <View style={styles.arrowRightIcon}>
