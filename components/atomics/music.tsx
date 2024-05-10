@@ -44,7 +44,10 @@ export default function Music(props: MusicProps): React.JSX.Element {
               </Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => drawerRef.current?.present()}>
+          <TouchableOpacity
+            onPress={() => drawerRef.current?.present()}
+            style={{ width: 30, height: 30 }}
+          >
             <SvgUri svgXmlData={svgAssests.musicOptions} />
           </TouchableOpacity>
         </View>
