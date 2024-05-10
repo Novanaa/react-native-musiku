@@ -40,4 +40,6 @@ export const headerBackgoundColor: string = "#191919";
 
 export const underlayColor: string = colors.light.background + "50";
 
+export const destructiveColor: string = "#fc4949";
+
 export default colors;
