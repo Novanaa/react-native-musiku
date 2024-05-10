@@ -1,28 +1,28 @@
 import React from "react";
 import Music from "../atomics/music";
-import { FlatList, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected } from "./not-found";
+import { MusicContext, MusicContextData } from "@/providers/music-provider";
 
 export default function MusicList(): React.JSX.Element {
-  // Validate if user songs is empty
-  if (true) return <EmptyMusic />;
+  const musicContext: MusicContextData = React.useContext(MusicContext);
 
   // Validate if user songs is not detected
-  if (true) return <MusicNotDetected />;
+  if (musicContext == null) return <MusicNotDetected />;
+
+  // Validate if user songs is empty
+  if (!musicContext.totalCount) return <EmptyMusic />;
 
   return (
-    <FlatList
-      // User songs data goes here!
-      data={[]}
-      renderItem={() => (
+    <ScrollView style={styles.container}>
+      {musicContext.assets.map((item) => (
         <Music
-          // Just a placeholder text for user songs
+          key={item.id}
           description="Unknown Artist - Unknown Album"
-          title="Sufjan Stevens - The Black Hawk War, or, How to Demolish an Entire Civilization and Still Feel Good About Yourself in the Morning, or, We Apologize for the Inconvenience but You're Going to Have to Leave Now, or, 'I Have Fought the Big Knives and Will Continue to Fight Them Until They Are Off Our Lands!"
+          title={item.filename}
         />
-      )}
-      style={styles.container}
-    />
+      ))}
+    </ScrollView>
   );
 }
 
