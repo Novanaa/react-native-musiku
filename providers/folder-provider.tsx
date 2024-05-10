@@ -13,25 +13,24 @@ export const FolderContext: React.Context<FolderContextData> =
 export default function FolderProvider(props: ViewProps): React.JSX.Element {
   const musicContext: MusicContextData = React.useContext(MusicContext);
 
-  if (!musicContext) throw new Error("Music context doesn't defined");
+  const folder: FolderContextData =
+    musicContext?.assets
+      .map((item) => {
+        // Map music data uri
+        const splitedFilePath: Array<string> = item.uri.split("/");
+        const folderName: string = splitedFilePath[splitedFilePath.length - 2];
+        const path: string = item.uri.substring(0, item.uri.lastIndexOf("/"));
 
-  const folder: FolderContextData = musicContext.assets
-    .map((item) => {
-      // Map music data uri
-      const splitedFilePath: Array<string> = item.uri.split("/");
-      const folderName: string = splitedFilePath[splitedFilePath.length - 2];
-      const path: string = item.uri.substring(0, item.uri.lastIndexOf("/"));
-
-      return {
-        folderName,
-        path,
-      };
-    })
-    .filter(
-      // To removes duplicates array datas
-      (item, index, self) =>
-        index === self.findIndex((t) => t.path === item.path)
-    );
+        return {
+          folderName,
+          path,
+        };
+      })
+      .filter(
+        // To removes duplicates array datas
+        (item, index, self) =>
+          index === self.findIndex((t) => t.path === item.path)
+      ) || null;
 
   return (
     <FolderContext.Provider value={folder}>
