@@ -5,6 +5,7 @@ import { EmptyMusic, MusicNotDetected, MusicSearchNotFound } from "./not-found";
 import { MusicContext, MusicContextData } from "@/providers/music-provider";
 import * as MediaLibrary from "expo-media-library";
 import { useDebounce } from "use-debounce";
+import { SearchWelcomeScreen } from "./welcome";
 
 interface SearchListProps {
   keyword: string;
@@ -12,7 +13,7 @@ interface SearchListProps {
 
 export default function SearchList(props: SearchListProps): React.JSX.Element {
   const musicContext: MusicContextData = React.useContext(MusicContext);
-  const [keyword] = useDebounce<string>(props.keyword, 300);
+  const [keyword] = useDebounce<string>(props.keyword, 500);
 
   // Validate if user songs is not detected
   if (musicContext == null) return <MusicNotDetected />;
@@ -20,9 +21,13 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
   // Validate if user songs is empty
   if (!musicContext.totalCount) return <EmptyMusic />;
 
-  const filteredMusic: Array<MediaLibrary.Asset> = musicContext.assets.filter(
-    (item) => item.filename.toLowerCase().includes(keyword.toLowerCase())
-  );
+  const filteredMusic: Array<MediaLibrary.Asset> = keyword
+    ? musicContext.assets.filter((item) =>
+        item.filename.toLowerCase().includes(keyword.toLowerCase())
+      )
+    : [];
+
+  if (!keyword) return <SearchWelcomeScreen />;
 
   if (!filteredMusic.length) return <MusicSearchNotFound />;
 
