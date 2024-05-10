@@ -1,6 +1,6 @@
 import React from "react";
 import Music from "../atomics/music";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected, MusicSearchNotFound } from "./not-found";
 import { MusicContext, MusicContextData } from "@/providers/music-provider";
 import * as MediaLibrary from "expo-media-library";

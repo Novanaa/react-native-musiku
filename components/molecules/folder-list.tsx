@@ -1,28 +1,55 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import Folder from "../atomics/folder";
-import { EmptyMusic } from "./not-found";
+import { EmptyMusic, MusicNotDetected } from "./not-found";
+import { MusicContext, MusicContextData } from "@/providers/music-provider";
+
+interface FolderData {
+  path: string;
+  folderName: string;
+}
 
 export default function FolderList(): React.JSX.Element {
+  const musicContext: MusicContextData = React.useContext(MusicContext);
+
   // Validate if the user music is empty
-  if (true) return <EmptyMusic />;
+  if (!musicContext?.totalCount) return <EmptyMusic />;
+
+  // Validate if the user music is not detected
+  if (musicContext == null) return <MusicNotDetected />;
+
+  const folder: Array<FolderData> = musicContext.assets
+    .map((item) => {
+      // Map music data uri
+      const splitedFilePath: Array<string> = item.uri.split("/");
+      const folderName: string = splitedFilePath[splitedFilePath.length - 2];
+      const path: string = item.uri.substring(0, item.uri.lastIndexOf("/"));
+
+      return {
+        folderName,
+        path,
+      };
+    })
+    .filter(
+      // To removes duplicates array datas
+      (item, index, self) =>
+        index === self.findIndex((t) => t.path === item.path)
+    );
 
   return (
-    <FlatList
-      style={styles.container}
-      // Replac this with real user data
-      data={[]}
-      renderItem={() => (
-        // Folder title and description placeholder (for now)
-        <Folder title="Document" description="6 Songs - 18/1/2024" />
-      )}
-      ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
-    />
+    <ScrollView style={styles.container}>
+      {folder.map((item, i) => (
+        <View style={styles.wrapper}>
+          <Folder title={item.folderName} description={item.path} key={i} />
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginVertical: 15,
   },
+  wrapper: { marginVertical: 2 },
 });
