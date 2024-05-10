@@ -1,6 +1,6 @@
 import React from "react";
 import Music from "../atomics/music";
-import { FlatList, ScrollView, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected } from "./not-found";
 import { MusicContext, MusicContextData } from "@/providers/music-provider";
 
