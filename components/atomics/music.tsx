@@ -13,10 +13,12 @@ import { underlayColor } from "@/constants/colors";
 import SvgUri from "react-native-svg-uri";
 import MusicOptions from "./music-options";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import * as MediaLibrary from "expo-media-library";
 
 interface MusicProps extends TouchableHighlightProps {
   title: string;
   description: string;
+  musicItem: MediaLibrary.Asset;
 }
 
 export default function Music(props: MusicProps): React.JSX.Element {
@@ -52,7 +54,7 @@ export default function Music(props: MusicProps): React.JSX.Element {
           </TouchableOpacity>
         </View>
       </TouchableHighlight>
-      <MusicOptions modalRef={drawerRef} />
+      <MusicOptions modalRef={drawerRef} music={props.musicItem} />
     </>
   );
 }
