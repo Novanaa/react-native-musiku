@@ -21,6 +21,7 @@ export default function MusicList(): React.JSX.Element {
         <Music
           description="Unknown Artist - Unknown Album"
           title={data.item.filename}
+          musicItem={data.item}
         />
       )}
     />
