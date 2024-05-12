@@ -13,6 +13,9 @@ import { svgAssests } from "@/constants/assests";
 import Text from "./text";
 import { destructiveColor, underlayColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { MusicOptionsInformation } from "./music-options-actions";
+import * as MediaLibrary from "expo-media-library";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
   icon: string;
@@ -21,36 +24,51 @@ interface MusicOptionsListProps extends TouchableHighlightProps {
   fill?: string;
 }
 
-export default function MusicOptions(props: DrawerProps): React.JSX.Element {
+interface MusicOptionsProps extends DrawerProps {
+  music: MediaLibrary.Asset;
+}
+
+export default function MusicOptions(
+  props: MusicOptionsProps
+): React.JSX.Element {
+  const musicInformationDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef(null);
+
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["33%"]}>
-      <View style={styles.wrapper}>
-        <MusicOptionsList
-          title="Play music"
-          icon={svgAssests.play}
-          onPress={() => console.log("action")}
-        />
-        <MusicOptionsList
-          title="Add to playlist"
-          icon={svgAssests.heart}
-          onPress={() => console.log("action")}
-        />
-        <MusicOptionsList
-          title="Music information"
-          icon={svgAssests.info}
-          onPress={() => console.log("action")}
-        />
-        <MusicOptionsList
-          title="Delete music"
-          icon={svgAssests.trash}
-          fill={destructiveColor}
-          textStyle={{
-            color: destructiveColor,
-          }}
-          onPress={() => console.log("action")}
-        />
-      </View>
-    </Drawer>
+    <>
+      <Drawer modalRef={props.modalRef} snapPoints={["33%"]}>
+        <View style={styles.wrapper}>
+          <MusicOptionsList
+            title="Play music"
+            icon={svgAssests.play}
+            onPress={() => console.log("action")}
+          />
+          <MusicOptionsList
+            title="Add to playlist"
+            icon={svgAssests.heart}
+            onPress={() => console.log("action")}
+          />
+          <MusicOptionsList
+            title="Music information"
+            icon={svgAssests.info}
+            onPress={() => musicInformationDrawerRef.current?.present()}
+          />
+          <MusicOptionsList
+            title="Delete music"
+            icon={svgAssests.trash}
+            fill={destructiveColor}
+            textStyle={{
+              color: destructiveColor,
+            }}
+            onPress={() => console.log("action")}
+          />
+        </View>
+      </Drawer>
+      <MusicOptionsInformation
+        modalRef={musicInformationDrawerRef}
+        music={props.music}
+      />
+    </>
   );
 }
 

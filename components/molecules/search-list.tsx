@@ -23,8 +23,8 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
 
   const filteredMusic: Array<MediaLibrary.Asset> = keyword
     ? musicContext.assets.filter((item) =>
-        item.filename.toLowerCase().includes(keyword.toLowerCase())
-      )
+      item.filename.toLowerCase().includes(keyword.toLowerCase())
+    )
     : [];
 
   if (!keyword) return <SearchWelcomeScreen />;
@@ -37,6 +37,7 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
       style={styles.container}
       renderItem={(data) => (
         <Music
+          musicItem={data.item}
           description="Unknown Artist - Unknown Album"
           title={data.item.filename}
         />
