@@ -5,7 +5,7 @@ import Text from "./text";
 import { StyleSheet, View, ViewProps } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import { svgAssests } from "@/constants/assests";
-import { borderColor } from "@/constants/colors";
+import colors, { borderColor } from "@/constants/colors";
 import { borderRadius, rowsGap } from "@/constants/styles";
 import parseDuration from "@/utils/parse-duration";
 
@@ -45,14 +45,14 @@ export function MusicOptionsInformation(
           <MusicOptionsInformationContent
             title="Last Modified"
             description={lastMusicModified}
-            icon={svgAssests.commandLine}
+            icon={svgAssests.roundedArrow}
           />
         </View>
         <View style={musicOptionsInformationStyles.contentContainer}>
           <MusicOptionsInformationContent
             title="Music Location"
             description={props.music.uri}
-            icon={svgAssests.commandLine}
+            icon={svgAssests.location}
           />
         </View>
       </DrawerWrapper>
@@ -65,7 +65,7 @@ export function MusicOptionsInformationContent(
 ): React.JSX.Element {
   return (
     <View style={musicOptionsInformationStyles.contentWrapper}>
-      <SvgUri svgXmlData={props.icon} />
+      <SvgUri svgXmlData={props.icon} fill={colors.light.background} />
       <View>
         <Text style={musicOptionsInformationStyles.contentMetadataTitle}>
           {props.title}
