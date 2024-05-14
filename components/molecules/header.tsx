@@ -1,11 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Router, useRouter } from "expo-router";
 import Text from "../atomics/text";
 
 export default function Header(): React.JSX.Element {
-  const router: Router = useRouter();
-
   return (
     <View style={styles.container}>
       <Text style={styles.appName}>Musiku</Text>
