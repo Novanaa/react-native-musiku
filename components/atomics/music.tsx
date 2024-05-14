@@ -1,7 +1,6 @@
 import {
   StyleSheet,
   View,
-  TouchableHighlight,
   TouchableOpacity,
   TouchableHighlightProps,
 } from "react-native";
@@ -9,7 +8,6 @@ import React from "react";
 import Text from "./text";
 import { svgAssests } from "@/constants/assests";
 import { borderRadius } from "@/constants/styles";
-import { underlayColor } from "@/constants/colors";
 import SvgUri from "react-native-svg-uri";
 import MusicOptions from "./music-options";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
@@ -27,9 +25,8 @@ export default function Music(props: MusicProps): React.JSX.Element {
 
   return (
     <>
-      <TouchableHighlight
+      <TouchableOpacity
         activeOpacity={0.6}
-        underlayColor={underlayColor}
         style={styles.container}
         // Music player action
         onPress={() => "open"}
@@ -53,7 +50,7 @@ export default function Music(props: MusicProps): React.JSX.Element {
             <SvgUri svgXmlData={svgAssests.musicOptions} />
           </TouchableOpacity>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
       <MusicOptions modalRef={drawerRef} music={props.musicItem} />
     </>
   );
