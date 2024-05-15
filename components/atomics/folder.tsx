@@ -1,9 +1,8 @@
 import { svgAssests } from "@/constants/assests";
 import React from "react";
-import { StyleSheet, View, TouchableHighlight } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import Text from "./text";
-import { underlayColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
 
 interface FolderProps {
@@ -11,13 +10,12 @@ interface FolderProps {
   description: string;
 }
 
-export default function Folder(props: FolderProps): React.JSX.Element {
+function Folder(props: FolderProps): React.JSX.Element {
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={styles.container}
       // onPress placeholder
       onPress={() => "test"}
-      underlayColor={underlayColor}
       activeOpacity={0.6}
     >
       <>
@@ -36,9 +34,11 @@ export default function Folder(props: FolderProps): React.JSX.Element {
           <SvgUri svgXmlData={svgAssests.arrowRight} width={18} height={18} />
         </View>
       </>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
+
+export default React.memo(Folder);
 
 const styles = StyleSheet.create({
   container: {

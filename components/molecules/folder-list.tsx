@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import Folder from "../atomics/folder";
 import { EmptyMusic, MusicNotDetected } from "./not-found";
 import { FolderContext, FolderContextData } from "@/providers/folder-provider";
@@ -14,13 +14,15 @@ export default function FolderList(): React.JSX.Element {
   if (!folderContext.length) return <EmptyMusic />;
 
   return (
-    <ScrollView style={styles.container}>
-      {folderContext.map((item) => (
-        <View style={styles.wrapper} key={item.path}>
-          <Folder title={item.folderName} description={item.path} />
+    <FlatList
+      style={styles.container}
+      data={folderContext}
+      renderItem={(data) => (
+        <View style={styles.wrapper} key={data.item.path}>
+          <Folder title={data.item.folderName} description={data.item.path} />
         </View>
-      ))}
-    </ScrollView>
+      )}
+    />
   );
 }
 
