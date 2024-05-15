@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "musiku",
+    "name": "Musiku",
     "slug": "musiku",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#121212"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -25,9 +23,7 @@
       },
       "package": "com.musiku.app"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
     },
