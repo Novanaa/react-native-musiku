@@ -19,7 +19,7 @@ interface MusicProps extends TouchableHighlightProps {
   musicItem: MediaLibrary.Asset;
 }
 
-export default function Music(props: MusicProps): React.JSX.Element {
+function Music(props: MusicProps): React.JSX.Element {
   const drawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
     React.useRef(null);
 
@@ -55,6 +55,8 @@ export default function Music(props: MusicProps): React.JSX.Element {
     </>
   );
 }
+
+export default React.memo(Music);
 
 const styles = StyleSheet.create({
   container: {
