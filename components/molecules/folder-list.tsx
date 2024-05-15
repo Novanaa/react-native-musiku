@@ -14,23 +14,21 @@ export default function FolderList(): React.JSX.Element {
   if (!folderContext.length) return <EmptyMusic />;
 
   return (
-    <ScrollView style={styles.container}>
-      <FlatList
-        style={styles.container}
-        data={folderContext}
-        renderItem={(data) => (
-          <View style={styles.wrapper} key={data.item.path}>
-            <Folder title={data.item.folderName} description={data.item.path} />
-          </View>
-        )}
-      />
-    </ScrollView>
+    <FlatList
+      style={styles.container}
+      data={folderContext}
+      renderItem={(data) => (
+        <View style={styles.wrapper} key={data.item.path}>
+          <Folder title={data.item.folderName} description={data.item.path} />
+        </View>
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 6,
+    marginVertical: 15,
   },
   wrapper: { marginVertical: 2 },
 });
