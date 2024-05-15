@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#121212"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -23,9 +25,19 @@
       },
       "package": "com.musiku.app"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e337ba48-3935-41d1-a7bb-8ede5f03b426"
+      }
     }
   }
 }
