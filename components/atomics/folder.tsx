@@ -11,7 +11,7 @@ interface FolderProps {
   description: string;
 }
 
-export default function Folder(props: FolderProps): React.JSX.Element {
+function Folder(props: FolderProps): React.JSX.Element {
   return (
     <TouchableHighlight
       style={styles.container}
@@ -39,6 +39,8 @@ export default function Folder(props: FolderProps): React.JSX.Element {
     </TouchableHighlight>
   );
 }
+
+export default React.memo(Folder);
 
 const styles = StyleSheet.create({
   container: {
