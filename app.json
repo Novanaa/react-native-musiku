@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "musiku",
+    "name": "Musiku",
     "slug": "musiku",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,6 +26,14 @@
     "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e337ba48-3935-41d1-a7bb-8ede5f03b426"
+      }
     }
   }
 }
