@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import Folder from "../atomics/folder";
 import { EmptyMusic, MusicNotDetected } from "./not-found";
 import { FolderContext, FolderContextData } from "@/providers/folder-provider";
