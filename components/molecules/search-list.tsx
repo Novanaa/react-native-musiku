@@ -13,7 +13,7 @@ interface SearchListProps {
 
 export default function SearchList(props: SearchListProps): React.JSX.Element {
   const musicContext: MusicContextData = React.useContext(MusicContext);
-  const [keyword] = useDebounce<string>(props.keyword, 500);
+  const [keyword] = useDebounce<string>(props.keyword, 300);
 
   // Validate if user songs is not detected
   if (musicContext == null) return <MusicNotDetected />;
@@ -21,11 +21,15 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
   // Validate if user songs is empty
   if (!musicContext.totalCount) return <EmptyMusic />;
 
-  const filteredMusic: Array<MediaLibrary.Asset> = keyword
-    ? musicContext.assets.filter((item) =>
-      item.filename.toLowerCase().includes(keyword.toLowerCase())
-    )
-    : [];
+  const filterMusic = React.useCallback(
+    () =>
+      musicContext.assets.filter((item) =>
+        item.filename.toLowerCase().includes(keyword.toLowerCase())
+      ),
+    [keyword]
+  );
+
+  const filteredMusic: Array<MediaLibrary.Asset> = keyword ? filterMusic() : [];
 
   if (!keyword) return <SearchWelcomeScreen />;
 
