@@ -12,6 +12,8 @@ import { UserPermissionProvider } from "@/providers/user-permission";
 import getMusic from "@/utils/get-music";
 import FolderProvider from "@/providers/folder-provider";
 import { Music, MusicSetter, useMusicStore } from "@/stores/music";
+import { Folder, FolderSetter, useFolderStore } from "@/stores/folder";
+import getFolder from "@/utils/get-folder";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -21,9 +23,15 @@ export default function RootLayout() {
   const musicStoreDispatch: MusicSetter = useMusicStore(
     (state) => state.setMusic
   );
+  const folderDispatch: FolderSetter = useFolderStore(
+    (state) => state.setFolder
+  );
 
   React.useEffect(() => {
+    const folder: Folder = getFolder(music!);
+
     getMusic().then((state) => musicStoreDispatch(state));
+    folderDispatch(folder);
   }, []);
 
   React.useEffect(() => {
