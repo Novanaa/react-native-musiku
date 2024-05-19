@@ -2,7 +2,7 @@
 
 import { StyleProp, TextStyle, View, ViewProps, ViewStyle } from "react-native";
 import React from "react";
-import { RadioCheckboxButton } from "../atomics/radio-button";
+import RadioCheckboxButton from "../atomics/radio-button";
 
 interface RadioCheckboxProps extends ViewProps {
   data: Array<RadioCheckboxData>;

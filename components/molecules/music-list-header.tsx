@@ -7,6 +7,8 @@ import Drawer, { DrawerProps, DrawerWrapper } from "../atomics/drawer";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { RadioCheckbox, RadioCheckboxData } from "./radio-checkbox";
 import SvgUri from "react-native-svg-uri";
+import SortByRepository from "@/repository/sort-by.repository";
+import { SortBySetter, useSortByStore } from "@/stores/sort-by";
 
 export default function MusicListHeader(): React.JSX.Element {
   const bottomSheetRef: React.MutableRefObject<BottomSheetModalMethods | null> =
@@ -30,10 +32,35 @@ export default function MusicListHeader(): React.JSX.Element {
 }
 
 export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
+  const sortByDispatch: SortBySetter = useSortByStore(
+    (state) => state.setIsSortByStateStored
+  );
+  const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
+  const [dummyState, setdummyState] = React.useState<boolean>(false);
   const radioCheckboxData: Array<RadioCheckboxData> = [
     { id: 1, title: "By music title (ascending)", default: true },
     { id: 2, title: "By music title (descending)" },
   ];
+
+  SortByRepository.getSortByStateAsync().then((state) =>
+    setDefaultCheckedId(state == "ascending" ? 1 : 2)
+  );
+
+  const handleOnChecked = (itemId: number): void => {
+    if (itemId === 1) {
+      SortByRepository.setSortByState("ascending");
+      sortByDispatch(true);
+    }
+    if (itemId == 2) {
+      SortByRepository.setSortByState("descending");
+      sortByDispatch(true);
+    }
+
+    sortByDispatch(false);
+    // Force update component
+    setdummyState(!dummyState);
+    props.modalRef.current?.close();
+  };
 
   return (
     <Drawer modalRef={props.modalRef} snapPoints={["28%"]}>
@@ -46,7 +73,8 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
         <RadioCheckbox
           data={radioCheckboxData}
           containerStyle={{ justifyContent: "space-between" }}
-          defaultCheckedId={1}
+          defaultCheckedId={defaultCheckedId}
+          onChecked={handleOnChecked}
         />
       </DrawerWrapper>
     </Drawer>

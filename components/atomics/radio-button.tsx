@@ -23,7 +23,7 @@ interface RadioCheckboxButtonProps extends TouchableOpacityProps {
   isChecked: boolean;
 }
 
-export function RadioCheckboxButton(
+function RadioCheckboxButton(
   props: RadioCheckboxButtonProps
 ): React.JSX.Element {
   return (
@@ -54,6 +54,8 @@ export function RadioCheckboxButton(
     </TouchableHighlight>
   );
 }
+
+export default React.memo(RadioCheckboxButton);
 
 const styles = StyleSheet.create({
   container: {
