@@ -4,18 +4,22 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import Text from "./text";
 import { borderRadius } from "@/constants/styles";
+import { Router, useRouter } from "expo-router";
+import { StaticRoutes } from "@/interfaces/app";
 
 interface FolderProps {
   title: string;
-  description: string;
+  path: string;
 }
 
 function Folder(props: FolderProps): React.JSX.Element {
+  const router: Router = useRouter();
+  const href: StaticRoutes = `/folder?path=${props.path}` as StaticRoutes;
+
   return (
     <TouchableOpacity
       style={styles.container}
-      // onPress placeholder
-      onPress={() => "test"}
+      onPress={() => router.push(href)}
       activeOpacity={0.6}
     >
       <>
@@ -25,8 +29,8 @@ function Folder(props: FolderProps): React.JSX.Element {
             <Text style={styles.headerTitle} numberOfLines={1}>
               {props.title}
             </Text>
-            <Text style={styles.headerDescription} numberOfLines={1}>
-              {props.description}
+            <Text style={styles.headerPath} numberOfLines={1}>
+              {props.path}
             </Text>
           </View>
         </View>
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
     fontFamily: "medium",
     fontSize: 16,
   },
-  headerDescription: {
+  headerPath: {
     fontSize: 11,
     opacity: 0.8,
   },

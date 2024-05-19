@@ -19,7 +19,7 @@ export default function FolderList(): React.JSX.Element {
       data={folder}
       renderItem={(data) => (
         <View style={styles.wrapper} key={data.item.path}>
-          <Folder title={data.item.folderName} description={data.item.path} />
+          <Folder title={data.item.folderName} path={data.item.path} />
         </View>
       )}
     />
