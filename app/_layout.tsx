@@ -11,18 +11,20 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { UserPermissionProvider } from "@/providers/user-permission";
 import MusicProvider from "@/providers/music-provider";
 import getMusic from "@/utils/get-music";
-import * as MediaLibrary from "expo-media-library";
 import FolderProvider from "@/providers/folder-provider";
+import { Music, MusicSetter, useMusicStore } from "@/stores/music";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [music, setMusic] =
-    React.useState<null | MediaLibrary.PagedInfo<MediaLibrary.Asset>>(null);
   const [loaded, error] = useFonts(fonts);
+  const music: Music | null = useMusicStore((state) => state.music);
+  const musicStoreDispatch: MusicSetter = useMusicStore(
+    (state) => state.setMusic
+  );
 
   React.useEffect(() => {
-    getMusic().then((state) => setMusic(state));
+    getMusic().then((state) => musicStoreDispatch(state));
   }, []);
 
   React.useEffect(() => {
