@@ -10,7 +10,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { UserPermissionProvider } from "@/providers/user-permission";
 import getMusic from "@/utils/get-music";
-import FolderProvider from "@/providers/folder-provider";
 import { Music, MusicSetter, useMusicStore } from "@/stores/music";
 import { Folder, FolderSetter, useFolderStore } from "@/stores/folder";
 import getFolder from "@/utils/get-folder";
@@ -48,12 +47,10 @@ export default function RootLayout() {
     >
       <BottomSheetModalProvider>
         <UserPermissionProvider>
-          <FolderProvider>
-            <StatusBar style="dark" />
-            <Stack screenOptions={{ contentStyle: styles.container }}>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
-          </FolderProvider>
+          <StatusBar style="dark" />
+          <Stack screenOptions={{ contentStyle: styles.container }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
         </UserPermissionProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
