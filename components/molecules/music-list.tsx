@@ -9,12 +9,6 @@ import { SortByState, useSortByStore } from "@/stores/sort-by";
 export default function MusicList(): React.JSX.Element {
   const music: Music = useMusicStore((state) => state.music) as Music;
 
-  // Validate if user songs is not detected
-  if (music == null) return <MusicNotDetected />;
-
-  // Validate if user songs is empty
-  if (!music.totalCount) return <EmptyMusic />;
-
   // Get boolean state if the sort by state is updated
   const isSortByStateStored: SortByState = useSortByStore((state) => state);
 
@@ -30,6 +24,12 @@ export default function MusicList(): React.JSX.Element {
 
     // Rendered if the sort by state is updated
   }, [isSortByStateStored]);
+
+  // Validate if user songs is not detected
+  if (music == null) return <MusicNotDetected />;
+
+  // Validate if user songs is empty
+  if (!music.totalCount) return <EmptyMusic />;
 
   return (
     <FlatList
