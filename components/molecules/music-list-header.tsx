@@ -8,6 +8,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { RadioCheckbox, RadioCheckboxData } from "./radio-checkbox";
 import SvgUri from "react-native-svg-uri";
 import SortByRepository from "@/repository/sort-by.repository";
+import { SortBySetter, useSortByStore } from "@/stores/sort-by";
 
 export default function MusicListHeader(): React.JSX.Element {
   const bottomSheetRef: React.MutableRefObject<BottomSheetModalMethods | null> =
@@ -31,9 +32,11 @@ export default function MusicListHeader(): React.JSX.Element {
 }
 
 export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
+  const sortByDispatch: SortBySetter = useSortByStore(
+    (state) => state.setIsSortByStateStored
+  );
   const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
-  const [isSortByStateStored, setIsSortByStateStored] =
-    React.useState<boolean>(false);
+  const [dummyState, setdummyState] = React.useState<boolean>(false);
   const radioCheckboxData: Array<RadioCheckboxData> = [
     { id: 1, title: "By music title (ascending)", default: true },
     { id: 2, title: "By music title (descending)" },
@@ -44,10 +47,18 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
   );
 
   const handleOnChecked = (itemId: number): void => {
-    if (itemId === 1) SortByRepository.setSortByState("ascending");
-    if (itemId == 2) SortByRepository.setSortByState("descending");
+    if (itemId === 1) {
+      SortByRepository.setSortByState("ascending");
+      sortByDispatch(true);
+    }
+    if (itemId == 2) {
+      SortByRepository.setSortByState("descending");
+      sortByDispatch(true);
+    }
 
-    setIsSortByStateStored(!isSortByStateStored);
+    sortByDispatch(false);
+    // Force update component
+    setdummyState(!dummyState);
     props.modalRef.current?.close();
   };
 
