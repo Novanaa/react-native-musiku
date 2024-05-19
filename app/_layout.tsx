@@ -28,13 +28,15 @@ export default function RootLayout() {
   );
 
   React.useEffect(() => {
-    const folder: Folder = getFolder(music!);
-
     if (!SortByRepository.getSortByState())
       SortByRepository.setSortByState("ascending");
 
-    getMusic().then((state) => musicStoreDispatch(state));
-    folderDispatch(folder);
+    getMusic().then((state) => {
+      const folder: Folder = getFolder(state);
+
+      folderDispatch(folder);
+      musicStoreDispatch(state);
+    });
   }, []);
 
   React.useEffect(() => {
