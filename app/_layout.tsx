@@ -9,20 +9,28 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { UserPermissionProvider } from "@/providers/user-permission";
-import MusicProvider from "@/providers/music-provider";
 import getMusic from "@/utils/get-music";
-import * as MediaLibrary from "expo-media-library";
-import FolderProvider from "@/providers/folder-provider";
+import { Music, MusicSetter, useMusicStore } from "@/stores/music";
+import { Folder, FolderSetter, useFolderStore } from "@/stores/folder";
+import getFolder from "@/utils/get-folder";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [music, setMusic] =
-    React.useState<null | MediaLibrary.PagedInfo<MediaLibrary.Asset>>(null);
   const [loaded, error] = useFonts(fonts);
+  const music: Music | null = useMusicStore((state) => state.music);
+  const musicStoreDispatch: MusicSetter = useMusicStore(
+    (state) => state.setMusic
+  );
+  const folderDispatch: FolderSetter = useFolderStore(
+    (state) => state.setFolder
+  );
 
   React.useEffect(() => {
-    getMusic().then((state) => setMusic(state));
+    const folder: Folder = getFolder(music!);
+
+    getMusic().then((state) => musicStoreDispatch(state));
+    folderDispatch(folder);
   }, []);
 
   React.useEffect(() => {
@@ -39,14 +47,10 @@ export default function RootLayout() {
     >
       <BottomSheetModalProvider>
         <UserPermissionProvider>
-          <MusicProvider music={music}>
-            <FolderProvider>
-              <StatusBar style="dark" />
-              <Stack screenOptions={{ contentStyle: styles.container }}>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              </Stack>
-            </FolderProvider>
-          </MusicProvider>
+          <StatusBar style="dark" />
+          <Stack screenOptions={{ contentStyle: styles.container }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
         </UserPermissionProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
