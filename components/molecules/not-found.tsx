@@ -1,13 +1,11 @@
 import React from "react";
 import Text from "../atomics/text";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Router, useRouter } from "expo-router";
+import { Image, StyleSheet, View } from "react-native";
 import assests, { svgAssests } from "@/constants/assests";
 import SvgUri from "react-native-svg-uri";
 import colors from "@/constants/colors";
 
 export function MusicNotDetected(): React.JSX.Element {
-  const router: Router = useRouter();
   return (
     <View style={musicNotDetectedStyles.container}>
       <Image
@@ -18,9 +16,6 @@ export function MusicNotDetected(): React.JSX.Element {
       <Text style={musicNotDetectedStyles.messege}>
         Music Not Detected, Are You Ready to Listen Your Favorite Music?
       </Text>
-      <TouchableOpacity onPress={() => router.push("/scan")}>
-        <Text style={musicNotDetectedStyles.cta}>Scan Your Music</Text>
-      </TouchableOpacity>
     </View>
   );
 }
