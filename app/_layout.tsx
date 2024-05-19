@@ -1,8 +1,7 @@
 import "react-native-gesture-handler";
-import { Appearance, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
-import useDefaultTheme from "@/hooks/use-default-theme";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import colors, { backgroundColor } from "@/constants/colors";
@@ -16,8 +15,6 @@ import * as MediaLibrary from "expo-media-library";
 import FolderProvider from "@/providers/folder-provider";
 
 SplashScreen.preventAutoHideAsync();
-
-Appearance.setColorScheme(useDefaultTheme());
 
 export default function RootLayout() {
   const [music, setMusic] =
