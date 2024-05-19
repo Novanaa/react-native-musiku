@@ -2,21 +2,21 @@ import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import Folder from "../atomics/folder";
 import { EmptyMusic, MusicNotDetected } from "./not-found";
-import { FolderContext, FolderContextData } from "@/providers/folder-provider";
+import { Folder as IFolder, useFolderStore } from "@/stores/folder";
 
 export default function FolderList(): React.JSX.Element {
-  const folderContext: FolderContextData = React.useContext(FolderContext);
+  const folder: IFolder = useFolderStore((state) => state.folder) as IFolder;
 
   // Validate if the user music is not detected
-  if (folderContext == null) return <MusicNotDetected />;
+  if (folder == null) return <MusicNotDetected />;
 
   // Validate if the user music is empty
-  if (!folderContext.length) return <EmptyMusic />;
+  if (!folder.length) return <EmptyMusic />;
 
   return (
     <FlatList
       style={styles.container}
-      data={folderContext}
+      data={folder}
       renderItem={(data) => (
         <View style={styles.wrapper} key={data.item.path}>
           <Folder title={data.item.folderName} description={data.item.path} />
