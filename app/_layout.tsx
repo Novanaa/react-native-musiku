@@ -4,7 +4,11 @@ import React from "react";
 import fonts from "@/constants/fonts";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import colors, { backgroundColor } from "@/constants/colors";
+import colors, {
+  textColor,
+  backgroundColor,
+  headerBackgoundColor,
+} from "@/constants/colors";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
@@ -56,6 +60,16 @@ export default function RootLayout() {
           <StatusBar style="dark" />
           <Stack screenOptions={{ contentStyle: styles.container }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="folder"
+              options={{
+                title: "Directory",
+                headerTintColor: textColor,
+                headerStyle: {
+                  backgroundColor: headerBackgoundColor,
+                },
+              }}
+            />
           </Stack>
         </UserPermissionProvider>
       </BottomSheetModalProvider>
