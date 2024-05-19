@@ -1,5 +1,4 @@
 import { StoreApi, UseBoundStore, create } from "zustand";
-import { useMusicStore } from "./music";
 
 export type Folder = Array<{
   path: string;
