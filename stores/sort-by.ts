@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { create, StoreApi, UseBoundStore } from "zustand";
 
 export interface SortByState {
