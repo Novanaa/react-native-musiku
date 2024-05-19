@@ -13,6 +13,7 @@ import MusicProvider from "@/providers/music-provider";
 import getMusic from "@/utils/get-music";
 import * as MediaLibrary from "expo-media-library";
 import FolderProvider from "@/providers/folder-provider";
+import SortByRepository from "@/repository/sort-by.repository";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +23,10 @@ export default function RootLayout() {
   const [loaded, error] = useFonts(fonts);
 
   React.useEffect(() => {
+    // Set default sort music as ascending
+    if (!SortByRepository.getSortByState())
+      SortByRepository.setSortByState("ascending");
+
     getMusic().then((state) => setMusic(state));
   }, []);
 
