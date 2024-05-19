@@ -13,6 +13,7 @@ import getMusic from "@/utils/get-music";
 import { Music, MusicSetter, useMusicStore } from "@/stores/music";
 import { Folder, FolderSetter, useFolderStore } from "@/stores/folder";
 import getFolder from "@/utils/get-folder";
+import SortByRepository from "@/repository/sort-by.repository";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,6 +29,9 @@ export default function RootLayout() {
 
   React.useEffect(() => {
     const folder: Folder = getFolder(music!);
+
+    if (!SortByRepository.getSortByState())
+      SortByRepository.setSortByState("ascending");
 
     getMusic().then((state) => musicStoreDispatch(state));
     folderDispatch(folder);
