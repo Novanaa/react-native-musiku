@@ -11,4 +11,12 @@ export default class SortByRepository {
   public static setSortByState(state: SortBy): void {
     return SecureStore.setItem(this.sortByKey, state);
   }
+
+  public static async setSortByStateAsync(state: SortBy): Promise<void> {
+    return await SecureStore.setItemAsync(this.sortByKey, state);
+  }
+
+  public static async getSortByStateAsync(): Promise<SortBy> {
+    return (await SecureStore.getItemAsync(this.sortByKey)) as SortBy;
+  }
 }
