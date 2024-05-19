@@ -9,7 +9,6 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { UserPermissionProvider } from "@/providers/user-permission";
-import MusicProvider from "@/providers/music-provider";
 import getMusic from "@/utils/get-music";
 import FolderProvider from "@/providers/folder-provider";
 import { Music, MusicSetter, useMusicStore } from "@/stores/music";
@@ -41,14 +40,12 @@ export default function RootLayout() {
     >
       <BottomSheetModalProvider>
         <UserPermissionProvider>
-          <MusicProvider music={music}>
-            <FolderProvider>
-              <StatusBar style="dark" />
-              <Stack screenOptions={{ contentStyle: styles.container }}>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              </Stack>
-            </FolderProvider>
-          </MusicProvider>
+          <FolderProvider>
+            <StatusBar style="dark" />
+            <Stack screenOptions={{ contentStyle: styles.container }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </FolderProvider>
         </UserPermissionProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
