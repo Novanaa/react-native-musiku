@@ -6,8 +6,8 @@ import SvgUri from "react-native-svg-uri";
 import { svgAssests } from "@/constants/assests";
 import { borderColor } from "@/constants/colors";
 import { borderRadius, rowsGap } from "@/constants/styles";
-import { MusicContext, MusicContextData } from "@/providers/music-provider";
 import { FolderContext, FolderContextData } from "@/providers/folder-provider";
+import { Music, useMusicStore } from "@/stores/music";
 
 interface DirectoryStatisticContentProps {
   icon: string;
@@ -18,7 +18,7 @@ interface DirectoryStatisticContentProps {
 export default function DirectoryStatistic(
   props: DrawerProps
 ): React.JSX.Element {
-  const musicContext: MusicContextData = React.useContext(MusicContext);
+  const music: Music = useMusicStore((state) => state.music) as Music;
   const folderContext: FolderContextData = React.useContext(FolderContext);
 
   return (
@@ -38,7 +38,7 @@ export default function DirectoryStatistic(
             icon={svgAssests.music}
             title="Music"
             // Change it later with real user data
-            description={`${musicContext?.totalCount} Items Found`}
+            description={`${music?.totalCount} Items Found`}
           />
           <DirectoryStatisticContent
             icon={svgAssests.folder}

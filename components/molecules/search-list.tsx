@@ -1,29 +1,29 @@
 import React from "react";
-import Music from "../atomics/music";
+import { default as MusicComponent } from "../atomics/music";
 import { FlatList, StyleSheet } from "react-native";
 import { EmptyMusic, MusicNotDetected, MusicSearchNotFound } from "./not-found";
-import { MusicContext, MusicContextData } from "@/providers/music-provider";
 import * as MediaLibrary from "expo-media-library";
 import { useDebounce } from "use-debounce";
 import { SearchWelcomeScreen } from "./welcome";
+import { Music, useMusicStore } from "@/stores/music";
 
 interface SearchListProps {
   keyword: string;
 }
 
 export default function SearchList(props: SearchListProps): React.JSX.Element {
-  const musicContext: MusicContextData = React.useContext(MusicContext);
+  const music: Music = useMusicStore((state) => state.music) as Music;
   const [keyword] = useDebounce<string>(props.keyword, 300);
 
   // Validate if user songs is not detected
-  if (musicContext == null) return <MusicNotDetected />;
+  if (music == null) return <MusicNotDetected />;
 
   // Validate if user songs is empty
-  if (!musicContext.totalCount) return <EmptyMusic />;
+  if (!music.totalCount) return <EmptyMusic />;
 
   const filterMusic = React.useCallback(
     () =>
-      musicContext.assets.filter((item) =>
+      music.assets.filter((item) =>
         item.filename.toLowerCase().includes(keyword.toLowerCase())
       ),
     [keyword]
@@ -40,7 +40,7 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
       data={filteredMusic}
       style={styles.container}
       renderItem={(data) => (
-        <Music
+        <MusicComponent
           musicItem={data.item}
           description="Unknown Artist - Unknown Album"
           title={data.item.filename}
