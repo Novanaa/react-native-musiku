@@ -4,8 +4,14 @@ import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import assests, { svgAssests } from "@/constants/assests";
 import SvgUri from "react-native-svg-uri";
 import colors from "@/constants/colors";
+import getPermission from "@/utils/permission";
+import { RefreshMusic, useMusicStore } from "@/stores/music";
+import { RefreshFolder, useFolderStore } from "@/stores/folder";
 
 export function MusicNotDetected(): React.JSX.Element {
+  const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
+  const refreshFolder: RefreshFolder = useFolderStore((state) => state.refresh);
+
   return (
     <View style={musicNotDetectedStyles.container}>
       <Image
@@ -15,7 +21,11 @@ export function MusicNotDetected(): React.JSX.Element {
       <Text style={musicNotDetectedStyles.messege}>
         Music Not Detected, Are You Ready to Listen Your Favorite Music?
       </Text>
-      <TouchableOpacity style={musicNotDetectedStyles.cta} activeOpacity={0.6}>
+      <TouchableOpacity
+        style={musicNotDetectedStyles.cta}
+        activeOpacity={0.6}
+        onPress={() => getPermission(refreshMusic, refreshFolder)}
+      >
         <Text>Give Permission</Text>
       </TouchableOpacity>
     </View>

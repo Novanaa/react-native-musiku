@@ -12,16 +12,18 @@ import colors, {
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { UserPermissionProvider } from "@/providers/user-permission";
 import getMusic from "@/utils/get-music";
 import { Music, MusicSetter, useMusicStore } from "@/stores/music";
 import { Folder, FolderSetter, useFolderStore } from "@/stores/folder";
 import getFolder from "@/utils/get-folder";
 import SortByRepository from "@/repository/sort-by.repository";
+import * as MediaLibrary from "expo-media-library";
+import { Welcome } from "@/components/molecules/welcome";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [permission] = MediaLibrary.usePermissions();
   const [loaded, error] = useFonts(fonts);
   const music: Music | null = useMusicStore((state) => state.music);
   const musicStoreDispatch: MusicSetter = useMusicStore(
@@ -46,8 +48,11 @@ export default function RootLayout() {
   React.useEffect(() => {
     if (error) throw error;
 
-    if (loaded && music !== null) SplashScreen.hideAsync();
-  }, [loaded, music]);
+    if (loaded) SplashScreen.hideAsync();
+    if (permission?.granted) {
+      if (loaded && music !== null) SplashScreen.hideAsync();
+    }
+  }, [loaded, music, permission?.granted]);
 
   if (!loaded && !error && !music) return null;
 
@@ -56,7 +61,7 @@ export default function RootLayout() {
       style={{ flex: 1, backgroundColor: colors.dark.background }}
     >
       <BottomSheetModalProvider>
-        <UserPermissionProvider>
+        <Welcome>
           <StatusBar style="dark" />
           <Stack screenOptions={{ contentStyle: styles.container }}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -71,7 +76,7 @@ export default function RootLayout() {
               }}
             />
           </Stack>
-        </UserPermissionProvider>
+        </Welcome>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );

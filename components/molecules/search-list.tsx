@@ -1,7 +1,7 @@
 import React from "react";
 import { default as MusicComponent } from "../atomics/music";
 import { FlatList, StyleSheet } from "react-native";
-import { EmptyMusic, MusicNotDetected, MusicSearchNotFound } from "./not-found";
+import { EmptyMusic, MusicSearchNotFound } from "./not-found";
 import * as MediaLibrary from "expo-media-library";
 import { useDebounce } from "use-debounce";
 import { SearchWelcomeScreen } from "./welcome";
@@ -16,7 +16,7 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
   const [keyword] = useDebounce<string>(props.keyword, 300);
 
   // Validate if user songs is not detected
-  if (music == null) return <MusicNotDetected />;
+  if (music == null) return <MusicSearchNotFound />;
 
   // Validate if user songs is empty
   if (!music.totalCount) return <EmptyMusic />;
