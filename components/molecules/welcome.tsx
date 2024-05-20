@@ -1,22 +1,69 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { BackHandler, StyleSheet, View, ViewProps } from "react-native";
 import Text from "../atomics/text";
 import SvgUri from "react-native-svg-uri";
 import { svgAssests } from "@/constants/assests";
+import ApplicationRepository from "@/repository/app.repository";
+import Drawer, { DrawerWrapper } from "../atomics/drawer";
+import { modalBackgroundColor } from "@/constants/colors";
+import { Button } from "../atomics/button";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 export function SearchWelcomeScreen(): React.JSX.Element {
   return (
-    <View style={styles.wrapper}>
+    <View style={searchWelcomeScreenStyles.wrapper}>
       <SvgUri svgXmlData={svgAssests.sparkles} width={100} height={100} />
-      <Text style={styles.title}>Hey! What's up?</Text>
-      <Text style={styles.description}>
+      <Text style={searchWelcomeScreenStyles.title}>Hey! What's up?</Text>
+      <Text style={searchWelcomeScreenStyles.description}>
         Type something in top search bar and see the magic!
       </Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+export function Welcome(props: ViewProps): React.JSX.Element {
+  const [, setIsAccepted] = React.useState<boolean>(false);
+  const drawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
+  const isAppFirstLaunched: string =
+    ApplicationRepository.getIsAppFirstLaunchedState();
+
+  React.useEffect(() => {
+    if (!isAppFirstLaunched) {
+      ApplicationRepository.setIsAppFirstLaunchedState("true");
+      drawerRef.current?.present();
+    }
+  }, []);
+
+  if (isAppFirstLaunched) return <>{props.children}</>;
+
+  return (
+    <Drawer
+      modalRef={drawerRef}
+      snapPoints={["38%"]}
+      handleIndicatorStyle={{ backgroundColor: modalBackgroundColor }}
+    >
+      <DrawerWrapper style={welcomeStyles.wrapper}>
+        <Text style={welcomeStyles.headerText}>Before Using This App</Text>
+        <Text style={welcomeStyles.headerDescription}>
+          By using the Musiku, you agree to its terms and conditions, including
+          granting access to your device's music library,
+        </Text>
+        <View style={welcomeStyles.buttonWrapper}>
+          <Button onPress={() => setIsAccepted(true)}>Accept</Button>
+          <Button
+            textStyle={{ color: "#fc4949" }}
+            onPress={() => BackHandler.exitApp()}
+          >
+            Quit this app
+          </Button>
+        </View>
+      </DrawerWrapper>
+    </Drawer>
+  );
+}
+
+const searchWelcomeScreenStyles = StyleSheet.create({
   wrapper: {
     justifyContent: "center",
     alignItems: "center",
@@ -32,5 +79,28 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "60%",
     opacity: 0.8,
+  },
+});
+
+const welcomeStyles = StyleSheet.create({
+  wrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 7,
+  },
+  headerText: {
+    fontFamily: "bold",
+    fontSize: 17,
+  },
+  headerDescription: {
+    textAlign: "center",
+    opacity: 0.8,
+    fontFamily: "medium",
+    width: "90%",
+  },
+  buttonWrapper: {
+    width: "100%",
+    top: 8,
+    gap: 10,
   },
 });
