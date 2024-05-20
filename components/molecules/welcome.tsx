@@ -8,6 +8,9 @@ import Drawer, { DrawerWrapper } from "../atomics/drawer";
 import { modalBackgroundColor } from "@/constants/colors";
 import { Button } from "../atomics/button";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import getPermission from "@/utils/permission";
+import { RefreshMusic, useMusicStore } from "@/stores/music";
+import { RefreshFolder, useFolderStore } from "@/stores/folder";
 
 export function SearchWelcomeScreen(): React.JSX.Element {
   return (
@@ -22,6 +25,8 @@ export function SearchWelcomeScreen(): React.JSX.Element {
 }
 
 export function Welcome(props: ViewProps): React.JSX.Element {
+  const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
+  const refreshFolder: RefreshFolder = useFolderStore((state) => state.refresh);
   const [, setIsAccepted] = React.useState<boolean>(false);
   const drawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
@@ -50,7 +55,14 @@ export function Welcome(props: ViewProps): React.JSX.Element {
           granting access to your device's music library,
         </Text>
         <View style={welcomeStyles.buttonWrapper}>
-          <Button onPress={() => setIsAccepted(true)}>Accept</Button>
+          <Button
+            onPress={() => {
+              getPermission(refreshMusic, refreshFolder);
+              setIsAccepted(true);
+            }}
+          >
+            Accept
+          </Button>
           <Button
             textStyle={{ color: "#fc4949" }}
             onPress={() => BackHandler.exitApp()}
