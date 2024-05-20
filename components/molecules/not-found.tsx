@@ -1,6 +1,6 @@
 import React from "react";
 import Text from "../atomics/text";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import assests, { svgAssests } from "@/constants/assests";
 import SvgUri from "react-native-svg-uri";
 import colors from "@/constants/colors";
@@ -10,12 +10,14 @@ export function MusicNotDetected(): React.JSX.Element {
     <View style={musicNotDetectedStyles.container}>
       <Image
         source={assests.images.musicDisc}
-        alt="music-not-detected"
         style={musicNotDetectedStyles.image}
       />
       <Text style={musicNotDetectedStyles.messege}>
         Music Not Detected, Are You Ready to Listen Your Favorite Music?
       </Text>
+      <TouchableOpacity style={musicNotDetectedStyles.cta} activeOpacity={0.6}>
+        <Text>Give Permission</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -64,14 +66,14 @@ const musicNotDetectedStyles = StyleSheet.create({
     gap: 10,
     opacity: 0.85,
   },
-  image: {
-    width: 110,
-    height: 110,
-  },
   messege: {
     textAlign: "center",
-    width: "80%",
+    width: "70%",
     opacity: 0.8,
+  },
+  image: {
+    width: 125,
+    height: 125,
   },
   cta: {
     fontFamily: "bold",
