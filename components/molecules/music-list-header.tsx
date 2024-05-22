@@ -8,7 +8,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import { RadioCheckbox, RadioCheckboxData } from "./radio-checkbox";
 import SvgUri from "react-native-svg-uri";
 import SortByRepository from "@/repository/sort-by.repository";
-import { SortBySetter, useSortByStore } from "@/stores/sort-by";
+import { RefreshMusic, useMusicStore } from "@/stores/music";
 
 export default function MusicListHeader(): React.JSX.Element {
   const bottomSheetRef: React.MutableRefObject<BottomSheetModalMethods | null> =
@@ -32,11 +32,9 @@ export default function MusicListHeader(): React.JSX.Element {
 }
 
 export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
-  const sortByDispatch: SortBySetter = useSortByStore(
-    (state) => state.setIsSortByStateStored
-  );
+  const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
+  const [dummyState, setDummyState] = React.useState<boolean>(false);
   const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
-  const [dummyState, setdummyState] = React.useState<boolean>(false);
   const radioCheckboxData: Array<RadioCheckboxData> = [
     { id: 1, title: "By music title (ascending)", default: true },
     { id: 2, title: "By music title (descending)" },
@@ -46,19 +44,18 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
     setDefaultCheckedId(state == "ascending" ? 1 : 2)
   );
 
-  const handleOnChecked = (itemId: number): void => {
+  /* eslint-disable no-unused-vars */
+  const handleOnChecked: (itemId: number) => void = (itemId: number): void => {
     if (itemId === 1) {
       SortByRepository.setSortByState("ascending");
-      sortByDispatch(true);
+      refreshMusic();
     }
     if (itemId == 2) {
       SortByRepository.setSortByState("descending");
-      sortByDispatch(true);
+      refreshMusic();
     }
 
-    sortByDispatch(false);
-    // Force update component
-    setdummyState(!dummyState);
+    setDummyState(!dummyState);
     props.modalRef.current?.close();
   };
 
