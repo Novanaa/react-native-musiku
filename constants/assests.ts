@@ -89,6 +89,10 @@ export const svgAssests = {
   <path d="M1 11H23V22C23 23.1046 22.1046 24 21 24H3C1.89543 24 1 23.1046 1 22V11Z" fill="#FEFEFE" fill-opacity="0.996078"/>
   </svg>
   `,
+  plusCircle: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 9V15M15 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#FEFEFE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  `,
 };
 
 export default {
