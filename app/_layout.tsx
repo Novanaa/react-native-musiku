@@ -19,6 +19,8 @@ import getFolder from "@/utils/get-folder";
 import SortByRepository from "@/repository/sort-by.repository";
 import * as MediaLibrary from "expo-media-library";
 import { Welcome } from "@/components/molecules/welcome";
+import * as SecureStore from "expo-secure-store";
+import PlaylistRepository from "@/repository/playlist.repository";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,6 +36,12 @@ export default function RootLayout() {
   );
 
   React.useEffect(() => {
+    if (!SecureStore.getItem(PlaylistRepository.playlistKey))
+      PlaylistRepository.setPlaylist({
+        playlist: [],
+        totalPlaylist: 0,
+      });
+
     if (!SortByRepository.getSortByState())
       SortByRepository.setSortByState("ascending");
 
