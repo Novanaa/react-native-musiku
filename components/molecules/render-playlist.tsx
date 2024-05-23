@@ -3,9 +3,12 @@ import { usePlaylistStore } from "@/stores/playlist";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import PlaylistItem from "../atomics/playlist-item";
+import { EmptyPlaylist } from "./not-found";
 
 export default function RenderPlaylist(): React.JSX.Element {
   const list: PlaylistScheme = usePlaylistStore((state) => state.playlist);
+
+  if (!list.playlist.length) return <EmptyPlaylist />;
 
   return (
     <FlatList
