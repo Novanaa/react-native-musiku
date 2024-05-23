@@ -7,6 +7,7 @@ import getPermission from "@/utils/permission";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
 import BoxOpenSVG from "@/assets/images/box-open.svg";
+import InboxEmptySVG from "@/assets/images/inbox-empty.svg";
 
 export function MusicNotDetected(): React.JSX.Element {
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
@@ -62,6 +63,51 @@ export function EmptyMusic(): React.JSX.Element {
     </View>
   );
 }
+
+export function EmptyPlaylist(): React.JSX.Element {
+  return (
+    <View style={emptyPlaylistStyles.container}>
+      <InboxEmptySVG width={150} height={150} />
+      <Text style={emptyPlaylistStyles.title}>
+        Opps!, seems like empty here
+      </Text>
+      <Text style={emptyPlaylistStyles.description}>
+        If you like you can make a playlist by click plus circle button in the
+        top
+      </Text>
+      <TouchableOpacity activeOpacity={0.6} style={emptyPlaylistStyles.button}>
+        <Text style={emptyPlaylistStyles.buttonText}>Create One!</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const emptyPlaylistStyles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    opacity: 0.85,
+  },
+  title: {
+    marginTop: 8,
+    fontFamily: "medium",
+    fontSize: 15.5,
+  },
+  description: {
+    textAlign: "center",
+    width: "70%",
+    opacity: 0.8,
+  },
+  button: {
+    top: 10,
+  },
+  buttonText: {
+    fontFamily: "bold",
+    borderBottomColor: colors.dark.text,
+    borderBottomWidth: 1,
+  },
+});
 
 const musicNotDetectedStyles = StyleSheet.create({
   container: {
