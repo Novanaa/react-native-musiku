@@ -45,17 +45,8 @@ export default function BottomTabs(): React.JSX.Element {
         <Tabs.Screen
           name="playlist"
           options={{
-            headerStyle: { backgroundColor: colors.headerBackgoundColor },
-            headerTitleStyle: {
-              color: colors.textColor,
-            },
+            headerShown: false,
             title: "Playlist",
-            headerRight: () => (
-              <IconButton
-                icon={svgAssests.musicOptions}
-                style={{ paddingRight: 13 }}
-              />
-            ),
             tabBarIcon: ({ focused }) => (
               <TabIcon focused={focused} icon={svgAssests.music} />
             ),
