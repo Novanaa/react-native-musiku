@@ -1,12 +1,12 @@
 import React from "react";
 import Text from "../atomics/text";
 import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
-import assests, { svgAssests } from "@/constants/assests";
-import SvgUri from "react-native-svg-uri";
+import assests from "@/constants/assests";
 import colors from "@/constants/colors";
 import getPermission from "@/utils/permission";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
+import BoxOpenSVG from "@/assets/images/box-open.svg";
 
 export function MusicNotDetected(): React.JSX.Element {
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
@@ -50,12 +50,7 @@ export function EmptyMusic(): React.JSX.Element {
   return (
     <View style={emptyMusicStyles.container}>
       <View style={{ top: 10 }}>
-        <SvgUri
-          svgXmlData={svgAssests.boxOpen}
-          width={110}
-          height={110}
-          fill="#FEFEFE"
-        />
+        <BoxOpenSVG width={110} height={110} fill="#FEFEFE" />
       </View>
       <Text style={emptyMusicStyles.headerText}>
         Got any tunes on your phone?

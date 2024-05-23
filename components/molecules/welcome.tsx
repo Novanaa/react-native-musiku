@@ -1,8 +1,6 @@
 import React from "react";
 import { BackHandler, StyleSheet, View, ViewProps } from "react-native";
 import Text from "../atomics/text";
-import SvgUri from "react-native-svg-uri";
-import { svgAssests } from "@/constants/assests";
 import ApplicationRepository from "@/repository/app.repository";
 import Drawer, { DrawerWrapper } from "../atomics/drawer";
 import { modalBackgroundColor } from "@/constants/colors";
@@ -10,12 +8,13 @@ import { Button } from "../atomics/button";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import getPermission from "@/utils/permission";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
+import SparklesSVG from "@/assets/icons/sparkles.svg";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
 
 export function SearchWelcomeScreen(): React.JSX.Element {
   return (
     <View style={searchWelcomeScreenStyles.wrapper}>
-      <SvgUri svgXmlData={svgAssests.sparkles} width={100} height={100} />
+      <SparklesSVG width={100} height={100} />
       <Text style={searchWelcomeScreenStyles.title}>Hey! What's up?</Text>
       <Text style={searchWelcomeScreenStyles.description}>
         Type something in top search bar and see the magic!

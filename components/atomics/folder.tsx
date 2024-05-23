@@ -1,11 +1,12 @@
-import { svgAssests } from "@/constants/assests";
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import SvgUri from "react-native-svg-uri";
 import Text from "./text";
 import { borderRadius } from "@/constants/styles";
-import { Router, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { StaticRoutes } from "@/interfaces/app";
+import { ExpoRouter } from "expo-router/types/expo-router";
+import FolderSVG from "@/assets/icons/folder.svg";
+import ArrowRightSVG from "@/assets/icons/arrow-right.svg";
 
 interface FolderProps {
   title: string;
@@ -13,7 +14,7 @@ interface FolderProps {
 }
 
 function Folder(props: FolderProps): React.JSX.Element {
-  const router: Router = useRouter();
+  const router: ExpoRouter.Router = useRouter();
   const href: StaticRoutes = `/folder?path=${props.path}` as StaticRoutes;
 
   return (
@@ -24,7 +25,7 @@ function Folder(props: FolderProps): React.JSX.Element {
     >
       <>
         <View style={styles.headerWrapper}>
-          <SvgUri svgXmlData={svgAssests.folder} width={32} height={32} />
+          <FolderSVG width={32} height={32} />
           <View style={styles.metadata}>
             <Text style={styles.headerTitle} numberOfLines={1}>
               {props.title}
@@ -35,7 +36,7 @@ function Folder(props: FolderProps): React.JSX.Element {
           </View>
         </View>
         <View style={styles.arrowRightIcon}>
-          <SvgUri svgXmlData={svgAssests.arrowRight} width={18} height={18} />
+          <ArrowRightSVG width={18} height={18} />
         </View>
       </>
     </TouchableOpacity>

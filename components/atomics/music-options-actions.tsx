@@ -3,11 +3,14 @@ import Drawer, { DrawerProps, DrawerWrapper } from "./drawer";
 import * as MediaLibrary from "expo-media-library";
 import Text from "./text";
 import { StyleSheet, View, ViewProps } from "react-native";
-import SvgUri from "react-native-svg-uri";
-import { svgAssests } from "@/constants/assests";
-import colors, { borderColor } from "@/constants/colors";
+import { borderColor } from "@/constants/colors";
 import { borderRadius, rowsGap } from "@/constants/styles";
 import parseDuration from "@/utils/parse-duration";
+import MusicSVG from "@/assets/icons/music.svg";
+import { SvgProps } from "react-native-svg";
+import PlaySVG from "@/assets/icons/play.svg";
+import RoundedArrowSVG from "@/assets/icons/rounded-arrow.svg";
+import LocationSVG from "@/assets/icons/location.svg";
 
 interface MusicOptionsInformationProps extends DrawerProps {
   music: MediaLibrary.Asset;
@@ -16,7 +19,7 @@ interface MusicOptionsInformationProps extends DrawerProps {
 interface MusicOptionsInformationContentProps extends ViewProps {
   title: string;
   description: string;
-  icon: string;
+  icon: React.ReactElement<SvgProps>;
 }
 
 export function MusicOptionsInformation(
@@ -31,7 +34,7 @@ export function MusicOptionsInformation(
     <Drawer modalRef={props.modalRef} snapPoints={["47%"]}>
       <DrawerWrapper>
         <View style={musicOptionsInformationStyles.headerWrapper}>
-          <SvgUri svgXmlData={svgAssests.music} width={30} height={30} />
+          <MusicSVG width={30} height={30} />
           <Text style={musicOptionsInformationStyles.headerTitle}>
             {props.music.filename}
           </Text>
@@ -40,19 +43,19 @@ export function MusicOptionsInformation(
           <MusicOptionsInformationContent
             title="Duration"
             description={parsedDuration}
-            icon={svgAssests.play}
+            icon={<PlaySVG />}
           />
           <MusicOptionsInformationContent
             title="Last Modified"
             description={lastMusicModified}
-            icon={svgAssests.roundedArrow}
+            icon={<RoundedArrowSVG />}
           />
         </View>
         <View style={musicOptionsInformationStyles.contentContainer}>
           <MusicOptionsInformationContent
             title="Music Location"
             description={props.music.uri}
-            icon={svgAssests.location}
+            icon={<LocationSVG />}
           />
         </View>
       </DrawerWrapper>
@@ -65,7 +68,7 @@ export function MusicOptionsInformationContent(
 ): React.JSX.Element {
   return (
     <View style={musicOptionsInformationStyles.contentWrapper}>
-      <SvgUri svgXmlData={props.icon} fill={colors.light.background} />
+      {props.icon}
       <View>
         <Text style={musicOptionsInformationStyles.contentMetadataTitle}>
           {props.title}

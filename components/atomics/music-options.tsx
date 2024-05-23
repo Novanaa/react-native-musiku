@@ -8,17 +8,20 @@ import {
 } from "react-native";
 import React from "react";
 import Drawer, { DrawerProps } from "../atomics/drawer";
-import SvgUri from "react-native-svg-uri";
-import { svgAssests } from "@/constants/assests";
 import Text from "./text";
 import { destructiveColor, underlayColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { MusicOptionsInformation } from "./music-options-actions";
 import * as MediaLibrary from "expo-media-library";
+import { SvgProps } from "react-native-svg";
+import PlaySVG from "@/assets/icons/play.svg";
+import HeartSVG from "@/assets/icons/heart.svg";
+import InfoSVG from "@/assets/icons/info.svg";
+import TrashSVG from "@/assets/icons/trash.svg";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
-  icon: string;
+  icon: React.FC<SvgProps>;
   title: string;
   textStyle?: StyleProp<TextStyle>;
   fill?: string;
@@ -40,22 +43,22 @@ export default function MusicOptions(
         <View style={styles.wrapper}>
           <MusicOptionsList
             title="Play music"
-            icon={svgAssests.play}
+            icon={PlaySVG}
             onPress={() => console.log("action")}
           />
           <MusicOptionsList
             title="Add to playlist"
-            icon={svgAssests.heart}
+            icon={HeartSVG}
             onPress={() => console.log("action")}
           />
           <MusicOptionsList
             title="Music information"
-            icon={svgAssests.info}
+            icon={InfoSVG}
             onPress={() => musicInformationDrawerRef.current?.present()}
           />
           <MusicOptionsList
             title="Delete music"
-            icon={svgAssests.trash}
+            icon={TrashSVG}
             fill={destructiveColor}
             textStyle={{
               color: destructiveColor,
@@ -82,12 +85,7 @@ export function MusicOptionsList(
       underlayColor={underlayColor}
     >
       <>
-        <SvgUri
-          svgXmlData={props.icon}
-          width={22}
-          height={22}
-          fill={props.fill}
-        />
+        <props.icon width={22} height={22} fill={props.fill} />
         <Text style={[styles.listTitle, props.textStyle]}>{props.title}</Text>
       </>
     </TouchableHighlight>

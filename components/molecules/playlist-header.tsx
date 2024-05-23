@@ -2,23 +2,25 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import Text from "../atomics/text";
 import { IconButton } from "../atomics/button";
-import { svgAssests } from "@/constants/assests";
 import SearchBar from "../atomics/search-bar";
 import { borderColor } from "@/constants/colors";
-import SvgUri from "react-native-svg-uri";
+import SparklesSVG from "@/assets/icons/sparkles.svg";
+import PlusCircleSVG from "@/assets/icons/plus-circle.svg";
+import HeartSVG from "@/assets/icons/heart.svg";
+import MusicOptionsSVG from "@/assets/icons/music-options.svg";
 
 export default function PlaylistHeader(): React.JSX.Element {
   return (
     <View style={styles.container}>
       <View style={styles.headerWrapper}>
         <View style={styles.titleWrapper}>
-          <SvgUri svgXmlData={svgAssests.sparkles} width={22} height={22} />
+          <SparklesSVG width={22} height={22} />
           <Text style={styles.title}>Playlist</Text>
         </View>
         <View style={styles.iconWrapper}>
-          <IconButton icon={svgAssests.plusCircle} width={26} height={26} />
-          <IconButton icon={svgAssests.heart} width={26} height={26} />
-          <IconButton icon={svgAssests.musicOptions} width={26} height={26} />
+          <IconButton icon={<PlusCircleSVG width={26} height={26} />} />
+          <IconButton icon={<HeartSVG width={26} height={26} />} />
+          <IconButton icon={<MusicOptionsSVG width={26} height={26} />} />
         </View>
       </View>
       <View style={styles.searchWrapper}>

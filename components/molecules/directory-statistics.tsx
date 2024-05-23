@@ -2,15 +2,17 @@ import React from "react";
 import Drawer, { DrawerProps, DrawerWrapper } from "../atomics/drawer";
 import Text from "../atomics/text";
 import { StyleSheet, View } from "react-native";
-import SvgUri from "react-native-svg-uri";
-import { svgAssests } from "@/constants/assests";
 import { borderColor } from "@/constants/colors";
 import { borderRadius, rowsGap } from "@/constants/styles";
 import { Music, useMusicStore } from "@/stores/music";
 import { Folder, useFolderStore } from "@/stores/folder";
+import ChartPieSVG from "@/assets/icons/chart-pie.svg";
+import { SvgProps } from "react-native-svg";
+import MusicSVG from "@/assets/icons/music.svg";
+import FolderSVG from "@/assets/icons/folder.svg";
 
 interface DirectoryStatisticContentProps {
-  icon: string;
+  icon: React.ReactElement<SvgProps>;
   title: string;
   description: string;
 }
@@ -25,7 +27,7 @@ export default function DirectoryStatistic(
     <Drawer modalRef={props.modalRef} snapPoints={["30%"]}>
       <DrawerWrapper>
         <View style={styles.headerWrapper}>
-          <SvgUri svgXmlData={svgAssests.chartPie} width={36} height={36} />
+          <ChartPieSVG width={36} height={36} />
           <View>
             <Text style={styles.headerText}>Your Directory Info</Text>
             <Text style={styles.headerDescription}>
@@ -35,15 +37,13 @@ export default function DirectoryStatistic(
         </View>
         <View style={styles.contentContainer}>
           <DirectoryStatisticContent
-            icon={svgAssests.music}
+            icon={<MusicSVG />}
             title="Music"
-            // Change it later with real user data
             description={`${music?.totalCount} Items Found`}
           />
           <DirectoryStatisticContent
-            icon={svgAssests.folder}
+            icon={<FolderSVG />}
             title="Folders"
-            // Change it later with real user data
             description={`${folder?.length} Items Found`}
           />
         </View>
@@ -57,7 +57,7 @@ export function DirectoryStatisticContent(
 ): React.JSX.Element {
   return (
     <View style={styles.contentWrapper}>
-      <SvgUri svgXmlData={props.icon} />
+      {props.icon}
       <View>
         <Text style={styles.contentMetadataTitle}>{props.title}</Text>
         <Text style={styles.contentMetadataDescription}>

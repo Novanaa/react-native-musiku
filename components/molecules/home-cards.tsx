@@ -16,7 +16,7 @@ export default function HomeCards(): React.JSX.Element {
           title={item.title}
           onPress={() => Linking.openURL(item.link)}
           description={item.description}
-          icon={item.icon}
+          icon={<item.icon />}
         />
       )}
       horizontal

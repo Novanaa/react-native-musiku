@@ -6,12 +6,12 @@ import {
 } from "react-native";
 import React from "react";
 import Text from "./text";
-import { svgAssests } from "@/constants/assests";
 import { borderRadius } from "@/constants/styles";
-import SvgUri from "react-native-svg-uri";
 import MusicOptions from "./music-options";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import * as MediaLibrary from "expo-media-library";
+import MusicSVG from "@/assets/icons/music.svg";
+import MusicOptionsSVG from "@/assets/icons/music-options.svg";
 
 interface MusicProps extends TouchableHighlightProps {
   title: string;
@@ -33,7 +33,7 @@ function Music(props: MusicProps): React.JSX.Element {
       >
         <View style={styles.wrapper}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-            <SvgUri svgXmlData={svgAssests.music} width={28} height={28} />
+            <MusicSVG width={28} height={28} />
             <View style={styles.metadata}>
               <Text style={styles.title} numberOfLines={1}>
                 {props.title}
@@ -47,7 +47,7 @@ function Music(props: MusicProps): React.JSX.Element {
             onPress={() => drawerRef.current?.present()}
             style={{ width: 30, height: 30 }}
           >
-            <SvgUri svgXmlData={svgAssests.musicOptions} />
+            <MusicOptionsSVG />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

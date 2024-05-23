@@ -5,16 +5,13 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 import React from "react";
-import SvgUri from "react-native-svg-uri";
 import Text from "./text";
 import { borderColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
+import { SvgProps } from "react-native-svg";
 
 interface IconButtonProps extends TouchableOpacityProps {
-  icon: string;
-  width?: number;
-  height?: number;
-  alt?: string;
+  icon: React.ReactElement<SvgProps>;
   onPress?: () => void;
 }
 
@@ -25,11 +22,7 @@ export function IconButton(props: IconButtonProps): React.JSX.Element {
       style={props.style}
       activeOpacity={0.6}
     >
-      <SvgUri
-        svgXmlData={props.icon}
-        height={props.height}
-        width={props.width}
-      />
+      {props.icon}
     </TouchableOpacity>
   );
 }
