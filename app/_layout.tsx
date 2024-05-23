@@ -21,6 +21,7 @@ import * as MediaLibrary from "expo-media-library";
 import { Welcome } from "@/components/molecules/welcome";
 import * as SecureStore from "expo-secure-store";
 import PlaylistRepository from "@/repository/playlist.repository";
+import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,6 +29,9 @@ export default function RootLayout() {
   const [permission] = MediaLibrary.usePermissions();
   const [loaded, error] = useFonts(fonts);
   const music: Music | null = useMusicStore((state) => state.music);
+  const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
+    (state) => state.refresh
+  );
   const musicStoreDispatch: MusicSetter = useMusicStore(
     (state) => state.setMusic
   );
@@ -36,11 +40,14 @@ export default function RootLayout() {
   );
 
   React.useEffect(() => {
-    if (!SecureStore.getItem(PlaylistRepository.playlistKey))
+    if (!SecureStore.getItem(PlaylistRepository.playlistKey)) {
       PlaylistRepository.setPlaylist({
         playlist: [],
         totalPlaylist: 0,
       });
+
+      refreshPlaylist();
+    }
 
     if (!SortByRepository.getSortByState())
       SortByRepository.setSortByState("ascending");
