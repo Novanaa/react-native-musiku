@@ -6,7 +6,7 @@ export type RefreshPlaylist = () => void;
 
 export interface PlaylistState {
   refresh: RefreshPlaylist;
-  playlist: PlaylistScheme;
+  playlist: string;
 }
 
 export const usePlaylistStore: UseBoundStore<StoreApi<PlaylistState>> =
