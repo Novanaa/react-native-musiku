@@ -4,20 +4,12 @@ import { PlaylistScheme } from "@/interfaces/playlist";
 export default class PlaylistRepository {
   public static playlistKey: string = "playlist";
 
-  public static async getPlaylistAsync(): Promise<PlaylistScheme> {
-    const parsedPlaylist: Awaited<PlaylistScheme> = JSON.parse(
-      (await SecureStore.getItemAsync(this.playlistKey)) as string
-    );
-
-    return parsedPlaylist;
+  public static async getPlaylistAsync(): Promise<string> {
+    return (await SecureStore.getItemAsync(this.playlistKey)) as string;
   }
 
-  public static getPlaylist(): PlaylistScheme {
-    const parsedPlaylist: PlaylistScheme = JSON.parse(
-      SecureStore.getItem(this.playlistKey) as string
-    );
-
-    return parsedPlaylist;
+  public static getPlaylist(): string {
+    return SecureStore.getItem(this.playlistKey) as string;
   }
 
   public static setPlaylist(state: PlaylistScheme): void {
