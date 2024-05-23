@@ -72,7 +72,7 @@ export function EmptyPlaylist(): React.JSX.Element {
         Opps!, seems like empty here
       </Text>
       <Text style={emptyPlaylistStyles.description}>
-        If you like you can make a playlist by click plus circle button in the
+        If you like you can make a playlist by click plus circle button on the
         top
       </Text>
       <TouchableOpacity activeOpacity={0.6} style={emptyPlaylistStyles.button}>
