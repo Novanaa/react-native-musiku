@@ -20,7 +20,11 @@ interface IconButtonProps extends TouchableOpacityProps {
 
 export function IconButton(props: IconButtonProps): React.JSX.Element {
   return (
-    <TouchableOpacity onPress={props.onPress} style={props.style}>
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={props.style}
+      activeOpacity={0.6}
+    >
       <SvgUri
         svgXmlData={props.icon}
         height={props.height}

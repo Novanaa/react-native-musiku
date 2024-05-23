@@ -1,14 +1,12 @@
 import React from "react";
 import Container from "@/components/atomics/container";
-import FavoritePlaylist from "@/components/atomics/favorite-playlist";
 import { StyleSheet } from "react-native";
-import { AddPlaylist } from "@/components/atomics/add-playlist";
+import PlaylistHeader from "@/components/molecules/playlist-header";
 
 export default function Playlist(): React.JSX.Element {
   return (
     <Container style={styles.container}>
-      <FavoritePlaylist />
-      <AddPlaylist />
+      <PlaylistHeader />
     </Container>
   );
 }
