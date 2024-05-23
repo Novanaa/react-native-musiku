@@ -1,4 +1,3 @@
-import { PlaylistScheme } from "@/interfaces/playlist";
 import PlaylistRepository from "@/repository/playlist.repository";
 import { StoreApi, UseBoundStore, create } from "zustand";
 
