@@ -1,9 +1,8 @@
-import { svgAssests } from "@/constants/assests";
 import colors, { inputBackgroundColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import SvgUri from "react-native-svg-uri";
+import SearchSVG from "@/assets/icons/magnifying-glass.svg";
 
 interface SearchBarProps {
   /* eslint-disable no-unused-vars */
@@ -14,7 +13,7 @@ export default function SearchBar(props: SearchBarProps): React.JSX.Element {
   return (
     <View style={styles.wrapper}>
       <View style={styles.searchIcon}>
-        <SvgUri svgXmlData={svgAssests.search} />
+        <SearchSVG />
       </View>
       <TextInput
         style={styles.searchInput}

@@ -8,12 +8,12 @@ import React from "react";
 import Text from "./text";
 import { borderColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
-import SvgUri from "react-native-svg-uri";
+import { SvgProps } from "react-native-svg";
 
 interface CardProps extends TouchableOpacityProps {
   title: string;
   description: string;
-  icon: string;
+  icon: React.ReactElement<SvgProps>;
 }
 
 export default function Card(props: CardProps): React.JSX.Element {
@@ -24,7 +24,7 @@ export default function Card(props: CardProps): React.JSX.Element {
       activeOpacity={0.65}
     >
       <View>
-        <SvgUri svgXmlData={props.icon} />
+        {props.icon}
         <Text style={styles.title}>{props.title}</Text>
       </View>
       <Text style={styles.description}>{props.description}</Text>

@@ -1,4 +1,3 @@
-import { svgAssests } from "@/constants/assests";
 import React from "react";
 import {
   StyleSheet,
@@ -6,8 +5,9 @@ import {
   TouchableOpacityProps,
   View,
 } from "react-native";
-import SvgUri from "react-native-svg-uri";
 import Text from "./text";
+import AlbumSVG from "@/assets/icons/album.svg";
+import ArrowRightSVG from "@/assets/icons/arrow-right.svg";
 
 interface PlaylistProps extends TouchableOpacityProps {
   title: string;
@@ -22,7 +22,7 @@ function Playlist(props: PlaylistProps): React.JSX.Element {
       onPress={() => console.log("test")}
     >
       <View style={styles.headerWrapper}>
-        <SvgUri svgXmlData={svgAssests.album} width={38} height={38} />
+        <AlbumSVG width={38} height={38} />
         <View>
           <Text style={styles.title} numberOfLines={1}>
             {props.title}
@@ -33,7 +33,7 @@ function Playlist(props: PlaylistProps): React.JSX.Element {
         </View>
       </View>
       <View>
-        <SvgUri svgXmlData={svgAssests.arrowRight} width={17} height={17} />
+        <ArrowRightSVG width={17} height={17} />
       </View>
     </TouchableOpacity>
   );

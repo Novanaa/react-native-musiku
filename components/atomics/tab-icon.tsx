@@ -1,15 +1,15 @@
 import React from "react";
 import { View } from "react-native";
-import SvgUri from "react-native-svg-uri";
+import { SvgProps } from "react-native-svg";
 
 interface TabIconParam {
-  icon: string;
+  Icon: React.FC<SvgProps>;
   focused: boolean;
 }
 
 export default function TabIcon({
   focused,
-  icon,
+  Icon,
 }: TabIconParam): React.JSX.Element {
   return (
     <View
@@ -19,7 +19,7 @@ export default function TabIcon({
         alignItems: "center",
       }}
     >
-      <SvgUri svgXmlData={icon} width={28} height={28} />
+      <Icon width={28} height={28} />
     </View>
   );
 }
