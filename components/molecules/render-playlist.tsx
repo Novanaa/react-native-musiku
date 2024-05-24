@@ -10,7 +10,7 @@ export default function RenderPlaylist(): React.JSX.Element {
     JSON.parse(state.playlist)
   );
 
-  if (!list.playlist.length) return <EmptyPlaylist />;
+  if (!list.totalPlaylist) return <EmptyPlaylist />;
 
   return (
     <FlatList
