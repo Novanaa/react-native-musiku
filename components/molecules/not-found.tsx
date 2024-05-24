@@ -8,6 +8,7 @@ import { RefreshFolder, useFolderStore } from "@/stores/folder";
 import InboxEmptySVG from "@/assets/images/inbox-empty.svg";
 import UserPermissionSVG from "@/assets/images/user-permission.svg";
 import CatBoxSVG from "@/assets/images/cat-box.svg";
+import FolderEmptySVG from "@/assets/images/folder-empty.svg";
 
 export function MusicNotDetected(): React.JSX.Element {
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
@@ -62,7 +63,7 @@ export function EmptyMusic(): React.JSX.Element {
   return (
     <View style={emptyMusicStyles.container}>
       <View style={{ top: 10 }}>
-        <InboxEmptySVG width={150} height={150} fill="#FEFEFE" />
+        <FolderEmptySVG width={140} height={140} />
       </View>
       <Text style={emptyMusicStyles.headerText}>
         Got any tunes on your phone?
@@ -232,6 +233,7 @@ const emptyMusicStyles = StyleSheet.create({
     opacity: 0.85,
   },
   headerText: {
+    marginTop: 10,
     fontFamily: "bold",
     fontSize: 16,
   },
