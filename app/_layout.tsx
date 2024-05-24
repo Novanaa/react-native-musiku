@@ -22,6 +22,8 @@ import { Welcome } from "@/components/molecules/welcome";
 import * as SecureStore from "expo-secure-store";
 import PlaylistRepository from "@/repository/playlist.repository";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
+import FavoriteRepository from "@/repository/favorite.repository";
+import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,6 +31,9 @@ export default function RootLayout() {
   const [permission] = MediaLibrary.usePermissions();
   const [loaded, error] = useFonts(fonts);
   const music: Music | null = useMusicStore((state) => state.music);
+  const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
+    (state) => state.refresh
+  );
   const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
     (state) => state.refresh
   );
@@ -40,6 +45,15 @@ export default function RootLayout() {
   );
 
   React.useEffect(() => {
+    if (!SecureStore.getItem(FavoriteRepository.favoriteKey)) {
+      FavoriteRepository.setFavorites({
+        assets: [],
+        total: 0,
+      });
+
+      refreshFavoritesMusic();
+    }
+
     if (!SecureStore.getItem(PlaylistRepository.playlistKey)) {
       PlaylistRepository.setPlaylist({
         playlist: [],
