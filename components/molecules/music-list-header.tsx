@@ -35,8 +35,11 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
   const [dummyState, setDummyState] = React.useState<boolean>(false);
   const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
   const radioCheckboxData: Array<RadioCheckboxData> = [
-    { id: 1, title: "By music title (ascending)", default: true },
-    { id: 2, title: "By music title (descending)" },
+    { id: 1, title: "Recently Music Added", default: true },
+    { id: 2, title: "Lately Music Added" },
+    { id: 3, title: "By Music Duration" },
+    { id: 4, title: "By Alphabet (Ascending)" },
+    { id: 5, title: "By Alphabet (Descending)" },
   ];
 
   SortByRepository.getSortByStateAsync().then((state) =>
@@ -59,7 +62,7 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
   };
 
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["28%"]}>
+    <Drawer modalRef={props.modalRef} snapPoints={["45%"]}>
       <DrawerWrapper style={optionsStyles.wrapper}>
         <View style={optionsStyles.headerWrapper}>
           <Text style={optionsStyles.headerText}>
