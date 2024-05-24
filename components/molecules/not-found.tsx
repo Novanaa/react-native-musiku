@@ -5,7 +5,6 @@ import colors from "@/constants/colors";
 import getPermission from "@/utils/permission";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
-import BoxOpenSVG from "@/assets/images/box-open.svg";
 import InboxEmptySVG from "@/assets/images/inbox-empty.svg";
 import UserPermissionSVG from "@/assets/images/user-permission.svg";
 

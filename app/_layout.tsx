@@ -50,7 +50,7 @@ export default function RootLayout() {
     }
 
     if (!SortByRepository.getSortByState())
-      SortByRepository.setSortByState("ascending");
+      SortByRepository.setSortByState("recently_added");
 
     getMusic().then((state) => {
       const folder: Folder = getFolder(state);

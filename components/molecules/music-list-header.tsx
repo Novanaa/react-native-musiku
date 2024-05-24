@@ -35,31 +35,43 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
   const [dummyState, setDummyState] = React.useState<boolean>(false);
   const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
   const radioCheckboxData: Array<RadioCheckboxData> = [
-    { id: 1, title: "By music title (ascending)", default: true },
-    { id: 2, title: "By music title (descending)" },
+    { id: 1, title: "Recently Music Added", default: true },
+    { id: 2, title: "Lately Music Added" },
+    { id: 3, title: "By Music Duration" },
+    { id: 4, title: "By Alphabet (Ascending)" },
+    { id: 5, title: "By Alphabet (Descending)" },
   ];
 
-  SortByRepository.getSortByStateAsync().then((state) =>
-    setDefaultCheckedId(state == "ascending" ? 1 : 2)
-  );
+  SortByRepository.getSortByStateAsync().then((state) => {
+    const setter: Record<typeof state, () => void> = {
+      recently_added: () => setDefaultCheckedId(1),
+      lately_added: () => setDefaultCheckedId(2),
+      duration: () => setDefaultCheckedId(3),
+      ascending: () => setDefaultCheckedId(4),
+      descending: () => setDefaultCheckedId(5),
+    };
+
+    setter[state]();
+  });
 
   /* eslint-disable no-unused-vars */
   const handleOnChecked: (itemId: number) => void = (itemId: number): void => {
-    if (itemId === 1) {
-      SortByRepository.setSortByState("ascending");
-      refreshMusic();
-    }
-    if (itemId == 2) {
-      SortByRepository.setSortByState("descending");
-      refreshMusic();
-    }
+    const setter: Record<number, () => void> = {
+      1: () => SortByRepository.setSortByState("recently_added"),
+      2: () => SortByRepository.setSortByState("lately_added"),
+      3: () => SortByRepository.setSortByState("duration"),
+      4: () => SortByRepository.setSortByState("ascending"),
+      5: () => SortByRepository.setSortByState("descending"),
+    };
 
+    setter[itemId]();
+    refreshMusic();
     setDummyState(!dummyState);
     props.modalRef.current?.close();
   };
 
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["28%"]}>
+    <Drawer modalRef={props.modalRef} snapPoints={["45%"]}>
       <DrawerWrapper style={optionsStyles.wrapper}>
         <View style={optionsStyles.headerWrapper}>
           <Text style={optionsStyles.headerText}>
