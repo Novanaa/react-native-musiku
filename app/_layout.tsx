@@ -88,6 +88,18 @@ export default function RootLayout() {
                 headerStyle: {
                   backgroundColor: headerBackgoundColor,
                 },
+                animation: "ios",
+              }}
+            />
+            <Stack.Screen
+              name="favorite"
+              options={{
+                title: "Favorites",
+                headerTintColor: textColor,
+                headerStyle: {
+                  backgroundColor: headerBackgoundColor,
+                },
+                animation: "ios",
               }}
             />
           </Stack>

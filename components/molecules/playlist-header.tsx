@@ -15,8 +15,11 @@ import {
 } from "@/stores/playlist";
 import PlaylistHeaderOptions from "../atomics/playlist-header-options";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { useRouter } from "expo-router";
+import { ExpoRouter } from "expo-router/types/expo-router";
 
 export default function PlaylistHeader(): React.JSX.Element {
+  const router: ExpoRouter.Router = useRouter();
   const drawerOptionsRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
   const setPlaylistSearchKeyword: SearchPlaylistKeywordSetter =
@@ -38,7 +41,15 @@ export default function PlaylistHeader(): React.JSX.Element {
           </View>
           <View style={styles.iconWrapper}>
             <IconButton icon={<PlusCircleSVG width={26} height={26} />} />
-            <IconButton icon={<HeartSVG width={26} height={26} />} />
+            <IconButton
+              icon={
+                <HeartSVG
+                  width={26}
+                  height={26}
+                  onPress={() => router.push("/favorite")}
+                />
+              }
+            />
             <IconButton
               icon={<MusicOptionsSVG width={26} height={26} />}
               onPress={() => drawerOptionsRef.current?.present()}
