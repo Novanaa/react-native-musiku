@@ -1,9 +1,13 @@
+import SortBy from "@/interfaces/sort-by";
 import SortByRepository from "@/repository/sort-by.repository";
 import * as MediaLibrary from "expo-media-library";
+import sortMusic from "./sort-music";
 
 export default async function getMusic(): Promise<
   MediaLibrary.PagedInfo<MediaLibrary.Asset>
   > {
+  const sortByState: Awaited<SortBy> =
+    await SortByRepository.getSortByStateAsync();
   const pagedMusic: Awaited<MediaLibrary.PagedInfo<MediaLibrary.Asset>> =
     await MediaLibrary.getAssetsAsync({ mediaType: "audio" });
 
@@ -14,26 +18,7 @@ export default async function getMusic(): Promise<
       sortBy: MediaLibrary.SortBy.duration,
     });
 
-  if (SortByRepository.getSortByState() == "ascending")
-    return {
-      ...allFetchedMusic,
-      assets: allFetchedMusic.assets.sort((a, b) =>
-        a.filename.localeCompare(b.filename)
-      ),
-    };
+  sortMusic(allFetchedMusic, sortByState);
 
-  if (SortByRepository.getSortByState() == "descending")
-    return {
-      ...allFetchedMusic,
-      assets: allFetchedMusic.assets.sort((a, b) =>
-        b.filename.localeCompare(a.filename)
-      ),
-    };
-
-  return {
-    ...allFetchedMusic,
-    assets: allFetchedMusic.assets.sort((a, b) =>
-      a.filename.localeCompare(b.filename)
-    ),
-  };
+  return allFetchedMusic;
 }
