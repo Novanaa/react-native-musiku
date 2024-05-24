@@ -48,7 +48,7 @@ export function EmptyMusic(): React.JSX.Element {
   return (
     <View style={emptyMusicStyles.container}>
       <View style={{ top: 10 }}>
-        <BoxOpenSVG width={110} height={110} fill="#FEFEFE" />
+        <InboxEmptySVG width={150} height={150} fill="#FEFEFE" />
       </View>
       <Text style={emptyMusicStyles.headerText}>
         Got any tunes on your phone?
