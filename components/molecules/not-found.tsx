@@ -1,13 +1,13 @@
 import React from "react";
 import Text from "../atomics/text";
-import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
-import assests from "@/constants/assests";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import colors from "@/constants/colors";
 import getPermission from "@/utils/permission";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
 import BoxOpenSVG from "@/assets/images/box-open.svg";
 import InboxEmptySVG from "@/assets/images/inbox-empty.svg";
+import UserPermissionSVG from "@/assets/images/user-permission.svg";
 
 export function MusicNotDetected(): React.JSX.Element {
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
@@ -15,10 +15,7 @@ export function MusicNotDetected(): React.JSX.Element {
 
   return (
     <View style={musicNotDetectedStyles.container}>
-      <Image
-        source={assests.images.musicDisc}
-        style={musicNotDetectedStyles.image}
-      />
+      <UserPermissionSVG width={140} height={140} />
       <Text style={musicNotDetectedStyles.messege}>
         Music Not Detected, Are You Ready to Listen Your Favorite Music?
       </Text>
@@ -51,7 +48,7 @@ export function EmptyMusic(): React.JSX.Element {
   return (
     <View style={emptyMusicStyles.container}>
       <View style={{ top: 10 }}>
-        <BoxOpenSVG width={110} height={110} fill="#FEFEFE" />
+        <InboxEmptySVG width={150} height={150} fill="#FEFEFE" />
       </View>
       <Text style={emptyMusicStyles.headerText}>
         Got any tunes on your phone?
