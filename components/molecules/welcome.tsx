@@ -43,6 +43,8 @@ export function Welcome(props: ViewProps): React.JSX.Element {
 
   return (
     <Drawer
+      enableContentPanningGesture={false}
+      enableHandlePanningGesture={false}
       modalRef={drawerRef}
       snapPoints={["38%"]}
       handleIndicatorStyle={{ backgroundColor: modalBackgroundColor }}

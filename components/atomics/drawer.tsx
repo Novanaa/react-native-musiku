@@ -9,6 +9,8 @@ export interface DrawerProps extends ViewProps {
   snapPoints?: Array<string>;
   enablePanDownToClose?: boolean;
   handleIndicatorStyle?: StyleProp<ViewStyle>;
+  enableHandlePanningGesture?: boolean;
+  enableContentPanningGesture?: boolean;
 }
 
 export default function Drawer(props: DrawerProps): React.JSX.Element {
@@ -23,6 +25,8 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
       backgroundStyle={{
         backgroundColor: modalBackgroundColor,
       }}
+      enableHandlePanningGesture={props.enableHandlePanningGesture}
+      enableContentPanningGesture={props.enableContentPanningGesture}
       handleIndicatorStyle={{ backgroundColor: colors.light.background }}
       {...props}
     >
