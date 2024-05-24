@@ -19,6 +19,7 @@ import PlaySVG from "@/assets/icons/play.svg";
 import HeartSVG from "@/assets/icons/heart.svg";
 import InfoSVG from "@/assets/icons/info.svg";
 import TrashSVG from "@/assets/icons/trash.svg";
+import AlbumSVG from "@/assets/icons/album.svg";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -39,7 +40,7 @@ export default function MusicOptions(
 
   return (
     <>
-      <Drawer modalRef={props.modalRef} snapPoints={["33%"]}>
+      <Drawer modalRef={props.modalRef} snapPoints={["40%"]}>
         <View style={styles.wrapper}>
           <MusicOptionsList
             title="Play music"
@@ -48,6 +49,11 @@ export default function MusicOptions(
           />
           <MusicOptionsList
             title="Add to playlist"
+            icon={AlbumSVG}
+            onPress={() => console.log("action")}
+          />
+          <MusicOptionsList
+            title="Add to favorites"
             icon={HeartSVG}
             onPress={() => console.log("action")}
           />
