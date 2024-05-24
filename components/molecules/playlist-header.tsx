@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   searchWrapper: {
+    zIndex: 2,
     top: 15,
   },
   iconWrapper: {
