@@ -13,8 +13,12 @@ import {
   SearchPlaylistKeywordSetter,
   usePlaylistStore,
 } from "@/stores/playlist";
+import PlaylistHeaderOptions from "../atomics/playlist-header-options";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 export default function PlaylistHeader(): React.JSX.Element {
+  const drawerOptionsRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
   const setPlaylistSearchKeyword: SearchPlaylistKeywordSetter =
     usePlaylistStore((state) => state.setSearchPlaylistKeyword);
   const [textValue, setTextValue] = React.useState<string>("");
@@ -25,23 +29,28 @@ export default function PlaylistHeader(): React.JSX.Element {
   }, [keyword]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerWrapper}>
-        <View style={styles.titleWrapper}>
-          <SparklesSVG width={22} height={22} />
-          <Text style={styles.title}>Playlist</Text>
+    <>
+      <View style={styles.container}>
+        <View style={styles.headerWrapper}>
+          <View style={styles.titleWrapper}>
+            <SparklesSVG width={22} height={22} />
+            <Text style={styles.title}>Playlist</Text>
+          </View>
+          <View style={styles.iconWrapper}>
+            <IconButton icon={<PlusCircleSVG width={26} height={26} />} />
+            <IconButton icon={<HeartSVG width={26} height={26} />} />
+            <IconButton
+              icon={<MusicOptionsSVG width={26} height={26} />}
+              onPress={() => drawerOptionsRef.current?.present()}
+            />
+          </View>
         </View>
-        <View style={styles.iconWrapper}>
-          <IconButton icon={<PlusCircleSVG width={26} height={26} />} />
-          <IconButton icon={<HeartSVG width={26} height={26} />} />
-          <IconButton icon={<MusicOptionsSVG width={26} height={26} />} />
+        <View style={styles.searchWrapper}>
+          <SearchBar onChangeText={(text) => setTextValue(text)} />
         </View>
       </View>
-      <View style={styles.searchWrapper}>
-        {/* Change it later on! */}
-        <SearchBar onChangeText={(text) => setTextValue(text)} />
-      </View>
-    </View>
+      <PlaylistHeaderOptions modalRef={drawerOptionsRef} />
+    </>
   );
 }
 
