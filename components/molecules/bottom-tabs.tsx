@@ -7,10 +7,14 @@ import { IconButton } from "../atomics/button";
 import DirectoryStatistic from "./directory-statistics";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import HomeSVG from "@/assets/icons/home.svg";
-import MusicSVG from "@/assets/icons/music.svg";
+import PlaylistSVG from "@/assets/icons/media-library.svg";
 import SearchSVG from "@/assets/icons/magnifying-glass.svg";
 import FolderSVG from "@/assets/icons/folder.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
+import SolidHomeSVG from "@/assets/icons/solid-home.svg";
+import SolidFolderSVG from "@/assets/icons/solid-folder.svg";
+import SolidPlaylistSVG from "@/assets/icons/solid-media-library.svg";
+import SolidSearchSVG from "@/assets/icons/solid-search.svg";
 
 export default function BottomTabs(): React.JSX.Element {
   const directoryStatisticDrawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
@@ -30,7 +34,11 @@ export default function BottomTabs(): React.JSX.Element {
             headerShown: false,
             title: "Home",
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} Icon={HomeSVG} />
+              <TabIcon
+                focused={focused}
+                Icon={HomeSVG}
+                FocusedIcon={SolidHomeSVG}
+              />
             ),
             tabBarActiveTintColor: colors.textColor,
           }}
@@ -41,7 +49,11 @@ export default function BottomTabs(): React.JSX.Element {
             headerShown: false,
             title: "Search",
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} Icon={SearchSVG} />
+              <TabIcon
+                focused={focused}
+                Icon={SearchSVG}
+                FocusedIcon={SolidSearchSVG}
+              />
             ),
             tabBarActiveTintColor: colors.textColor,
           }}
@@ -52,7 +64,11 @@ export default function BottomTabs(): React.JSX.Element {
             headerShown: false,
             title: "Playlist",
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} Icon={MusicSVG} />
+              <TabIcon
+                focused={focused}
+                Icon={PlaylistSVG}
+                FocusedIcon={SolidPlaylistSVG}
+              />
             ),
             tabBarActiveTintColor: colors.textColor,
           }}
@@ -66,7 +82,11 @@ export default function BottomTabs(): React.JSX.Element {
             },
             title: "Directories",
             tabBarIcon: ({ focused }) => (
-              <TabIcon focused={focused} Icon={FolderSVG} />
+              <TabIcon
+                focused={focused}
+                Icon={FolderSVG}
+                FocusedIcon={SolidFolderSVG}
+              />
             ),
             headerRight: () => (
               <IconButton
