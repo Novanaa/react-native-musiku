@@ -7,6 +7,7 @@ import { RefreshMusic, useMusicStore } from "@/stores/music";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
 import InboxEmptySVG from "@/assets/images/inbox-empty.svg";
 import UserPermissionSVG from "@/assets/images/user-permission.svg";
+import CatBoxSVG from "@/assets/images/cat-box.svg";
 
 export function MusicNotDetected(): React.JSX.Element {
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
@@ -91,6 +92,40 @@ export function EmptyPlaylist(): React.JSX.Element {
     </View>
   );
 }
+
+export function EmptyFavoritesMusic(): React.JSX.Element {
+  return (
+    <View style={emptyFavoritesStyles.container}>
+      <CatBoxSVG width={150} height={150} />
+      <Text style={emptyFavoritesStyles.title}>
+        Opps!, seems like empty here
+      </Text>
+      <Text style={emptyFavoritesStyles.description}>
+        Your favorite music will appear here! And you don't have it now.
+      </Text>
+    </View>
+  );
+}
+
+const emptyFavoritesStyles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    opacity: 0.85,
+    gap: 3,
+  },
+  title: {
+    marginTop: 8,
+    fontFamily: "medium",
+    fontSize: 15.5,
+  },
+  description: {
+    textAlign: "center",
+    width: "70%",
+    opacity: 0.8,
+  },
+});
 
 const emptyPlaylistStyles = StyleSheet.create({
   container: {
