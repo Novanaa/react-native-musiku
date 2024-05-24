@@ -1,8 +1,9 @@
+import Music from "@/components/atomics/music";
 import { EmptyFavoritesMusic } from "@/components/molecules/not-found";
 import { default as IFavorites } from "@/interfaces/favorites";
 import { useFavoritesMusic } from "@/stores/favorites";
 import React from "react";
-import { View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 export default function Favorites(): React.JSX.Element {
   const favoritedMusic: IFavorites = useFavoritesMusic((state) =>
@@ -11,5 +12,28 @@ export default function Favorites(): React.JSX.Element {
 
   if (!favoritedMusic.total) return <EmptyFavoritesMusic />;
 
-  return <View></View>;
+  return (
+    <FlatList
+      style={styles.container}
+      data={favoritedMusic.assets}
+      renderItem={(data) => (
+        <View style={styles.wrapper}>
+          <Music
+            title={data.item.filename}
+            description="Unknown Artist - Unknown Album"
+            musicItem={data.item}
+          />
+        </View>
+      )}
+    />
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+  },
+  wrapper: {
+    paddingHorizontal: 5,
+  },
+});
