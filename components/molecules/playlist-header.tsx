@@ -38,7 +38,6 @@ export default function PlaylistHeader(): React.JSX.Element {
         </View>
       </View>
       <View style={styles.searchWrapper}>
-        {/* Change it later on! */}
         <SearchBar onChangeText={(text) => setTextValue(text)} />
       </View>
     </View>
