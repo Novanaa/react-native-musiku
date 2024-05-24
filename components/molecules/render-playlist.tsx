@@ -1,22 +1,35 @@
-import { PlaylistScheme } from "@/interfaces/playlist";
+import { Playlist, PlaylistScheme } from "@/interfaces/playlist";
 import { usePlaylistStore } from "@/stores/playlist";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import PlaylistItem from "../atomics/playlist-item";
-import { EmptyPlaylist } from "./not-found";
+import { EmptyPlaylist, PlaylistSearchNotFound } from "./not-found";
 
 export default function RenderPlaylist(): React.JSX.Element {
+  const searchPlaylistKeyword: string = usePlaylistStore(
+    (state) => state.searchPlaylistKeyword
+  );
   const list: PlaylistScheme = usePlaylistStore((state) =>
     JSON.parse(state.playlist)
   );
 
-  if (!list.playlist.length) return <EmptyPlaylist />;
+  const filteredPlaylist: Array<Playlist> = React.useMemo(
+    () =>
+      list.playlist.filter((item) =>
+        item.title.toLowerCase().includes(searchPlaylistKeyword.toLowerCase())
+      ),
+    [searchPlaylistKeyword]
+  );
+
+  if (!list.totalPlaylist) return <EmptyPlaylist />;
+
+  if (!filteredPlaylist.length) return <PlaylistSearchNotFound />;
 
   return (
     <FlatList
       keyExtractor={(item) => String(item.id)}
       style={styles.container}
-      data={list.playlist}
+      data={filteredPlaylist}
       renderItem={(data) => (
         <PlaylistItem
           title={data.item.title}

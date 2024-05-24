@@ -43,6 +43,20 @@ export function MusicSearchNotFound(): React.JSX.Element {
   );
 }
 
+export function PlaylistSearchNotFound(): React.JSX.Element {
+  return (
+    <View style={playlistSearchNotFoundStyles.container}>
+      <Text style={playlistSearchNotFoundStyles.notFoundText}>404</Text>
+      <Text style={playlistSearchNotFoundStyles.headerText}>
+        Not results found
+      </Text>
+      <Text style={playlistSearchNotFoundStyles.messege}>
+        Requested playlist cannot be found, try searching something else.
+      </Text>
+    </View>
+  );
+}
+
 export function EmptyMusic(): React.JSX.Element {
   return (
     <View style={emptyMusicStyles.container}>
@@ -131,6 +145,28 @@ const musicNotDetectedStyles = StyleSheet.create({
 });
 
 const musicSearchNotFoundStyles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    gap: 5,
+    opacity: 0.85,
+  },
+  notFoundText: {
+    fontFamily: "extraBold",
+  },
+  headerText: {
+    fontFamily: "medium",
+    fontSize: 16,
+  },
+  messege: {
+    textAlign: "center",
+    width: "70%",
+    opacity: 0.8,
+  },
+});
+
+const playlistSearchNotFoundStyles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",

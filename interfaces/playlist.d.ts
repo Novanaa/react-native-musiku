@@ -1,7 +1,7 @@
 import * as MediaLibrary from "expo-media-library";
 
 export type Playlist = {
-  id: number;
+  id: string;
   title: string;
   totalSongs: number;
   songs: Array<MediaLibrary.Asset>;
