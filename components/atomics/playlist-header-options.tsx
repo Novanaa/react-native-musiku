@@ -14,6 +14,8 @@ import { borderRadius } from "@/constants/styles";
 import TrashSVG from "@/assets/icons/trash.svg";
 import AlbumSVG from "@/assets/icons/album.svg";
 import HeartSVG from "@/assets/icons/heart.svg";
+import { useRouter } from "expo-router";
+import { ExpoRouter } from "expo-router/types/expo-router";
 
 interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -24,6 +26,8 @@ interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
 export default function PlaylistHeaderOptions(
   props: DrawerProps
 ): React.JSX.Element {
+  const router: ExpoRouter.Router = useRouter();
+
   return (
     <Drawer modalRef={props.modalRef} snapPoints={["27%"]}>
       <View style={styles.wrapper}>
@@ -33,7 +37,10 @@ export default function PlaylistHeaderOptions(
           title="Add Playlist"
         />
         <PlaylistHeaderOptionsItem
-          onPress={() => console.log("test")}
+          onPress={() => {
+            router.push("/favorite");
+            props.modalRef.current?.close();
+          }}
           icon={HeartSVG}
           title="Favorites Music"
         />
