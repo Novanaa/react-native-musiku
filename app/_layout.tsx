@@ -24,6 +24,7 @@ import PlaylistRepository from "@/repository/playlist.repository";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 import FavoriteRepository from "@/repository/favorite.repository";
 import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
+import uuid from "react-native-uuid";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -56,8 +57,15 @@ export default function RootLayout() {
 
     if (!SecureStore.getItem(PlaylistRepository.playlistKey)) {
       PlaylistRepository.setPlaylist({
-        playlist: [],
-        totalPlaylist: 0,
+        playlist: [
+          {
+            id: String(uuid.v4()),
+            songs: [],
+            title: "My Playlist",
+            totalSongs: 0,
+          },
+        ],
+        totalPlaylist: 1,
       });
 
       refreshPlaylist();
