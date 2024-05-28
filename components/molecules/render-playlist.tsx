@@ -33,7 +33,7 @@ export default function RenderPlaylist(): React.JSX.Element {
       renderItem={(data) => (
         <PlaylistItem
           title={data.item.title}
-          description={`${data.item.totalSongs} Songs`}
+          description={`${data.item.totalSongs} Songs - ${new Date(data.item.createdAt).toLocaleDateString()}`}
         />
       )}
     />

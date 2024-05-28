@@ -63,6 +63,7 @@ export default function RootLayout() {
             songs: [],
             title: "My Playlist",
             totalSongs: 0,
+            createdAt: new Date().getTime(),
           },
         ],
         totalPlaylist: 1,
