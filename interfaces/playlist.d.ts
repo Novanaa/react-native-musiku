@@ -5,6 +5,7 @@ export type Playlist = {
   title: string;
   totalSongs: number;
   songs: Array<MediaLibrary.Asset>;
+  createdAt: number;
 };
 
 export type PlaylistScheme = {
