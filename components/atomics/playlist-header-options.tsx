@@ -16,6 +16,8 @@ import AlbumSVG from "@/assets/icons/album.svg";
 import HeartSVG from "@/assets/icons/heart.svg";
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
+import { RemovesAllPlaylist } from "./playlist-header-options-actions";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -26,34 +28,39 @@ interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
 export default function PlaylistHeaderOptions(
   props: DrawerProps
 ): React.JSX.Element {
+  const removesPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
   const router: ExpoRouter.Router = useRouter();
 
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["27%"]}>
-      <View style={styles.wrapper}>
-        <PlaylistHeaderOptionsItem
-          onPress={() => console.log("test")}
-          icon={AlbumSVG}
-          title="Add Playlist"
-        />
-        <PlaylistHeaderOptionsItem
-          onPress={() => {
-            router.push("/favorite");
-            props.modalRef.current?.close();
-          }}
-          icon={HeartSVG}
-          title="Favorites Music"
-        />
-        <PlaylistHeaderOptionsItem
-          onPress={() => console.log("test")}
-          icon={TrashSVG}
-          title="Removes Playlist"
-          textStyle={{
-            color: destructiveColor,
-          }}
-        />
-      </View>
-    </Drawer>
+    <>
+      <Drawer modalRef={props.modalRef} snapPoints={["27%"]}>
+        <View style={styles.wrapper}>
+          <PlaylistHeaderOptionsItem
+            onPress={() => console.log("test")}
+            icon={AlbumSVG}
+            title="Add Playlist"
+          />
+          <PlaylistHeaderOptionsItem
+            onPress={() => {
+              router.push("/favorite");
+              props.modalRef.current?.close();
+            }}
+            icon={HeartSVG}
+            title="Favorites Music"
+          />
+          <PlaylistHeaderOptionsItem
+            onPress={() => removesPlaylistDrawerRef.current?.present()}
+            icon={TrashSVG}
+            title="Removes Playlist"
+            textStyle={{
+              color: destructiveColor,
+            }}
+          />
+        </View>
+      </Drawer>
+      <RemovesAllPlaylist modalRef={removesPlaylistDrawerRef} />
+    </>
   );
 }
 
