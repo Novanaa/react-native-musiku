@@ -18,6 +18,8 @@ import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
 import { RemovesAllPlaylist } from "./playlist-header-options-actions";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { usePlaylistStore } from "@/stores/playlist";
+import { PlaylistScheme } from "@/interfaces/playlist";
 
 interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -28,9 +30,13 @@ interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
 export default function PlaylistHeaderOptions(
   props: DrawerProps
 ): React.JSX.Element {
+  const list: PlaylistScheme = usePlaylistStore((state) =>
+    JSON.parse(state.playlist)
+  );
   const removesPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
   const router: ExpoRouter.Router = useRouter();
+  const removesPlaylistButtonDisabled: boolean = !list.totalPlaylist;
 
   return (
     <>
@@ -50,6 +56,10 @@ export default function PlaylistHeaderOptions(
             title="Favorites Music"
           />
           <PlaylistHeaderOptionsItem
+            style={{
+              opacity: removesPlaylistButtonDisabled ? 0.55 : 1,
+            }}
+            disabled={removesPlaylistButtonDisabled}
             onPress={() => removesPlaylistDrawerRef.current?.present()}
             icon={TrashSVG}
             title="Removes Playlist"
@@ -69,9 +79,10 @@ export function PlaylistHeaderOptionsItem(
 ): React.JSX.Element {
   return (
     <TouchableHighlight
+      {...props}
       onPress={props.onPress}
       underlayColor={underlayColor}
-      style={styles.listWrapper}
+      style={[styles.listWrapper, props.style]}
     >
       <>
         <props.icon width={22} height={22} />
