@@ -1,11 +1,17 @@
 import { RefreshFolder } from "@/stores/folder";
 import { RefreshMusic } from "@/stores/music";
 import * as MediaLibrary from "expo-media-library";
+import React from "react";
 import { BackHandler, Linking } from "react-native";
 
+interface GetPermissionProps {
+  refreshMusic: RefreshMusic;
+  refreshFolder: RefreshFolder;
+  stateSetter: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export default async function getPermission(
-  refreshMusic: RefreshMusic,
-  refreshFolder: RefreshFolder
+  params: GetPermissionProps
 ): Promise<void> {
   const permission: Awaited<MediaLibrary.PermissionResponse> =
     await MediaLibrary.getPermissionsAsync();
@@ -23,13 +29,15 @@ export default async function getPermission(
       Linking.openSettings();
 
     if (requestedPermission.granted) {
-      refreshMusic();
-      refreshFolder();
+      params.stateSetter(true);
+      params.refreshMusic();
+      params.refreshFolder();
     }
   }
 
   if (permission.granted) {
-    refreshMusic();
-    refreshFolder();
+    params.stateSetter(true);
+    params.refreshMusic();
+    params.refreshFolder();
   }
 }

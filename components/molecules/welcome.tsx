@@ -1,7 +1,6 @@
 import React from "react";
 import { BackHandler, StyleSheet, View, ViewProps } from "react-native";
 import Text from "../atomics/text";
-import ApplicationRepository from "@/repository/app.repository";
 import Drawer, { DrawerWrapper } from "../atomics/drawer";
 import { modalBackgroundColor } from "@/constants/colors";
 import { Button } from "../atomics/button";
@@ -10,6 +9,7 @@ import getPermission from "@/utils/permission";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import { RefreshFolder, useFolderStore } from "@/stores/folder";
 import SearchNotFoundSVG from "@/assets/images/search-not-found.svg";
+import * as MediaLibrary from "expo-media-library";
 
 export function SearchWelcomeScreen(): React.JSX.Element {
   return (
@@ -24,22 +24,18 @@ export function SearchWelcomeScreen(): React.JSX.Element {
 }
 
 export function Welcome(props: ViewProps): React.JSX.Element {
+  const [permission] = MediaLibrary.usePermissions();
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
   const refreshFolder: RefreshFolder = useFolderStore((state) => state.refresh);
-  const [, setIsAccepted] = React.useState<boolean>(false);
+  const [isAccepted, setIsAccepted] = React.useState<boolean>(false);
   const drawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
-  const isAppFirstLaunched: string =
-    ApplicationRepository.getIsAppFirstLaunchedState();
 
   React.useEffect(() => {
-    if (!isAppFirstLaunched) {
-      ApplicationRepository.setIsAppFirstLaunchedState("true");
-      drawerRef.current?.present();
-    }
-  }, []);
+    if (!permission?.granted) drawerRef.current?.present();
+  }, [permission]);
 
-  if (isAppFirstLaunched) return <>{props.children}</>;
+  if (permission?.granted || isAccepted) return <>{props.children}</>;
 
   return (
     <Drawer
@@ -57,10 +53,13 @@ export function Welcome(props: ViewProps): React.JSX.Element {
         </Text>
         <View style={welcomeStyles.buttonWrapper}>
           <Button
-            onPress={() => {
-              getPermission(refreshMusic, refreshFolder);
-              setIsAccepted(true);
-            }}
+            onPress={() =>
+              getPermission({
+                refreshMusic,
+                refreshFolder,
+                stateSetter: setIsAccepted,
+              })
+            }
           >
             Accept
           </Button>
