@@ -31,7 +31,7 @@ export function MusicOptionsInformation(
   const parsedDuration: string = parseDuration(String(props.music.duration));
 
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["47%"]}>
+    <Drawer modalRef={props.modalRef} snapPoints={["44%", "53%"]}>
       <DrawerWrapper>
         <View style={musicOptionsInformationStyles.headerWrapper}>
           <MusicSVG width={30} height={30} />
