@@ -17,7 +17,12 @@ import AlbumSVG from "@/assets/icons/album.svg";
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
 import { Playlist } from "@/interfaces/playlist";
-import { PlaylistTitleSetter, usePlaylistStore } from "@/stores/playlist";
+import {
+  PlaylistTitleSetter,
+  RefreshPlaylist,
+  usePlaylistStore,
+} from "@/stores/playlist";
+import deletePlaylist from "@/utils/delete-playlist";
 
 interface PlaylistOptionsProps extends DrawerProps {
   item: Playlist;
@@ -32,6 +37,9 @@ interface PlaylistOptionsItemProps extends TouchableHighlightProps {
 export default function PlaylistOptions(
   props: PlaylistOptionsProps
 ): React.JSX.Element {
+  const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
+    (state) => state.refresh
+  );
   const setPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
     (state) => state.setPlaylistTitle
   );
@@ -60,7 +68,10 @@ export default function PlaylistOptions(
             color: destructiveColor,
           }}
           title="Delete playlist"
-          onPress={() => console.log("test")}
+          onPress={() => {
+            deletePlaylist(props.item);
+            refreshPlaylist();
+          }}
         />
       </View>
     </Drawer>
