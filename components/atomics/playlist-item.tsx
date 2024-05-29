@@ -14,6 +14,7 @@ import PlaylistOptions from "./playlist-options";
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
 import { Playlist as IPlaylist } from "@/interfaces/playlist";
+import { PlaylistTitleSetter, usePlaylistStore } from "@/stores/playlist";
 
 interface PlaylistProps extends TouchableOpacityProps {
   item: IPlaylist;
@@ -25,15 +26,19 @@ function Playlist(props: PlaylistProps): React.JSX.Element {
   const router: ExpoRouter.Router = useRouter();
   const optionsDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<null | BottomSheetModalMethods>(null);
+  const setPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
+    (state) => state.setPlaylistTitle
+  );
 
   return (
     <>
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.container}
-        onPress={() =>
-          router.push(`/playlist?item=${JSON.stringify(props.item)}`)
-        }
+        onPress={() => {
+          router.push(`/playlist?item=${JSON.stringify(props.item)}`);
+          setPlaylistTitle(props.item.title);
+        }}
       >
         <View style={styles.headerWrapper}>
           <AlbumSVG width={38} height={38} />

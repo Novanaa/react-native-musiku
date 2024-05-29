@@ -17,6 +17,7 @@ import AlbumSVG from "@/assets/icons/album.svg";
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
 import { Playlist } from "@/interfaces/playlist";
+import { PlaylistTitleSetter, usePlaylistStore } from "@/stores/playlist";
 
 interface PlaylistOptionsProps extends DrawerProps {
   item: Playlist;
@@ -31,6 +32,9 @@ interface PlaylistOptionsItemProps extends TouchableHighlightProps {
 export default function PlaylistOptions(
   props: PlaylistOptionsProps
 ): React.JSX.Element {
+  const setPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
+    (state) => state.setPlaylistTitle
+  );
   const router: ExpoRouter.Router = useRouter();
 
   return (
@@ -41,6 +45,7 @@ export default function PlaylistOptions(
           title="View playlist"
           onPress={() => {
             router.push(`/playlist?item=${JSON.stringify(props.item)}`);
+            setPlaylistTitle(props.item.title);
             props.modalRef.current?.close();
           }}
         />
