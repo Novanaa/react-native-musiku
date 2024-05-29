@@ -7,7 +7,10 @@ import {
 } from "react-native";
 import Text from "./text";
 import AlbumSVG from "@/assets/icons/album.svg";
-import ArrowRightSVG from "@/assets/icons/arrow-right.svg";
+import { IconButton } from "./button";
+import OptionsSVG from "@/assets/icons/music-options.svg";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import PlaylistOptions from "./playlist-options";
 
 interface PlaylistProps extends TouchableOpacityProps {
   title: string;
@@ -15,27 +18,34 @@ interface PlaylistProps extends TouchableOpacityProps {
 }
 
 function Playlist(props: PlaylistProps): React.JSX.Element {
+  const optionsDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<null | BottomSheetModalMethods>(null);
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.6}
-      style={styles.container}
-      onPress={() => console.log("test")}
-    >
-      <View style={styles.headerWrapper}>
-        <AlbumSVG width={38} height={38} />
-        <View>
-          <Text style={styles.title} numberOfLines={1}>
-            {props.title}
-          </Text>
-          <Text style={styles.description} numberOfLines={1}>
-            {props.description}
-          </Text>
+    <>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        style={styles.container}
+        onPress={() => console.log("test")}
+      >
+        <View style={styles.headerWrapper}>
+          <AlbumSVG width={38} height={38} />
+          <View>
+            <Text style={styles.title} numberOfLines={1}>
+              {props.title}
+            </Text>
+            <Text style={styles.description} numberOfLines={1}>
+              {props.description}
+            </Text>
+          </View>
         </View>
-      </View>
-      <View>
-        <ArrowRightSVG width={17} height={17} />
-      </View>
-    </TouchableOpacity>
+        <IconButton
+          icon={<OptionsSVG width={24} height={24} />}
+          onPress={() => optionsDrawerRef.current?.present()}
+        />
+      </TouchableOpacity>
+      <PlaylistOptions modalRef={optionsDrawerRef} />
+    </>
   );
 }
 
