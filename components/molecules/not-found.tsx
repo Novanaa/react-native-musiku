@@ -9,6 +9,13 @@ import InboxEmptySVG from "@/assets/images/inbox-empty.svg";
 import UserPermissionSVG from "@/assets/images/user-permission.svg";
 import CatBoxSVG from "@/assets/images/cat-box.svg";
 import FolderEmptySVG from "@/assets/images/folder-empty.svg";
+import { Playlist } from "@/interfaces/playlist";
+import { useRouter } from "expo-router";
+import { ExpoRouter } from "expo-router/types/expo-router";
+
+interface EmptyPlaylistMusicProps {
+  playlist: Playlist;
+}
 
 export function MusicNotDetected(): React.JSX.Element {
   const [, setIsLoading] = React.useState<boolean>(false);
@@ -83,7 +90,11 @@ export function EmptyMusic(): React.JSX.Element {
   );
 }
 
-export function EmptyPlaylistMusic(): React.JSX.Element {
+export function EmptyPlaylistMusic(
+  props: EmptyPlaylistMusicProps
+): React.JSX.Element {
+  const router: ExpoRouter.Router = useRouter();
+
   return (
     <View style={emptyPlaylistMusicStyles.container}>
       <View style={{ top: 10 }}>
@@ -99,7 +110,11 @@ export function EmptyPlaylistMusic(): React.JSX.Element {
       <TouchableOpacity
         style={emptyPlaylistMusicStyles.cta}
         activeOpacity={0.6}
-        onPress={() => console.log("test")}
+        onPress={() =>
+          router.push(
+            `/add-music-playlist?item=${JSON.stringify(props.playlist)}`
+          )
+        }
       >
         <Text>Add Music!</Text>
       </TouchableOpacity>
