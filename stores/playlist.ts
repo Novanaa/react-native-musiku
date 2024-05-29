@@ -7,11 +7,15 @@ export type RefreshPlaylist = () => void;
 
 export type SearchPlaylistKeywordSetter = (text: string) => void;
 
+export type PlaylistTitleSetter = (title: string) => void;
+
 export interface PlaylistState {
   refresh: RefreshPlaylist;
   playlist: string;
   setSearchPlaylistKeyword: SearchPlaylistKeywordSetter;
   searchPlaylistKeyword: string;
+  playlistTitle: string;
+  setPlaylistTitle: PlaylistTitleSetter;
 }
 
 export const usePlaylistStore: UseBoundStore<StoreApi<PlaylistState>> =
@@ -28,5 +32,10 @@ export const usePlaylistStore: UseBoundStore<StoreApi<PlaylistState>> =
     setSearchPlaylistKeyword: (text: string) =>
       set(() => ({
         searchPlaylistKeyword: text,
+      })),
+    playlistTitle: "",
+    setPlaylistTitle: (title: string) =>
+      set(() => ({
+        playlistTitle: title,
       })),
   }));
