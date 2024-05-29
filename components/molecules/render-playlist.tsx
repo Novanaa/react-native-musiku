@@ -32,6 +32,7 @@ export default function RenderPlaylist(): React.JSX.Element {
       data={filteredPlaylist}
       renderItem={(data) => (
         <PlaylistItem
+          item={data.item}
           title={data.item.title}
           description={`${data.item.totalSongs} Songs - ${new Date(data.item.createdAt).toLocaleDateString()}`}
         />

@@ -32,6 +32,9 @@ export default function RootLayout() {
   const [permission] = MediaLibrary.usePermissions();
   const [loaded, error] = useFonts(fonts);
   const music: Music | null = useMusicStore((state) => state.music);
+  const playlistStackScreenTitle: string = usePlaylistStore(
+    (state) => state.playlistTitle
+  );
   const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
     (state) => state.refresh
   );
@@ -118,6 +121,17 @@ export default function RootLayout() {
               name="favorite"
               options={{
                 title: "Favorites",
+                headerTintColor: textColor,
+                headerStyle: {
+                  backgroundColor: headerBackgoundColor,
+                },
+                animation: "ios",
+              }}
+            />
+            <Stack.Screen
+              name="playlist"
+              options={{
+                title: playlistStackScreenTitle,
                 headerTintColor: textColor,
                 headerStyle: {
                   backgroundColor: headerBackgoundColor,
