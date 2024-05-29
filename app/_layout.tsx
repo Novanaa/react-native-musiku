@@ -139,6 +139,17 @@ export default function RootLayout() {
                 animation: "ios",
               }}
             />
+            <Stack.Screen
+              name="add-music-playlist"
+              options={{
+                title: "Add Music",
+                headerTintColor: textColor,
+                headerStyle: {
+                  backgroundColor: headerBackgoundColor,
+                },
+                animation: "ios",
+              }}
+            />
           </Stack>
         </Welcome>
       </BottomSheetModalProvider>
