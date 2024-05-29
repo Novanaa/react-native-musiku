@@ -6,20 +6,20 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 interface PlaylistSearchParams {
-  item: IPlaylist;
+  item: string;
 }
 
 export default function Playlist(): React.JSX.Element {
   const params: PlaylistSearchParams =
     // @ts-expect-error interface conflict
     useLocalSearchParams() as PlaylistSearchParams;
+  const playlist: IPlaylist = JSON.parse(params.item);
 
-  if (!params.item.totalSongs)
-    return <EmptyPlaylistMusic playlist={params.item} />;
+  if (!playlist.totalSongs) return <EmptyPlaylistMusic playlist={playlist} />;
 
   return (
     <FlatList
-      data={params.item.songs}
+      data={playlist.songs}
       style={styles.container}
       renderItem={(data) => (
         <View style={styles.wrapper}>
