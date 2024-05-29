@@ -14,6 +14,13 @@ import { borderRadius } from "@/constants/styles";
 import TrashSVG from "@/assets/icons/trash.svg";
 import MusicSVG from "@/assets/icons/music.svg";
 import AlbumSVG from "@/assets/icons/album.svg";
+import { useRouter } from "expo-router";
+import { ExpoRouter } from "expo-router/types/expo-router";
+import { Playlist } from "@/interfaces/playlist";
+
+interface PlaylistOptionsProps extends DrawerProps {
+  item: Playlist;
+}
 
 interface PlaylistOptionsItemProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -21,14 +28,21 @@ interface PlaylistOptionsItemProps extends TouchableHighlightProps {
   textStyle?: TextStyle;
 }
 
-export default function PlaylistOptions(props: DrawerProps): React.JSX.Element {
+export default function PlaylistOptions(
+  props: PlaylistOptionsProps
+): React.JSX.Element {
+  const router: ExpoRouter.Router = useRouter();
+
   return (
     <Drawer modalRef={props.modalRef} snapPoints={["27%"]}>
       <View style={styles.wrapper}>
         <PlaylistOptionsItem
           icon={AlbumSVG}
           title="View playlist"
-          onPress={() => console.log("test")}
+          onPress={() => {
+            router.push(`/playlist?item=${JSON.stringify(props.item)}`);
+            props.modalRef.current?.close();
+          }}
         />
         <PlaylistOptionsItem
           icon={MusicSVG}

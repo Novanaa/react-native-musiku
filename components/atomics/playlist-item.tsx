@@ -11,13 +11,18 @@ import { IconButton } from "./button";
 import OptionsSVG from "@/assets/icons/music-options.svg";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import PlaylistOptions from "./playlist-options";
+import { useRouter } from "expo-router";
+import { ExpoRouter } from "expo-router/types/expo-router";
+import { Playlist as IPlaylist } from "@/interfaces/playlist";
 
 interface PlaylistProps extends TouchableOpacityProps {
+  item: IPlaylist;
   title: string;
   description: string;
 }
 
 function Playlist(props: PlaylistProps): React.JSX.Element {
+  const router: ExpoRouter.Router = useRouter();
   const optionsDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<null | BottomSheetModalMethods>(null);
 
@@ -26,7 +31,9 @@ function Playlist(props: PlaylistProps): React.JSX.Element {
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.container}
-        onPress={() => console.log("test")}
+        onPress={() =>
+          router.push(`/playlist?item=${JSON.stringify(props.item)}`)
+        }
       >
         <View style={styles.headerWrapper}>
           <AlbumSVG width={38} height={38} />
@@ -44,7 +51,7 @@ function Playlist(props: PlaylistProps): React.JSX.Element {
           onPress={() => optionsDrawerRef.current?.present()}
         />
       </TouchableOpacity>
-      <PlaylistOptions modalRef={optionsDrawerRef} />
+      <PlaylistOptions modalRef={optionsDrawerRef} item={props.item} />
     </>
   );
 }
