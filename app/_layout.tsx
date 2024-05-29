@@ -125,6 +125,17 @@ export default function RootLayout() {
                 animation: "ios",
               }}
             />
+            <Stack.Screen
+              name="playlist"
+              options={{
+                title: "Playlist",
+                headerTintColor: textColor,
+                headerStyle: {
+                  backgroundColor: headerBackgoundColor,
+                },
+                animation: "ios",
+              }}
+            />
           </Stack>
         </Welcome>
       </BottomSheetModalProvider>
