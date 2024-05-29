@@ -20,6 +20,10 @@ import HeartSVG from "@/assets/icons/heart.svg";
 import InfoSVG from "@/assets/icons/info.svg";
 import TrashSVG from "@/assets/icons/trash.svg";
 import AlbumSVG from "@/assets/icons/album.svg";
+import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
+import Favorites from "@/interfaces/favorites";
+import addMusicFavorites from "@/utils/add-favorites";
+import removeFavorites from "@/utils/remove-favorites";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -35,6 +39,15 @@ interface MusicOptionsProps extends DrawerProps {
 export default function MusicOptions(
   props: MusicOptionsProps
 ): React.JSX.Element {
+  const favoritesMusic: Favorites = useFavoritesMusic((state) =>
+    JSON.parse(state.favorites)
+  );
+  const isMusicFavorited: boolean =
+    favoritesMusic.assets.filter((state) => state.uri == props.music.uri)
+      .length > 0;
+  const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
+    (state) => state.refresh
+  );
   const musicInformationDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef(null);
 
@@ -52,11 +65,27 @@ export default function MusicOptions(
             icon={AlbumSVG}
             onPress={() => console.log("action")}
           />
-          <MusicOptionsList
-            title="Add to favorites"
-            icon={HeartSVG}
-            onPress={() => console.log("action")}
-          />
+          {!isMusicFavorited ? (
+            <MusicOptionsList
+              title="Add to favorites"
+              icon={HeartSVG}
+              onPress={() => {
+                addMusicFavorites(props.music);
+                refreshFavoritesMusic();
+                props.modalRef.current?.close();
+              }}
+            />
+          ) : (
+            <MusicOptionsList
+              title="Remove from favorites"
+              icon={HeartSVG}
+              onPress={() => {
+                removeFavorites(props.music);
+                refreshFavoritesMusic();
+                props.modalRef.current?.close();
+              }}
+            />
+          )}
           <MusicOptionsList
             title="Music information"
             icon={InfoSVG}
