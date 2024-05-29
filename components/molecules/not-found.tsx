@@ -11,6 +11,7 @@ import CatBoxSVG from "@/assets/images/cat-box.svg";
 import FolderEmptySVG from "@/assets/images/folder-empty.svg";
 
 export function MusicNotDetected(): React.JSX.Element {
+  const [, setIsLoading] = React.useState<boolean>(false);
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
   const refreshFolder: RefreshFolder = useFolderStore((state) => state.refresh);
 
@@ -23,7 +24,13 @@ export function MusicNotDetected(): React.JSX.Element {
       <TouchableOpacity
         style={musicNotDetectedStyles.cta}
         activeOpacity={0.6}
-        onPress={() => getPermission(refreshMusic, refreshFolder)}
+        onPress={() =>
+          getPermission({
+            refreshFolder,
+            refreshMusic,
+            stateSetter: setIsLoading,
+          })
+        }
       >
         <Text>Give Permission</Text>
       </TouchableOpacity>
