@@ -12,7 +12,10 @@ import Text from "./text";
 import { destructiveColor, underlayColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import { MusicOptionsInformation } from "./music-options-actions";
+import {
+  MusicOptionsAddToPlaylist,
+  MusicOptionsInformation,
+} from "./music-options-actions";
 import * as MediaLibrary from "expo-media-library";
 import { SvgProps } from "react-native-svg";
 import PlaySVG from "@/assets/icons/play.svg";
@@ -50,6 +53,8 @@ export default function MusicOptions(
   );
   const musicInformationDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef(null);
+  const addToPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef(null);
 
   return (
     <>
@@ -63,7 +68,7 @@ export default function MusicOptions(
           <MusicOptionsList
             title="Add to playlist"
             icon={AlbumSVG}
-            onPress={() => console.log("action")}
+            onPress={() => addToPlaylistDrawerRef.current?.present()}
           />
           {!isMusicFavorited ? (
             <MusicOptionsList
@@ -104,6 +109,10 @@ export default function MusicOptions(
       </Drawer>
       <MusicOptionsInformation
         modalRef={musicInformationDrawerRef}
+        music={props.music}
+      />
+      <MusicOptionsAddToPlaylist
+        modalRef={addToPlaylistDrawerRef}
         music={props.music}
       />
     </>
