@@ -60,7 +60,12 @@ export default function PlaylistOptions(
         <PlaylistOptionsItem
           icon={MusicSVG}
           title="Add music"
-          onPress={() => console.log("test")}
+          onPress={() => {
+            router.push(
+              `/add-music-playlist?item=${JSON.stringify(props.item)}`
+            );
+            props.modalRef.current?.close();
+          }}
         />
         <PlaylistOptionsItem
           icon={TrashSVG}
