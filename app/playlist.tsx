@@ -1,11 +1,40 @@
-import Text from "@/components/atomics/text";
+import Music from "@/components/atomics/music";
+import { Playlist as IPlaylist } from "@/interfaces/playlist";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
+
+interface PlaylistSearchParams {
+  item: IPlaylist;
+}
 
 export default function Playlist(): React.JSX.Element {
+  const params: PlaylistSearchParams =
+    // @ts-expect-error interface conflict
+    useLocalSearchParams() as PlaylistSearchParams;
+
   return (
-    <View>
-      <Text>Playlist</Text>
-    </View>
+    <FlatList
+      data={params.item.songs}
+      style={styles.container}
+      renderItem={(data) => (
+        <View style={styles.wrapper}>
+          <Music
+            description="Unknown Artist - Unknown Album"
+            title={data.item.filename}
+            musicItem={data.item}
+          />
+        </View>
+      )}
+    />
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+  },
+  wrapper: {
+    paddingHorizontal: 5,
+  },
+});
