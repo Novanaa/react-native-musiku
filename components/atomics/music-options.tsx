@@ -111,7 +111,10 @@ export default function MusicOptions(
         modalRef={musicInformationDrawerRef}
         music={props.music}
       />
-      <MusicOptionsAddToPlaylist modalRef={addToPlaylistDrawerRef} />
+      <MusicOptionsAddToPlaylist
+        modalRef={addToPlaylistDrawerRef}
+        music={props.music}
+      />
     </>
   );
 }
