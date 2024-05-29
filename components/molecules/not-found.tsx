@@ -85,17 +85,24 @@ export function EmptyMusic(): React.JSX.Element {
 
 export function EmptyPlaylistMusic(): React.JSX.Element {
   return (
-    <View style={emptyMusicStyles.container}>
+    <View style={emptyPlaylistMusicStyles.container}>
       <View style={{ top: 10 }}>
         <InboxEmptySVG width={140} height={140} />
       </View>
-      <Text style={emptyMusicStyles.headerText}>
+      <Text style={emptyPlaylistMusicStyles.headerText}>
         Got any tunes on your phone?
       </Text>
-      <Text style={emptyMusicStyles.messege}>
+      <Text style={emptyPlaylistMusicStyles.messege}>
         How about we add some tunes to your phone? It's feeling a bit too quiet
         in here!
       </Text>
+      <TouchableOpacity
+        style={emptyPlaylistMusicStyles.cta}
+        activeOpacity={0.6}
+        onPress={() => console.log("test")}
+      >
+        <Text>Add Music!</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -265,5 +272,32 @@ const emptyMusicStyles = StyleSheet.create({
     textAlign: "center",
     width: "80%",
     opacity: 0.8,
+  },
+});
+
+const emptyPlaylistMusicStyles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    gap: 3,
+    opacity: 0.85,
+  },
+  headerText: {
+    marginTop: 10,
+    fontFamily: "bold",
+    fontSize: 16,
+  },
+  messege: {
+    textAlign: "center",
+    width: "80%",
+    opacity: 0.8,
+  },
+  cta: {
+    top: 8,
+    fontFamily: "bold",
+    borderBottomColor: colors.light.background,
+    borderBottomWidth: 1,
+    paddingBottom: 1,
   },
 });
