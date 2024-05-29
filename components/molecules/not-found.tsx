@@ -76,6 +76,23 @@ export function EmptyMusic(): React.JSX.Element {
   );
 }
 
+export function EmptyPlaylistMusic(): React.JSX.Element {
+  return (
+    <View style={emptyMusicStyles.container}>
+      <View style={{ top: 10 }}>
+        <InboxEmptySVG width={140} height={140} />
+      </View>
+      <Text style={emptyMusicStyles.headerText}>
+        Got any tunes on your phone?
+      </Text>
+      <Text style={emptyMusicStyles.messege}>
+        How about we add some tunes to your phone? It's feeling a bit too quiet
+        in here!
+      </Text>
+    </View>
+  );
+}
+
 export function EmptyPlaylist(): React.JSX.Element {
   return (
     <View style={emptyPlaylistStyles.container}>

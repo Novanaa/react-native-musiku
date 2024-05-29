@@ -1,4 +1,5 @@
 import Music from "@/components/atomics/music";
+import { EmptyPlaylistMusic } from "@/components/molecules/not-found";
 import { Playlist as IPlaylist } from "@/interfaces/playlist";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -12,6 +13,8 @@ export default function Playlist(): React.JSX.Element {
   const params: PlaylistSearchParams =
     // @ts-expect-error interface conflict
     useLocalSearchParams() as PlaylistSearchParams;
+
+  if (!params.item.totalSongs) return <EmptyPlaylistMusic />;
 
   return (
     <FlatList
