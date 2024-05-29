@@ -14,7 +14,8 @@ export default function Playlist(): React.JSX.Element {
     // @ts-expect-error interface conflict
     useLocalSearchParams() as PlaylistSearchParams;
 
-  if (!params.item.totalSongs) return <EmptyPlaylistMusic />;
+  if (!params.item.totalSongs)
+    return <EmptyPlaylistMusic playlist={params.item} />;
 
   return (
     <FlatList
