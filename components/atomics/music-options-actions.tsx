@@ -176,7 +176,7 @@ export function MusicOptionsAddToPlaylistItem(
       style={musicOptionsAddToPlaylistItemStyles.container}
     >
       <View style={musicOptionsAddToPlaylistItemStyles.headerWrapper}>
-        <AlbumSVG width={35} height={35} />
+        <AlbumSVG width={32} height={32} />
         <View>
           <Text
             style={musicOptionsAddToPlaylistItemStyles.title}
@@ -199,7 +199,7 @@ export function MusicOptionsAddToPlaylistItem(
 
 const renderMusicOptionsAddToPlaylistItemStyles = StyleSheet.create({
   container: {
-    paddingVertical: 2,
+    paddingVertical: 3,
     height: "78%",
   },
 });
