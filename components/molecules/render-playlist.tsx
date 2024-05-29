@@ -18,7 +18,7 @@ export default function RenderPlaylist(): React.JSX.Element {
       list.playlist.filter((item) =>
         item.title.toLowerCase().includes(searchPlaylistKeyword.toLowerCase())
       ),
-    [searchPlaylistKeyword]
+    [searchPlaylistKeyword, list]
   );
 
   if (!list.totalPlaylist) return <EmptyPlaylist />;
