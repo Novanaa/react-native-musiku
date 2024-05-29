@@ -2,7 +2,13 @@ import React from "react";
 import Drawer, { DrawerProps, DrawerWrapper } from "./drawer";
 import * as MediaLibrary from "expo-media-library";
 import Text from "./text";
-import { StyleSheet, View, ViewProps } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+  ViewProps,
+} from "react-native";
 import { borderColor } from "@/constants/colors";
 import { borderRadius, rowsGap } from "@/constants/styles";
 import parseDuration from "@/utils/parse-duration";
@@ -11,8 +17,23 @@ import { SvgProps } from "react-native-svg";
 import PlaySVG from "@/assets/icons/play.svg";
 import RoundedArrowSVG from "@/assets/icons/rounded-arrow.svg";
 import LocationSVG from "@/assets/icons/location.svg";
+import PlusCircleSVG from "@/assets/icons/plus-circle.svg";
+import { usePlaylistStore } from "@/stores/playlist";
+import { PlaylistScheme } from "@/interfaces/playlist";
+import AlbumSVG from "@/assets/icons/album.svg";
+import { Playlist as IPlaylist } from "@/interfaces/playlist";
+import ArrowRightSVG from "@/assets/icons/arrow-right.svg";
+import { FlatList } from "react-native-gesture-handler";
 
 interface MusicOptionsInformationProps extends DrawerProps {
+  music: MediaLibrary.Asset;
+}
+
+interface MusicOptionsAddToPlaylistProps extends DrawerProps {
+  music: MediaLibrary.Asset;
+}
+
+interface RenderMusicOptionsAddToPlaylistItemProps {
   music: MediaLibrary.Asset;
 }
 
@@ -20,6 +41,13 @@ interface MusicOptionsInformationContentProps extends ViewProps {
   title: string;
   description: string;
   icon: React.ReactElement<SvgProps>;
+}
+
+interface MusicOptionsAddToPlaylistItemProps extends TouchableOpacityProps {
+  item: IPlaylist;
+  music: MediaLibrary.Asset;
+  title: string;
+  description: string;
 }
 
 export function MusicOptionsInformation(
@@ -80,6 +108,154 @@ export function MusicOptionsInformationContent(
     </View>
   );
 }
+
+export function MusicOptionsAddToPlaylist(
+  props: MusicOptionsAddToPlaylistProps
+): React.JSX.Element {
+  return (
+    <Drawer modalRef={props.modalRef} snapPoints={["30%", "50%"]}>
+      <View style={musicOptionsAddToPlaylistStyles.wrapper}>
+        <TouchableOpacity
+          onPress={() => console.log("test")}
+          activeOpacity={0.6}
+          style={musicOptionsAddToPlaylistStyles.addPlaylistWrapper}
+        >
+          <>
+            <PlusCircleSVG width={35} height={35} />
+            <View>
+              <Text style={musicOptionsAddToPlaylistStyles.addPlaylistTitle}>
+                Add Playlist
+              </Text>
+              <Text
+                style={musicOptionsAddToPlaylistStyles.addPlaylistDescription}
+              >
+                Add your playlist collection
+              </Text>
+            </View>
+          </>
+        </TouchableOpacity>
+        <View style={musicOptionsAddToPlaylistStyles.separator}></View>
+        <RenderMusicOptionsAddToPlaylistItem music={props.music} />
+      </View>
+    </Drawer>
+  );
+}
+
+export function RenderMusicOptionsAddToPlaylistItem(
+  props: RenderMusicOptionsAddToPlaylistItemProps
+): React.JSX.Element {
+  const list: PlaylistScheme = usePlaylistStore((state) =>
+    JSON.parse(state.playlist)
+  ) as PlaylistScheme;
+
+  return (
+    <FlatList
+      keyExtractor={(item) => String(item.id)}
+      style={renderMusicOptionsAddToPlaylistItemStyles.container}
+      data={list.playlist}
+      renderItem={(data) => (
+        <MusicOptionsAddToPlaylistItem
+          music={props.music}
+          item={data.item}
+          title={data.item.title}
+          description={`${data.item.totalSongs} Songs - ${new Date(data.item.createdAt).toLocaleDateString()}`}
+        />
+      )}
+    />
+  );
+}
+
+export function MusicOptionsAddToPlaylistItem(
+  props: MusicOptionsAddToPlaylistItemProps
+): React.JSX.Element {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.6}
+      // Override this soon!!
+      onPress={() => console.log("test")}
+      style={musicOptionsAddToPlaylistItemStyles.container}
+    >
+      <View style={musicOptionsAddToPlaylistItemStyles.headerWrapper}>
+        <AlbumSVG width={35} height={35} />
+        <View>
+          <Text
+            style={musicOptionsAddToPlaylistItemStyles.title}
+            numberOfLines={1}
+          >
+            {props.title}
+          </Text>
+          <Text
+            style={musicOptionsAddToPlaylistItemStyles.description}
+            numberOfLines={1}
+          >
+            {props.description}
+          </Text>
+        </View>
+      </View>
+      <ArrowRightSVG width={20} height={20} opacity={0.9} />
+    </TouchableOpacity>
+  );
+}
+
+const renderMusicOptionsAddToPlaylistItemStyles = StyleSheet.create({
+  container: {
+    paddingVertical: 2,
+    height: "78%",
+  },
+});
+
+const musicOptionsAddToPlaylistItemStyles = StyleSheet.create({
+  container: {
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    opacity: 0.85,
+    borderRadius,
+  },
+  headerWrapper: {
+    gap: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    width: "75%",
+  },
+  title: {
+    fontFamily: "medium",
+    fontSize: 16,
+  },
+  description: {
+    fontSize: 12,
+    opacity: 0.8,
+  },
+});
+
+const musicOptionsAddToPlaylistStyles = StyleSheet.create({
+  wrapper: {
+    paddingHorizontal: 8,
+  },
+  addPlaylistWrapper: {
+    flexDirection: "row",
+    padding: 6,
+    paddingVertical: 10,
+    gap: 5,
+    borderRadius,
+    alignItems: "center",
+    opacity: 0.9,
+  },
+  addPlaylistTitle: {
+    fontFamily: "bold",
+    fontSize: 15,
+  },
+  addPlaylistDescription: {
+    opacity: 0.8,
+    fontSize: 12,
+  },
+  separator: {
+    borderBottomColor: borderColor,
+    borderBottomWidth: 1,
+  },
+});
 
 const musicOptionsInformationStyles = StyleSheet.create({
   headerWrapper: {
