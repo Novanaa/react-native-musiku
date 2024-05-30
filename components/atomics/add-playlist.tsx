@@ -9,8 +9,25 @@ import { StyleSheet, View } from "react-native";
 import { borderRadius } from "@/constants/styles";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { Button } from "./button";
+import savePlaylist from "@/utils/save-playlist";
+import {
+  PlaylistTitleSetter,
+  RefreshPlaylist,
+  usePlaylistStore,
+} from "@/stores/playlist";
+import { useRouter } from "expo-router";
+import { ExpoRouter } from "expo-router/types/expo-router";
+import { Playlist } from "@/interfaces/playlist";
 
 export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
+  const setCurrentPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
+    (state) => state.setPlaylistTitle
+  );
+  const router: ExpoRouter.Router = useRouter();
+  const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
+    (state) => state.refresh
+  );
+  const [playlistTitle, setPlaylistTitle] = React.useState<string>("");
   const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
 
   return (
@@ -22,12 +39,25 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
       <View style={styles.wrapper}>
         <Text style={styles.title}>New Playlist</Text>
         <BottomSheetTextInput
+          onChangeText={(text: string) => setPlaylistTitle(text)}
           style={styles.input}
           placeholder="Name it something cool!"
           placeholderTextColor={colors.dark.text}
         />
         <View style={styles.buttonWrapper}>
-          <Button style={styles.button}>Save</Button>
+          <Button
+            style={styles.button}
+            onPress={() => {
+              props.modalRef.current?.close();
+              const newPlaylist: Playlist = savePlaylist(playlistTitle);
+              refreshPlaylist();
+
+              setCurrentPlaylistTitle(newPlaylist.title);
+              router.push(`/playlist?item=${JSON.stringify(newPlaylist)}`);
+            }}
+          >
+            Save
+          </Button>
           <Button
             textStyle={{
               color: destructiveColor,
