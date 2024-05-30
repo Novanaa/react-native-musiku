@@ -25,14 +25,12 @@ export function SearchWelcomeScreen(): React.JSX.Element {
 
 export function Welcome(props: ViewProps): React.JSX.Element {
   const [permission] = MediaLibrary.usePermissions();
-  const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
-  const refreshFolder: RefreshFolder = useFolderStore((state) => state.refresh);
   const [isAccepted, setIsAccepted] = React.useState<boolean>(false);
   const drawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
 
   React.useEffect(() => {
-    if (!permission?.granted) drawerRef.current?.present();
+    if (permission && !permission.granted) drawerRef.current?.present();
   }, [permission]);
 
   if (permission?.granted || isAccepted) return <>{props.children}</>;
@@ -52,17 +50,7 @@ export function Welcome(props: ViewProps): React.JSX.Element {
           granting access to your device's music library,
         </Text>
         <View style={welcomeStyles.buttonWrapper}>
-          <Button
-            onPress={() =>
-              getPermission({
-                refreshMusic,
-                refreshFolder,
-                stateSetter: setIsAccepted,
-              })
-            }
-          >
-            Accept
-          </Button>
+          <Button onPress={() => setIsAccepted(true)}>Accept</Button>
           <Button
             textStyle={{ color: "#fc4949" }}
             onPress={() => BackHandler.exitApp()}
