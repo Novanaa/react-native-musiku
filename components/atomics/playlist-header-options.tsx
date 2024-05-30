@@ -20,6 +20,7 @@ import { RemovesAllPlaylist } from "./playlist-header-options-actions";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { usePlaylistStore } from "@/stores/playlist";
 import { PlaylistScheme } from "@/interfaces/playlist";
+import AddPlaylist from "./add-playlist";
 
 interface PlaylistHeaderOptionsItemProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -35,6 +36,8 @@ export default function PlaylistHeaderOptions(
   );
   const removesPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
+  const addPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
   const router: ExpoRouter.Router = useRouter();
   const removesPlaylistButtonDisabled: boolean = !list.totalPlaylist;
 
@@ -43,7 +46,7 @@ export default function PlaylistHeaderOptions(
       <Drawer modalRef={props.modalRef} snapPoints={["27%"]}>
         <View style={styles.wrapper}>
           <PlaylistHeaderOptionsItem
-            onPress={() => console.log("test")}
+            onPress={() => addPlaylistDrawerRef.current?.present()}
             icon={AlbumSVG}
             title="Add Playlist"
           />
@@ -70,6 +73,7 @@ export default function PlaylistHeaderOptions(
         </View>
       </Drawer>
       <RemovesAllPlaylist modalRef={removesPlaylistDrawerRef} />
+      <AddPlaylist modalRef={addPlaylistDrawerRef} />
     </>
   );
 }
