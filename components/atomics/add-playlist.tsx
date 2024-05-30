@@ -18,6 +18,7 @@ import {
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
 import { Playlist } from "@/interfaces/playlist";
+import showToast from "@/utils/toast";
 
 export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   const setCurrentPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
@@ -29,6 +30,16 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   );
   const [playlistTitle, setPlaylistTitle] = React.useState<string>("");
   const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
+
+  const savePlaylistHandler: () => void = React.useCallback(() => {
+    props.modalRef.current?.close();
+    const newPlaylist: Playlist = savePlaylist(playlistTitle);
+    refreshPlaylist();
+
+    showToast(`Successfully added new "${newPlaylist.title}" playlist`);
+    setCurrentPlaylistTitle(newPlaylist.title);
+    router.push(`/playlist?item=${JSON.stringify(newPlaylist)}`);
+  }, []);
 
   return (
     <Drawer
@@ -46,19 +57,6 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
         />
         <View style={styles.buttonWrapper}>
           <Button
-            style={styles.button}
-            onPress={() => {
-              props.modalRef.current?.close();
-              const newPlaylist: Playlist = savePlaylist(playlistTitle);
-              refreshPlaylist();
-
-              setCurrentPlaylistTitle(newPlaylist.title);
-              router.push(`/playlist?item=${JSON.stringify(newPlaylist)}`);
-            }}
-          >
-            Save
-          </Button>
-          <Button
             textStyle={{
               color: destructiveColor,
             }}
@@ -66,6 +64,9 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
             onPress={() => props.modalRef.current?.close()}
           >
             Cancel
+          </Button>
+          <Button style={styles.button} onPress={() => savePlaylistHandler()}>
+            Save
           </Button>
         </View>
       </View>
