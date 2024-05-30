@@ -20,10 +20,13 @@ export interface PlaylistState {
 
 export const usePlaylistStore: UseBoundStore<StoreApi<PlaylistState>> =
   create<PlaylistState>((set) => ({
-    refresh: () =>
-      set(() => ({
-        playlist: PlaylistRepository.getPlaylist(),
-      })),
+    refresh: () => {
+      PlaylistRepository.getPlaylistAsync().then((state) =>
+        set(() => ({
+          playlist: state,
+        }))
+      );
+    },
     playlist: PlaylistRepository.getPlaylist(),
     searchPlaylistKeyword: "",
     setSearchPlaylistKeyword: (text: string) =>

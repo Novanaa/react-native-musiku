@@ -76,6 +76,7 @@ export default function PlaylistOptions(
           onPress={() => {
             deletePlaylist(props.item);
             refreshPlaylist();
+            props.modalRef.current?.close();
           }}
         />
       </View>
