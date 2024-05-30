@@ -19,6 +19,7 @@ import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
 import { Playlist } from "@/interfaces/playlist";
 import showToast from "@/utils/toast";
+import { useDebounce } from "use-debounce";
 
 export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   const setCurrentPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
@@ -29,17 +30,18 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
     (state) => state.refresh
   );
   const [playlistTitle, setPlaylistTitle] = React.useState<string>("");
+  const [debouncedPlaylistTitle] = useDebounce(playlistTitle, 200);
   const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
 
   const savePlaylistHandler: () => void = React.useCallback(() => {
     props.modalRef.current?.close();
-    const newPlaylist: Playlist = savePlaylist(playlistTitle);
+    const newPlaylist: Playlist = savePlaylist(debouncedPlaylistTitle);
     refreshPlaylist();
 
     showToast(`Successfully added new "${newPlaylist.title}" playlist`);
     setCurrentPlaylistTitle(newPlaylist.title);
     router.push(`/playlist?item=${JSON.stringify(newPlaylist)}`);
-  }, []);
+  }, [debouncedPlaylistTitle]);
 
   return (
     <Drawer
