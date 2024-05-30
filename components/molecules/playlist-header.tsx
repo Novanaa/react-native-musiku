@@ -17,10 +17,13 @@ import PlaylistHeaderOptions from "../atomics/playlist-header-options";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
+import AddPlaylist from "../atomics/add-playlist";
 
 export default function PlaylistHeader(): React.JSX.Element {
   const router: ExpoRouter.Router = useRouter();
   const drawerOptionsRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
+  const addPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
   const setPlaylistSearchKeyword: SearchPlaylistKeywordSetter =
     usePlaylistStore((state) => state.setSearchPlaylistKeyword);
@@ -40,7 +43,10 @@ export default function PlaylistHeader(): React.JSX.Element {
             <Text style={styles.title}>Playlist</Text>
           </View>
           <View style={styles.iconWrapper}>
-            <IconButton icon={<PlusCircleSVG width={26} height={26} />} />
+            <IconButton
+              icon={<PlusCircleSVG width={26} height={26} />}
+              onPress={() => addPlaylistDrawerRef.current?.present()}
+            />
             <IconButton
               icon={
                 <HeartSVG
@@ -61,6 +67,7 @@ export default function PlaylistHeader(): React.JSX.Element {
         </View>
       </View>
       <PlaylistHeaderOptions modalRef={drawerOptionsRef} />
+      <AddPlaylist modalRef={addPlaylistDrawerRef} />
     </>
   );
 }

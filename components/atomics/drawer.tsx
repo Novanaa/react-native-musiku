@@ -11,6 +11,8 @@ export interface DrawerProps extends ViewProps {
   handleIndicatorStyle?: StyleProp<ViewStyle>;
   enableHandlePanningGesture?: boolean;
   enableContentPanningGesture?: boolean;
+  keyboardBehavior?: "interactive" | "extend" | "fillParent" | undefined;
+  keyboardBlurBehavior?: "none" | "restore" | undefined;
 }
 
 export default function Drawer(props: DrawerProps): React.JSX.Element {
@@ -28,6 +30,8 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
       enableHandlePanningGesture={props.enableHandlePanningGesture}
       enableContentPanningGesture={props.enableContentPanningGesture}
       handleIndicatorStyle={{ backgroundColor: colors.light.background }}
+      keyboardBehavior={props.keyboardBehavior}
+      keyboardBlurBehavior={props.keyboardBlurBehavior}
       {...props}
     >
       {props.children}
