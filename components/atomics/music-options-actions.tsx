@@ -18,12 +18,15 @@ import PlaySVG from "@/assets/icons/play.svg";
 import RoundedArrowSVG from "@/assets/icons/rounded-arrow.svg";
 import LocationSVG from "@/assets/icons/location.svg";
 import PlusCircleSVG from "@/assets/icons/plus-circle.svg";
-import { usePlaylistStore } from "@/stores/playlist";
+import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 import { PlaylistScheme } from "@/interfaces/playlist";
 import AlbumSVG from "@/assets/icons/album.svg";
 import { Playlist as IPlaylist } from "@/interfaces/playlist";
 import ArrowRightSVG from "@/assets/icons/arrow-right.svg";
 import { FlatList } from "react-native-gesture-handler";
+import isMusicAddedToPlaylist from "@/utils/is-music-added-to-playlist";
+import addMusicPlaylist from "@/utils/add-music-playlist";
+import showToast from "@/utils/toast";
 
 interface MusicOptionsInformationProps extends DrawerProps {
   music: MediaLibrary.Asset;
@@ -33,7 +36,7 @@ interface MusicOptionsAddToPlaylistProps extends DrawerProps {
   music: MediaLibrary.Asset;
 }
 
-interface RenderMusicOptionsAddToPlaylistItemProps {
+interface RenderMusicOptionsAddToPlaylistItemProps extends DrawerProps {
   music: MediaLibrary.Asset;
 }
 
@@ -43,7 +46,9 @@ interface MusicOptionsInformationContentProps extends ViewProps {
   icon: React.ReactElement<SvgProps>;
 }
 
-interface MusicOptionsAddToPlaylistItemProps extends TouchableOpacityProps {
+interface MusicOptionsAddToPlaylistItemProps
+  extends TouchableOpacityProps,
+    DrawerProps {
   item: IPlaylist;
   music: MediaLibrary.Asset;
   title: string;
@@ -135,7 +140,10 @@ export function MusicOptionsAddToPlaylist(
           </>
         </TouchableOpacity>
         <View style={musicOptionsAddToPlaylistStyles.separator}></View>
-        <RenderMusicOptionsAddToPlaylistItem music={props.music} />
+        <RenderMusicOptionsAddToPlaylistItem
+          music={props.music}
+          modalRef={props.modalRef}
+        />
       </View>
     </Drawer>
   );
@@ -155,6 +163,7 @@ export function RenderMusicOptionsAddToPlaylistItem(
       data={list.playlist}
       renderItem={(data) => (
         <MusicOptionsAddToPlaylistItem
+          modalRef={props.modalRef}
           music={props.music}
           item={data.item}
           title={data.item.title}
@@ -168,15 +177,36 @@ export function RenderMusicOptionsAddToPlaylistItem(
 export function MusicOptionsAddToPlaylistItem(
   props: MusicOptionsAddToPlaylistItemProps
 ): React.JSX.Element {
+  const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
+    (state) => state.refresh
+  );
+
+  const addMusicPlaylistItem: () => void = React.useCallback(() => {
+    const isMusicIsAlreadyAddedToPlaylist: boolean = isMusicAddedToPlaylist(
+      props.item,
+      props.music
+    );
+
+    if (isMusicIsAlreadyAddedToPlaylist) {
+      props.modalRef.current?.close();
+      showToast(`Music already added to "${props.item.title}"`);
+      return;
+    }
+
+    addMusicPlaylist(props.item, props.music);
+    refreshPlaylist();
+    showToast(`Successfully added to "${props.item.title}"`);
+    props.modalRef.current?.close();
+  }, []);
+
   return (
     <TouchableOpacity
       activeOpacity={0.6}
-      // Override this soon!!
-      onPress={() => console.log("test")}
+      onPress={() => addMusicPlaylistItem()}
       style={musicOptionsAddToPlaylistItemStyles.container}
     >
       <View style={musicOptionsAddToPlaylistItemStyles.headerWrapper}>
-        <AlbumSVG width={35} height={35} />
+        <AlbumSVG width={32} height={32} />
         <View>
           <Text
             style={musicOptionsAddToPlaylistItemStyles.title}
@@ -199,7 +229,7 @@ export function MusicOptionsAddToPlaylistItem(
 
 const renderMusicOptionsAddToPlaylistItemStyles = StyleSheet.create({
   container: {
-    paddingVertical: 2,
+    paddingVertical: 3,
     height: "78%",
   },
 });

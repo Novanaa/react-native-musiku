@@ -27,6 +27,7 @@ import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 import uuid from "react-native-uuid";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { NavigationProp } from "@react-navigation/native";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -107,66 +108,68 @@ export default function RootLayout() {
     >
       <BottomSheetModalProvider>
         <Welcome>
-          <StatusBar style="dark" />
-          <Stack screenOptions={{ contentStyle: styles.container }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="folder"
-              options={{
-                title: "Directory",
-                headerTintColor: textColor,
-                headerStyle: {
-                  backgroundColor: headerBackgoundColor,
-                },
-                animation: "ios",
-              }}
-            />
-            <Stack.Screen
-              name="favorite"
-              options={{
-                title: "Favorites",
-                headerTintColor: textColor,
-                headerStyle: {
-                  backgroundColor: headerBackgoundColor,
-                },
-                animation: "ios",
-              }}
-            />
-            <Stack.Screen
-              name="playlist"
-              options={{
-                title: playlistStackScreenTitle,
-                headerTintColor: textColor,
-                headerStyle: {
-                  backgroundColor: headerBackgoundColor,
-                },
-                animation: "ios",
-              }}
-            />
-            <Stack.Screen
-              name="add-music-playlist"
-              options={{
-                title: "Add Music",
-                headerLeft: () => (
-                  <HeaderBackButton
-                    style={{
-                      right: 10,
-                    }}
-                    tintColor={textColor}
-                    onPress={() => {
-                      navigation.goBack();
-                      refreshPlaylist();
-                    }}
-                  />
-                ),
-                headerTintColor: textColor,
-                headerStyle: {
-                  backgroundColor: headerBackgoundColor,
-                },
-                animation: "ios",
-              }}
-            />
-          </Stack>
+          <RootSiblingParent>
+            <StatusBar style="dark" />
+            <Stack screenOptions={{ contentStyle: styles.container }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="folder"
+                options={{
+                  title: "Directory",
+                  headerTintColor: textColor,
+                  headerStyle: {
+                    backgroundColor: headerBackgoundColor,
+                  },
+                  animation: "ios",
+                }}
+              />
+              <Stack.Screen
+                name="favorite"
+                options={{
+                  title: "Favorites",
+                  headerTintColor: textColor,
+                  headerStyle: {
+                    backgroundColor: headerBackgoundColor,
+                  },
+                  animation: "ios",
+                }}
+              />
+              <Stack.Screen
+                name="playlist"
+                options={{
+                  title: playlistStackScreenTitle,
+                  headerTintColor: textColor,
+                  headerStyle: {
+                    backgroundColor: headerBackgoundColor,
+                  },
+                  animation: "ios",
+                }}
+              />
+              <Stack.Screen
+                name="add-music-playlist"
+                options={{
+                  title: "Add Music",
+                  headerLeft: () => (
+                    <HeaderBackButton
+                      style={{
+                        right: 10,
+                      }}
+                      tintColor={textColor}
+                      onPress={() => {
+                        navigation.goBack();
+                        refreshPlaylist();
+                      }}
+                    />
+                  ),
+                  headerTintColor: textColor,
+                  headerStyle: {
+                    backgroundColor: headerBackgoundColor,
+                  },
+                  animation: "ios",
+                }}
+              />
+            </Stack>
+          </RootSiblingParent>
         </Welcome>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
