@@ -1,7 +1,10 @@
 import React from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import colors, { modalBackgroundColor } from "@/constants/colors";
+import colors, {
+  backgroundColor,
+  modalBackgroundColor,
+} from "@/constants/colors";
 import { StyleProp, View, ViewProps, ViewStyle } from "react-native";
 
 export interface DrawerProps extends ViewProps {
@@ -17,13 +20,29 @@ export interface DrawerProps extends ViewProps {
 
 export default function Drawer(props: DrawerProps): React.JSX.Element {
   const bottomSheetIndex: number = 0;
-  const bottomSheetSnapPoint: Array<string> = props.snapPoints || ["50%"];
+  const bottomSheetSnapPoint: Array<string> = React.useMemo(
+    () => props.snapPoints,
+    []
+  ) || ["50%"];
 
   return (
     <BottomSheetModal
       snapPoints={bottomSheetSnapPoint}
       index={bottomSheetIndex}
       ref={props.modalRef}
+      backdropComponent={({ style }) => (
+        <View
+          // @ts-expect-error interfaces conflicts
+          onStartShouldSetResponder={() => props.modalRef.current?.close()}
+          style={[
+            style,
+            {
+              backgroundColor: backgroundColor,
+              opacity: 0.5,
+            },
+          ]}
+        />
+      )}
       backgroundStyle={{
         backgroundColor: modalBackgroundColor,
       }}
