@@ -9,6 +9,7 @@ import SortByRepository from "@/repository/sort-by.repository";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import ListOptionsSVG from "@/assets/icons/list-options.svg";
 import SortBy from "@/interfaces/sort-by";
+import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
 
 export default function MusicListHeader(): React.JSX.Element {
   const bottomSheetRef: React.MutableRefObject<BottomSheetModalMethods | null> =
@@ -26,19 +27,20 @@ export default function MusicListHeader(): React.JSX.Element {
         </TouchableOpacity>
       </View>
       <View style={styles.bottomBorder}></View>
-      <MusicListHeaderOptions modalRef={bottomSheetRef} />
+      <MusicListHeaderSortByMusicOptions modalRef={bottomSheetRef} />
     </>
   );
 }
 
-export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
-  const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
-  const [dummyState, setDummyState] = React.useState<boolean>(false);
-  const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
-  const sortByState: SortBy = React.useMemo(
-    () => SortByRepository.getSortByState(),
-    [dummyState]
+export function MusicListHeaderSortByMusicOptions(
+  props: DrawerProps
+): React.JSX.Element {
+  const refreshSortByMusicState: RefreshSortByState = useSortByStore(
+    (state) => state.refresh
   );
+  const sortByState: SortBy = useSortByStore((state) => state.sortBy);
+  const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
+  const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
   const radioCheckboxData: Array<RadioCheckboxData> = [
     { id: 1, title: "Recently Music Added", default: true },
     { id: 2, title: "Lately Music Added" },
@@ -57,23 +59,26 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
     };
 
     setter[sortByState]();
-  }, []);
+  }, [sortByState]);
 
   /* eslint-disable no-unused-vars */
-  const handleOnChecked: (itemId: number) => void = (itemId: number): void => {
-    const setter: Record<number, () => void> = {
-      1: () => SortByRepository.setSortByState("recently_added"),
-      2: () => SortByRepository.setSortByState("lately_added"),
-      3: () => SortByRepository.setSortByState("duration"),
-      4: () => SortByRepository.setSortByState("ascending"),
-      5: () => SortByRepository.setSortByState("descending"),
-    };
+  const handleOnChecked: (itemId: number) => void = React.useCallback(
+    (itemId: number): void => {
+      const setter: Record<number, () => void> = {
+        1: () => SortByRepository.setSortByState("recently_added"),
+        2: () => SortByRepository.setSortByState("lately_added"),
+        3: () => SortByRepository.setSortByState("duration"),
+        4: () => SortByRepository.setSortByState("ascending"),
+        5: () => SortByRepository.setSortByState("descending"),
+      };
 
-    setter[itemId]();
-    refreshMusic();
-    setDummyState(!dummyState);
-    props.modalRef.current?.close();
-  };
+      props.modalRef.current?.close();
+      setter[itemId]();
+      refreshMusic();
+      refreshSortByMusicState();
+    },
+    [sortByState]
+  );
 
   return (
     <Drawer modalRef={props.modalRef} snapPoints={["45%"]}>

@@ -5,7 +5,7 @@ import sortMusic from "./sort-music";
 
 export default async function getMusic(): Promise<
   MediaLibrary.PagedInfo<MediaLibrary.Asset>
-> {
+  > {
   const sortByState: SortBy = SortByRepository.getSortByState();
   const pagedMusic: Awaited<MediaLibrary.PagedInfo<MediaLibrary.Asset>> =
     await MediaLibrary.getAssetsAsync({ mediaType: "audio" });
