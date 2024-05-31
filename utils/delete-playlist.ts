@@ -1,5 +1,6 @@
 import { Playlist, PlaylistScheme } from "@/interfaces/playlist";
 import PlaylistRepository from "@/repository/playlist.repository";
+import showToast from "./toast";
 
 export default function deletePlaylist(playlist: Playlist): void {
   const latestPlaylistState: PlaylistScheme = JSON.parse(
@@ -15,4 +16,6 @@ export default function deletePlaylist(playlist: Playlist): void {
     ...latestPlaylistState,
     totalPlaylist: latestPlaylistState.totalPlaylist - 1,
   });
+
+  showToast(`Successfully deleted "${playlist.title}" playlist`);
 }

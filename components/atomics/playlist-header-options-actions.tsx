@@ -6,6 +6,7 @@ import { destructiveColor } from "@/constants/colors";
 import resetPlaylist from "@/utils/reset-playlist";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 import React from "react";
+import showToast from "@/utils/toast";
 
 export function RemovesAllPlaylist(props: DrawerProps): React.JSX.Element {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -27,13 +28,15 @@ export function RemovesAllPlaylist(props: DrawerProps): React.JSX.Element {
             textStyle={{
               color: destructiveColor,
             }}
-            onPress={() =>
+            onPress={() => {
               resetPlaylist({
                 refreshPlaylist,
                 drawerRef: props.modalRef,
                 setIsLoading,
-              })
-            }
+              });
+
+              showToast(`Successfully removes all of your playlist!`);
+            }}
           >
             Removes
           </Button>
