@@ -24,9 +24,10 @@ import InfoSVG from "@/assets/icons/info.svg";
 import TrashSVG from "@/assets/icons/trash.svg";
 import AlbumSVG from "@/assets/icons/album.svg";
 import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
-import Favorites from "@/interfaces/favorites";
 import addMusicFavorites from "@/utils/add-favorites";
 import removeFavorites from "@/utils/remove-favorites";
+import isMusicFavorited from "@/utils/is-music-favorited";
+import Favorites from "@/interfaces/favorites";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -42,12 +43,13 @@ interface MusicOptionsProps extends DrawerProps {
 export default function MusicOptions(
   props: MusicOptionsProps
 ): React.JSX.Element {
-  const favoritesMusic: Favorites = useFavoritesMusic((state) =>
-    JSON.parse(state.favorites)
+  const favoritesMusic: Favorites = JSON.parse(
+    useFavoritesMusic((state) => state.favorites)
   );
-  const isMusicFavorited: boolean =
-    favoritesMusic.assets.filter((state) => state.uri == props.music.uri)
-      .length > 0;
+  const isMusicFavoritedState: boolean = isMusicFavorited(
+    favoritesMusic,
+    props.music
+  );
   const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
     (state) => state.refresh
   );
@@ -70,7 +72,7 @@ export default function MusicOptions(
             icon={AlbumSVG}
             onPress={() => addToPlaylistDrawerRef.current?.present()}
           />
-          {!isMusicFavorited ? (
+          {!isMusicFavoritedState ? (
             <MusicOptionsList
               title="Add to favorites"
               icon={HeartSVG}
