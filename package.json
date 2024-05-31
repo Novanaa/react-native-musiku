@@ -15,7 +15,7 @@
   "license": "MIT",
   "scripts": {
     "start": "expo start --dev-client",
-    "build": "eas build",
+    "build": "eas build --profile preview",
     "production": "expo start --minify --no-dev",
     "android": "expo start --android",
     "ios": "expo start --ios",
