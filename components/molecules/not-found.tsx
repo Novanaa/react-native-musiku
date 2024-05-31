@@ -12,6 +12,8 @@ import FolderEmptySVG from "@/assets/images/folder-empty.svg";
 import { Playlist } from "@/interfaces/playlist";
 import { useRouter } from "expo-router";
 import { ExpoRouter } from "expo-router/types/expo-router";
+import AddPlaylist from "../atomics/add-playlist";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 interface EmptyPlaylistMusicProps {
   playlist: Playlist;
@@ -123,20 +125,30 @@ export function EmptyPlaylistMusic(
 }
 
 export function EmptyPlaylist(): React.JSX.Element {
+  const modalRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
+
   return (
-    <View style={emptyPlaylistStyles.container}>
-      <InboxEmptySVG width={150} height={150} />
-      <Text style={emptyPlaylistStyles.title}>
-        Opps!, seems like empty here
-      </Text>
-      <Text style={emptyPlaylistStyles.description}>
-        If you like you can make a playlist by click plus circle button on the
-        top
-      </Text>
-      <TouchableOpacity activeOpacity={0.6} style={emptyPlaylistStyles.button}>
-        <Text style={emptyPlaylistStyles.buttonText}>Create One!</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={emptyPlaylistStyles.container}>
+        <InboxEmptySVG width={150} height={150} />
+        <Text style={emptyPlaylistStyles.title}>
+          Opps!, seems like empty here
+        </Text>
+        <Text style={emptyPlaylistStyles.description}>
+          If you like you can make a playlist by click plus circle button on the
+          top
+        </Text>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={emptyPlaylistStyles.button}
+          onPress={() => modalRef.current?.present()}
+        >
+          <Text style={emptyPlaylistStyles.buttonText}>Create One!</Text>
+        </TouchableOpacity>
+      </View>
+      <AddPlaylist modalRef={modalRef} />
+    </>
   );
 }
 
