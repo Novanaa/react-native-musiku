@@ -5,9 +5,6 @@ import Drawer, { DrawerWrapper } from "../atomics/drawer";
 import { modalBackgroundColor } from "@/constants/colors";
 import { Button } from "../atomics/button";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import getPermission from "@/utils/permission";
-import { RefreshMusic, useMusicStore } from "@/stores/music";
-import { RefreshFolder, useFolderStore } from "@/stores/folder";
 import SearchNotFoundSVG from "@/assets/images/search-not-found.svg";
 import * as MediaLibrary from "expo-media-library";
 

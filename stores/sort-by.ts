@@ -4,6 +4,7 @@ import { StoreApi, UseBoundStore, create } from "zustand";
 
 export type RefreshSortByState = () => void;
 
+/* eslint-disable no-unused-vars */
 export type IsSortMusicLoadingSetter = (state: boolean) => void;
 
 export interface SortByState {
