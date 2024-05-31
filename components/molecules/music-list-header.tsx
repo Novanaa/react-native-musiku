@@ -8,6 +8,7 @@ import { RadioCheckbox, RadioCheckboxData } from "./radio-checkbox";
 import SortByRepository from "@/repository/sort-by.repository";
 import { RefreshMusic, useMusicStore } from "@/stores/music";
 import ListOptionsSVG from "@/assets/icons/list-options.svg";
+import SortBy from "@/interfaces/sort-by";
 
 export default function MusicListHeader(): React.JSX.Element {
   const bottomSheetRef: React.MutableRefObject<BottomSheetModalMethods | null> =
@@ -34,6 +35,10 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
   const [dummyState, setDummyState] = React.useState<boolean>(false);
   const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
+  const sortByState: SortBy = React.useMemo(
+    () => SortByRepository.getSortByState(),
+    [dummyState]
+  );
   const radioCheckboxData: Array<RadioCheckboxData> = [
     { id: 1, title: "Recently Music Added", default: true },
     { id: 2, title: "Lately Music Added" },
@@ -42,8 +47,8 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
     { id: 5, title: "By Alphabet (Descending)" },
   ];
 
-  SortByRepository.getSortByStateAsync().then((state) => {
-    const setter: Record<typeof state, () => void> = {
+  React.useEffect(() => {
+    const setter: Record<typeof sortByState, () => void> = {
       recently_added: () => setDefaultCheckedId(1),
       lately_added: () => setDefaultCheckedId(2),
       duration: () => setDefaultCheckedId(3),
@@ -51,8 +56,8 @@ export function MusicListHeaderOptions(props: DrawerProps): React.JSX.Element {
       descending: () => setDefaultCheckedId(5),
     };
 
-    setter[state]();
-  });
+    setter[sortByState]();
+  }, []);
 
   /* eslint-disable no-unused-vars */
   const handleOnChecked: (itemId: number) => void = (itemId: number): void => {
