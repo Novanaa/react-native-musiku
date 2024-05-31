@@ -27,6 +27,8 @@ import { FlatList } from "react-native-gesture-handler";
 import isMusicAddedToPlaylist from "@/utils/is-music-added-to-playlist";
 import addMusicPlaylist from "@/utils/add-music-playlist";
 import showToast from "@/utils/toast";
+import AddPlaylist from "./add-playlist";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 interface MusicOptionsInformationProps extends DrawerProps {
   music: MediaLibrary.Asset;
@@ -117,35 +119,41 @@ export function MusicOptionsInformationContent(
 export function MusicOptionsAddToPlaylist(
   props: MusicOptionsAddToPlaylistProps
 ): React.JSX.Element {
+  const addPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
+
   return (
-    <Drawer modalRef={props.modalRef} snapPoints={["30%", "50%"]}>
-      <View style={musicOptionsAddToPlaylistStyles.wrapper}>
-        <TouchableOpacity
-          onPress={() => console.log("test")}
-          activeOpacity={0.6}
-          style={musicOptionsAddToPlaylistStyles.addPlaylistWrapper}
-        >
-          <>
-            <PlusCircleSVG width={35} height={35} />
-            <View>
-              <Text style={musicOptionsAddToPlaylistStyles.addPlaylistTitle}>
-                Add Playlist
-              </Text>
-              <Text
-                style={musicOptionsAddToPlaylistStyles.addPlaylistDescription}
-              >
-                Add your playlist collection
-              </Text>
-            </View>
-          </>
-        </TouchableOpacity>
-        <View style={musicOptionsAddToPlaylistStyles.separator}></View>
-        <RenderMusicOptionsAddToPlaylistItem
-          music={props.music}
-          modalRef={props.modalRef}
-        />
-      </View>
-    </Drawer>
+    <>
+      <Drawer modalRef={props.modalRef} snapPoints={["30%", "50%"]}>
+        <View style={musicOptionsAddToPlaylistStyles.wrapper}>
+          <TouchableOpacity
+            onPress={() => addPlaylistDrawerRef.current?.present()}
+            activeOpacity={0.6}
+            style={musicOptionsAddToPlaylistStyles.addPlaylistWrapper}
+          >
+            <>
+              <PlusCircleSVG width={35} height={35} />
+              <View>
+                <Text style={musicOptionsAddToPlaylistStyles.addPlaylistTitle}>
+                  Add Playlist
+                </Text>
+                <Text
+                  style={musicOptionsAddToPlaylistStyles.addPlaylistDescription}
+                >
+                  Add your playlist collection
+                </Text>
+              </View>
+            </>
+          </TouchableOpacity>
+          <View style={musicOptionsAddToPlaylistStyles.separator}></View>
+          <RenderMusicOptionsAddToPlaylistItem
+            music={props.music}
+            modalRef={props.modalRef}
+          />
+        </View>
+      </Drawer>
+      <AddPlaylist modalRef={addPlaylistDrawerRef} />
+    </>
   );
 }
 
