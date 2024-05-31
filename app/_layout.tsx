@@ -19,7 +19,6 @@ import getFolder from "@/utils/get-folder";
 import SortByRepository from "@/repository/sort-by.repository";
 import * as MediaLibrary from "expo-media-library";
 import { Welcome } from "@/components/molecules/welcome";
-import * as SecureStore from "expo-secure-store";
 import PlaylistRepository from "@/repository/playlist.repository";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 import FavoriteRepository from "@/repository/favorite.repository";
@@ -28,6 +27,7 @@ import uuid from "react-native-uuid";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { NavigationProp } from "@react-navigation/native";
 import { RootSiblingParent } from "react-native-root-siblings";
+import storage from "@/libs/storage";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -54,7 +54,7 @@ export default function RootLayout() {
   );
 
   React.useEffect(() => {
-    if (!SecureStore.getItem(FavoriteRepository.favoriteKey)) {
+    if (!storage.getString(FavoriteRepository.favoriteKey)) {
       FavoriteRepository.setFavorites({
         assets: [],
         total: 0,
@@ -63,7 +63,7 @@ export default function RootLayout() {
       refreshFavoritesMusic();
     }
 
-    if (!SecureStore.getItem(PlaylistRepository.playlistKey)) {
+    if (!storage.getString(PlaylistRepository.playlistKey)) {
       PlaylistRepository.setPlaylist({
         playlist: [
           {
