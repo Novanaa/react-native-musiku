@@ -1,6 +1,7 @@
 import { Playlist, PlaylistScheme } from "@/interfaces/playlist";
 import PlaylistRepository from "@/repository/playlist.repository";
 import * as MediaLibrary from "expo-media-library";
+import showToast from "./toast";
 
 export default function addMusicPlaylist(
   playlist: Playlist,
@@ -21,4 +22,6 @@ export default function addMusicPlaylist(
   });
 
   PlaylistRepository.setPlaylist(latestPlaylistState);
+
+  showToast(`Successfully added music to "${playlist.title}" playlist`);
 }
