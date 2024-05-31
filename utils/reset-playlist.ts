@@ -9,11 +9,9 @@ interface ResetPlaylistParams {
   drawerRef: React.MutableRefObject<null | BottomSheetModalMethods>;
 }
 
-export default async function resetPlaylist(
-  params: ResetPlaylistParams
-): Promise<void> {
+export default function resetPlaylist(params: ResetPlaylistParams): void {
   params.setIsLoading(true);
-  await PlaylistRepository.setPlaylistAsync({
+  PlaylistRepository.setPlaylist({
     totalPlaylist: 0,
     playlist: [],
   });
