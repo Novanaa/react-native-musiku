@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import * as MediaLibrary from "expo-media-library";
 import isMusicFavorited from "./is-music-favorited";
 import Favorites from "@/interfaces/favorites";

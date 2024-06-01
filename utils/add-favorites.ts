@@ -13,5 +13,5 @@ export default function addMusicFavorites(music: MediaLibrary.Asset): void {
     assets: [...latestFavoritesState.assets, music],
   });
 
-  showToast(`Successfully added music to favorites!`);
+  showToast("Successfully added music to favorites!");
 }

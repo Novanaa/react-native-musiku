@@ -35,7 +35,7 @@ export function RemovesAllPlaylist(props: DrawerProps): React.JSX.Element {
                 setIsLoading,
               });
 
-              showToast(`Successfully removes all of your playlist!`);
+              showToast("Successfully removes all of your playlist!");
             }}
           >
             Removes
