@@ -29,6 +29,8 @@ import addMusicPlaylist from "@/utils/add-music-playlist";
 import showToast from "@/utils/toast";
 import AddPlaylist from "./add-playlist";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
 
 interface MusicOptionsInformationProps extends DrawerProps {
   music: MediaLibrary.Asset;
@@ -185,6 +187,7 @@ export function RenderMusicOptionsAddToPlaylistItem(
 export function MusicOptionsAddToPlaylistItem(
   props: MusicOptionsAddToPlaylistItemProps
 ): React.JSX.Element {
+  const { dismissAll }: BottomSheetModalContextType = useBottomSheetModal();
   const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
     (state) => state.refresh
   );
@@ -196,15 +199,14 @@ export function MusicOptionsAddToPlaylistItem(
     );
 
     if (isMusicIsAlreadyAddedToPlaylist) {
-      props.modalRef.current?.close();
+      dismissAll();
       showToast(`Music already added to "${props.item.title}"`);
       return;
     }
 
     addMusicPlaylist(props.item, props.music);
     refreshPlaylist();
-    showToast(`Successfully added to "${props.item.title}"`);
-    props.modalRef.current?.close();
+    dismissAll();
   }, []);
 
   return (
