@@ -1,4 +1,4 @@
-import Music from "@/components/atomics/music";
+import PlaylistMusic from "@/components/atomics/playlist-music";
 import { EmptyPlaylistMusic } from "@/components/molecules/not-found";
 import { Playlist as IPlaylist } from "@/interfaces/playlist";
 import { useLocalSearchParams } from "expo-router";
@@ -23,7 +23,8 @@ export default function Playlist(): React.JSX.Element {
       style={styles.container}
       renderItem={(data) => (
         <View style={styles.wrapper}>
-          <Music
+          <PlaylistMusic
+            playlistItem={playlist}
             description="Unknown Artist - Unknown Album"
             title={data.item.filename}
             musicItem={data.item}
