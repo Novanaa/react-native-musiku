@@ -28,6 +28,9 @@ import addMusicFavorites from "@/utils/add-favorites";
 import removeFavorites from "@/utils/remove-favorites";
 import isMusicFavorited from "@/utils/is-music-favorited";
 import Favorites from "@/interfaces/favorites";
+import deleteMusic from "@/utils/delete-music";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -43,6 +46,7 @@ interface MusicOptionsProps extends DrawerProps {
 export default function MusicOptions(
   props: MusicOptionsProps
 ): React.JSX.Element {
+  const { dismissAll }: BottomSheetModalContextType = useBottomSheetModal();
   const favoritesMusic: Favorites = JSON.parse(
     useFavoritesMusic((state) => state.favorites)
   );
@@ -79,7 +83,7 @@ export default function MusicOptions(
               onPress={() => {
                 addMusicFavorites(props.music);
                 refreshFavoritesMusic();
-                props.modalRef.current?.close();
+                dismissAll();
               }}
             />
           ) : (
@@ -89,7 +93,7 @@ export default function MusicOptions(
               onPress={() => {
                 removeFavorites(props.music);
                 refreshFavoritesMusic();
-                props.modalRef.current?.close();
+                dismissAll();
               }}
             />
           )}
@@ -105,7 +109,10 @@ export default function MusicOptions(
             textStyle={{
               color: destructiveColor,
             }}
-            onPress={() => console.log("action")}
+            onPress={() => {
+              deleteMusic(props.music);
+              dismissAll();
+            }}
           />
         </View>
       </Drawer>
