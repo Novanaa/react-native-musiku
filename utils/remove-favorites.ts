@@ -17,5 +17,5 @@ export default function removeFavorites(music: MediaLibrary.Asset): void {
     assets: [...filteredFavoritesMusicAssests],
   });
 
-  showToast(`Successfully remove music from favorites!`);
+  showToast("Successfully remove music from favorites!");
 }

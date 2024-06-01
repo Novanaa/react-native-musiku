@@ -14,6 +14,7 @@ import BoxSVG from "@/assets/icons/square.svg";
 import CheckboxSVG from "@/assets/icons/check-square.svg";
 import addMusicPlaylist from "@/utils/add-music-playlist";
 import { IconButton } from "./button";
+import isMusicAddedToPlaylist from "@/utils/is-music-added-to-playlist";
 
 interface MusicProps extends TouchableHighlightProps {
   title: string;
@@ -26,9 +27,7 @@ function AddMusicPlaylistItem(props: MusicProps): React.JSX.Element {
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
   const isMusicIsAlreadyAdded: boolean =
     React.useMemo(
-      () =>
-        props.playlist.songs.filter((state) => state.uri == props.musicItem.uri)
-          .length > 0,
+      () => isMusicAddedToPlaylist(props.playlist, props.musicItem),
       [props.playlist.songs]
     ) || isChecked;
 

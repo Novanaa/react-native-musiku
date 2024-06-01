@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, useNavigation } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import colors, {
   textColor,
   backgroundColor,
@@ -24,8 +24,6 @@ import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 import FavoriteRepository from "@/repository/favorite.repository";
 import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 import uuid from "react-native-uuid";
-import { HeaderBackButton } from "@react-navigation/elements";
-import { NavigationProp } from "@react-navigation/native";
 import { RootSiblingParent } from "react-native-root-siblings";
 import storage from "@/libs/storage";
 import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
@@ -33,8 +31,6 @@ import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const navigation: NavigationProp<ReactNavigation.RootParamList> =
-    useNavigation();
   const [permission] = MediaLibrary.usePermissions();
   const [loaded, error] = useFonts(fonts);
   const music: Music | null = useMusicStore((state) => state.music);
@@ -155,18 +151,6 @@ export default function RootLayout() {
                 name="add-music-playlist"
                 options={{
                   title: "Add Music",
-                  headerLeft: () => (
-                    <HeaderBackButton
-                      style={{
-                        right: 10,
-                      }}
-                      tintColor={textColor}
-                      onPress={() => {
-                        navigation.goBack();
-                        refreshPlaylist();
-                      }}
-                    />
-                  ),
                   headerTintColor: textColor,
                   headerStyle: {
                     backgroundColor: headerBackgoundColor,
