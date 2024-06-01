@@ -7,7 +7,10 @@ import colors, {
 import Text from "./text";
 import { StyleSheet, View } from "react-native";
 import { borderRadius } from "@/constants/styles";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetTextInput,
+  useBottomSheetModal,
+} from "@gorhom/bottom-sheet";
 import { Button } from "./button";
 import savePlaylist from "@/utils/save-playlist";
 import {
@@ -20,8 +23,10 @@ import { ExpoRouter } from "expo-router/types/expo-router";
 import { Playlist } from "@/interfaces/playlist";
 import showToast from "@/utils/toast";
 import { useDebounce } from "use-debounce";
+import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
 
 export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
+  const { dismissAll }: BottomSheetModalContextType = useBottomSheetModal();
   const setCurrentPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
     (state) => state.setPlaylistTitle
   );
@@ -34,7 +39,7 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
 
   const savePlaylistHandler: () => void = React.useCallback(() => {
-    props.modalRef.current?.close();
+    dismissAll();
     const newPlaylist: Playlist = savePlaylist(debouncedPlaylistTitle);
     refreshPlaylist();
 

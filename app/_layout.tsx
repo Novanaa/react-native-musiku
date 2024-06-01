@@ -28,6 +28,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { NavigationProp } from "@react-navigation/native";
 import { RootSiblingParent } from "react-native-root-siblings";
 import storage from "@/libs/storage";
+import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,6 +40,9 @@ export default function RootLayout() {
   const music: Music | null = useMusicStore((state) => state.music);
   const playlistStackScreenTitle: string = usePlaylistStore(
     (state) => state.playlistTitle
+  );
+  const refreshSortByState: RefreshSortByState = useSortByStore(
+    (state) => state.refresh
   );
   const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
     (state) => state.refresh
@@ -80,8 +84,10 @@ export default function RootLayout() {
       refreshPlaylist();
     }
 
-    if (!SortByRepository.getSortByState())
+    if (!storage.getString(SortByRepository.sortByKey)) {
       SortByRepository.setSortByState("recently_added");
+      refreshSortByState();
+    }
 
     getMusic().then((state) => {
       const folder: Folder = getFolder(state);
