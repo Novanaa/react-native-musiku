@@ -4,6 +4,7 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import PlaylistItem from "../atomics/playlist-item";
 import { EmptyPlaylist, PlaylistSearchNotFound } from "./not-found";
+import undefinedPlaylistMusicDetection from "@/utils/undefined-playlist-music-detection";
 
 export default function RenderPlaylist(): React.JSX.Element {
   const searchPlaylistKeyword: string = usePlaylistStore(
@@ -12,6 +13,10 @@ export default function RenderPlaylist(): React.JSX.Element {
   const list: PlaylistScheme = usePlaylistStore((state) =>
     JSON.parse(state.playlist)
   );
+
+  React.useEffect(() => {
+    undefinedPlaylistMusicDetection(list);
+  }, [list]);
 
   const filteredPlaylist: Array<Playlist> = React.useMemo(
     () =>
