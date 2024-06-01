@@ -39,6 +39,12 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
 
   const savePlaylistHandler: () => void = React.useCallback(() => {
+    if (!debouncedPlaylistTitle) {
+      showToast("Please fill the playlist title correctly!");
+
+      return;
+    }
+
     dismissAll();
     const newPlaylist: Playlist = savePlaylist(debouncedPlaylistTitle);
     refreshPlaylist();
