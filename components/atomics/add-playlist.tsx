@@ -1,8 +1,8 @@
 import React from "react";
-import Drawer, { DrawerProps } from "./drawer";
 import colors, {
   destructiveColor,
   inputBackgroundColor,
+  modalBackgroundColor,
 } from "@/constants/colors";
 import Text from "./text";
 import { StyleSheet, View } from "react-native";
@@ -24,8 +24,9 @@ import { Playlist } from "@/interfaces/playlist";
 import showToast from "@/utils/toast";
 import { useDebounce } from "use-debounce";
 import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
+import Modal, { ModalProps } from "./modal";
 
-export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
+export default function AddPlaylist(props: ModalProps): React.JSX.Element {
   const { dismissAll }: BottomSheetModalContextType = useBottomSheetModal();
   const setCurrentPlaylistTitle: PlaylistTitleSetter = usePlaylistStore(
     (state) => state.setPlaylistTitle
@@ -36,7 +37,6 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   );
   const [playlistTitle, setPlaylistTitle] = React.useState<string>("");
   const [debouncedPlaylistTitle] = useDebounce(playlistTitle, 200);
-  const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
 
   const savePlaylistHandler: () => void = React.useCallback(() => {
     if (!debouncedPlaylistTitle) {
@@ -55,10 +55,10 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   }, [debouncedPlaylistTitle]);
 
   return (
-    <Drawer
-      keyboardBehavior="extend"
+    <Modal
       modalRef={props.modalRef}
-      snapPoints={snapPoints}
+      enableHandlePanningGesture={false}
+      enableContentPanningGesture={false}
     >
       <View style={styles.wrapper}>
         <Text style={styles.title}>New Playlist</Text>
@@ -83,7 +83,7 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
           </Button>
         </View>
       </View>
-    </Drawer>
+    </Modal>
   );
 }
 
@@ -93,7 +93,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 15,
     gap: 10,
-    marginTop: 10,
+    position: "absolute",
+    width: "100%",
+    backgroundColor: modalBackgroundColor,
+    borderRadius,
+    paddingVertical: 25,
   },
   title: {
     fontFamily: "bold",

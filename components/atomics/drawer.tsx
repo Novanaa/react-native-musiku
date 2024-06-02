@@ -1,33 +1,25 @@
 import React from "react";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet";
 import colors, {
   backgroundColor,
   modalBackgroundColor,
 } from "@/constants/colors";
-import { StyleProp, View, ViewProps, ViewStyle } from "react-native";
+import { View, ViewProps } from "react-native";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
-export interface DrawerProps extends ViewProps {
+export interface DrawerProps extends BottomSheetModalProps {
   modalRef: React.MutableRefObject<null | BottomSheetModalMethods>;
-  snapPoints?: Array<string>;
-  enablePanDownToClose?: boolean;
-  handleIndicatorStyle?: StyleProp<ViewStyle>;
-  enableHandlePanningGesture?: boolean;
-  enableContentPanningGesture?: boolean;
-  keyboardBehavior?: "interactive" | "extend" | "fillParent" | undefined;
-  keyboardBlurBehavior?: "none" | "restore" | undefined;
 }
 
 export default function Drawer(props: DrawerProps): React.JSX.Element {
   const bottomSheetIndex: number = 0;
-  const bottomSheetSnapPoint: Array<string> = React.useMemo(
-    () => props.snapPoints,
-    []
-  ) || ["50%"];
+  const bottomSheetSnapPoints =
+    React.useMemo(() => props.snapPoints, []) ||
+    React.useMemo(() => ["50%"], []);
 
   return (
     <BottomSheetModal
-      snapPoints={bottomSheetSnapPoint}
+      snapPoints={bottomSheetSnapPoints}
       index={bottomSheetIndex}
       ref={props.modalRef}
       backdropComponent={({ style }) => (
@@ -46,11 +38,7 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
       backgroundStyle={{
         backgroundColor: modalBackgroundColor,
       }}
-      enableHandlePanningGesture={props.enableHandlePanningGesture}
-      enableContentPanningGesture={props.enableContentPanningGesture}
       handleIndicatorStyle={{ backgroundColor: colors.light.background }}
-      keyboardBehavior={props.keyboardBehavior}
-      keyboardBlurBehavior={props.keyboardBlurBehavior}
       {...props}
     >
       {props.children}
