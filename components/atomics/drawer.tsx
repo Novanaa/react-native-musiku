@@ -7,11 +7,16 @@ import colors, {
 import { View, ViewProps } from "react-native";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
-export interface DrawerProps extends BottomSheetModalProps {
+export interface DrawerProps extends Omit<BottomSheetModalProps, "children"> {
   modalRef: React.MutableRefObject<null | BottomSheetModalMethods>;
 }
 
-export default function Drawer(props: DrawerProps): React.JSX.Element {
+interface DrawerComponentProps extends BottomSheetModalProps {
+  modalRef: React.MutableRefObject<null | BottomSheetModalMethods>;
+}
+
+export default function Drawer(props: DrawerComponentProps): React.JSX.Element {
+  const children: React.ReactNode = props.children as React.ReactNode;
   const bottomSheetIndex: number = 0;
   const bottomSheetSnapPoints =
     React.useMemo(() => props.snapPoints, []) ||
@@ -41,7 +46,7 @@ export default function Drawer(props: DrawerProps): React.JSX.Element {
       handleIndicatorStyle={{ backgroundColor: colors.light.background }}
       {...props}
     >
-      {props.children}
+      {children}
     </BottomSheetModal>
   );
 }
