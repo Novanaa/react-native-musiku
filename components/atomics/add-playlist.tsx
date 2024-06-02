@@ -3,6 +3,7 @@ import Drawer, { DrawerProps } from "./drawer";
 import colors, {
   destructiveColor,
   inputBackgroundColor,
+  modalBackgroundColor,
 } from "@/constants/colors";
 import Text from "./text";
 import { StyleSheet, View } from "react-native";
@@ -36,7 +37,7 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
   );
   const [playlistTitle, setPlaylistTitle] = React.useState<string>("");
   const [debouncedPlaylistTitle] = useDebounce(playlistTitle, 200);
-  const snapPoints: Array<string> = React.useMemo(() => ["30%", "90%"], []);
+  const snapPoints: Array<string> = React.useMemo(() => ["30%", "65%"], []);
 
   const savePlaylistHandler: () => void = React.useCallback(() => {
     if (!debouncedPlaylistTitle) {
@@ -56,6 +57,19 @@ export default function AddPlaylist(props: DrawerProps): React.JSX.Element {
 
   return (
     <Drawer
+      detached
+      bottomInset={70}
+      backgroundStyle={{
+        backgroundColor: "transparent",
+      }}
+      style={{
+        margin: 15,
+      }}
+      enableContentPanningGesture={false}
+      enableHandlePanningGesture={false}
+      handleIndicatorStyle={{
+        backgroundColor: "transparent",
+      }}
       keyboardBehavior="extend"
       modalRef={props.modalRef}
       snapPoints={snapPoints}
@@ -93,7 +107,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 15,
     gap: 10,
-    marginTop: 10,
+    position: "absolute",
+    width: "100%",
+    backgroundColor: modalBackgroundColor,
+    borderRadius,
+    paddingVertical: 25,
   },
   title: {
     fontFamily: "bold",
