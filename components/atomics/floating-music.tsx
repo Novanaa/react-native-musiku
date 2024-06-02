@@ -20,24 +20,29 @@ export default function FloatingMusic(): React.JSX.Element {
     [currentMusicPlayed]
   )!;
   const parsedDuration: string | null = React.useMemo(
-    () =>
-      currentMusicPlayed?.duration
-        ? parseDuration(String(currentMusicPlayed?.duration))
-        : "No music audio history provided!",
+    () => parseDuration(String(currentMusicPlayed?.duration)),
     [currentMusicPlayed]
   );
+  const modificationTime: string | null = React.useMemo(
+    () =>
+      new Date(currentMusicPlayed?.modificationTime!).toDateString() || null,
+    [currentMusicPlayed]
+  );
+  const musicDescription: string = currentMusicPlayed
+    ? `${modificationTime} - ${parsedDuration}`
+    : "No music audio history provided!";
 
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.9}>
       <View style={styles.wrapper}>
         <View style={styles.musicHeaderWrapper}>
-          <MusicSVG width={28} height={28} />
+          <MusicSVG width={29} height={29} />
           <View style={styles.musicMetadataWrapper}>
             <Text style={styles.musicTitle} numberOfLines={1}>
               {filename}
             </Text>
             <Text style={styles.duration} numberOfLines={1}>
-              {parsedDuration}
+              {musicDescription}
             </Text>
           </View>
         </View>
