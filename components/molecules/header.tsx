@@ -12,7 +12,7 @@ export default function Header(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 70,
+    paddingTop: 55,
     paddingBottom: 20,
     justifyContent: "space-between",
     alignItems: "center",
