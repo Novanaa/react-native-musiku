@@ -4,20 +4,26 @@ import Text from "./text";
 import { backgroundColor, borderColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
 import MusicSVG from "@/assets/icons/music.svg";
-import { useMusicStore } from "@/stores/music";
 import { IconButton } from "./button";
 import PlaySVG from "@/assets/icons/play.svg";
 import NextMusicSVG from "@/assets/icons/next-music.svg";
 import PrevMusicSVG from "@/assets/icons/prev-music.svg";
 import parseDuration from "@/utils/parse-duration";
+import { CurrentMusicPlayedData, usePlayerStore } from "@/stores/player";
 
 export default function FloatingMusic(): React.JSX.Element {
-  // Its just a placeholder for this time
-  // Change it later :)
-  const music = useMusicStore((state) => state.music);
-  const filename: string = React.useMemo(() => music?.assets[2].filename, [])!;
-  const parsedDuration: string = React.useMemo(
-    () => parseDuration(String(music?.assets[2].duration)),
+  const currentMusicPlayed: CurrentMusicPlayedData = usePlayerStore(
+    (state) => state.getCurrentMusicPlayed
+  )();
+  const filename: string = React.useMemo(
+    () => currentMusicPlayed?.filename || "What do you like to play?",
+    []
+  )!;
+  const parsedDuration: string | null = React.useMemo(
+    () =>
+      currentMusicPlayed?.duration
+        ? parseDuration(String(currentMusicPlayed?.duration))
+        : "No music audio history provided!",
     []
   );
 
@@ -30,7 +36,9 @@ export default function FloatingMusic(): React.JSX.Element {
             <Text style={styles.musicTitle} numberOfLines={1}>
               {filename}
             </Text>
-            <Text style={styles.duration}>{parsedDuration}</Text>
+            <Text style={styles.duration} numberOfLines={1}>
+              {parsedDuration}
+            </Text>
           </View>
         </View>
         <View style={styles.musicActionsWrapper}>
