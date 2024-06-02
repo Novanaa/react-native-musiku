@@ -48,6 +48,6 @@ export default function RenderPlaylist(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    top: 70,
+    top: 55,
   },
 });
