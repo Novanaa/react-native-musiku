@@ -17,14 +17,14 @@ export default function FloatingMusic(): React.JSX.Element {
   )();
   const filename: string = React.useMemo(
     () => currentMusicPlayed?.filename || "What do you like to play?",
-    []
+    [currentMusicPlayed]
   )!;
   const parsedDuration: string | null = React.useMemo(
     () =>
       currentMusicPlayed?.duration
         ? parseDuration(String(currentMusicPlayed?.duration))
         : "No music audio history provided!",
-    []
+    [currentMusicPlayed]
   );
 
   return (
