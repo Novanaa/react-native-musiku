@@ -3,9 +3,11 @@
 import { create } from "zustand";
 import * as MediaLibrary from "expo-media-library";
 
-export type GetCurrentMusicPlayed = () => MediaLibrary.Asset | null;
+export type GetCurrentMusicPlayed = () => CurrentMusicPlayedData;
 
 export type SetCurrentMusicPlayed = (music: MediaLibrary.Asset) => void;
+
+export type CurrentMusicPlayedData = MediaLibrary.Asset | null;
 
 interface PlayerState {
   getCurrentMusicPlayed: GetCurrentMusicPlayed;
