@@ -74,7 +74,7 @@ export default function PlaylistHeader(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    top: 60,
+    top: 50,
     paddingBottom: 15,
   },
   headerWrapper: {
