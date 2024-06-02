@@ -2,13 +2,7 @@ import React from "react";
 import Drawer, { DrawerProps, DrawerWrapper } from "./drawer";
 import * as MediaLibrary from "expo-media-library";
 import Text from "./text";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-  ViewProps,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, ViewProps } from "react-native";
 import { borderColor } from "@/constants/colors";
 import { borderRadius, rowsGap } from "@/constants/styles";
 import parseDuration from "@/utils/parse-duration";
@@ -50,9 +44,7 @@ interface MusicOptionsInformationContentProps extends ViewProps {
   icon: React.ReactElement<SvgProps>;
 }
 
-interface MusicOptionsAddToPlaylistItemProps
-  extends TouchableOpacityProps,
-    DrawerProps {
+interface MusicOptionsAddToPlaylistItemProps extends DrawerProps {
   item: IPlaylist;
   music: MediaLibrary.Asset;
   title: string;

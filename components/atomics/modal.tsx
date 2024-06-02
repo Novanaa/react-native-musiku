@@ -3,11 +3,15 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import React from "react";
 import Drawer from "./drawer";
 
-export interface ModalProps extends BottomSheetProps {
+export interface ModalProps extends Omit<BottomSheetProps, "children"> {
   modalRef: React.MutableRefObject<BottomSheetModalMethods | null>;
 }
 
-export default function Modal(props: ModalProps): React.JSX.Element {
+interface ModalComponentProps extends BottomSheetProps {
+  modalRef: React.MutableRefObject<BottomSheetModalMethods | null>;
+}
+
+export default function Modal(props: ModalComponentProps): React.JSX.Element {
   const modalSnapPoints =
     React.useMemo(() => ["30%", "65%"], []) ||
     React.useMemo(() => props.snapPoints, []);
