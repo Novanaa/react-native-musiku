@@ -9,12 +9,12 @@ import PlaySVG from "@/assets/icons/play.svg";
 import NextMusicSVG from "@/assets/icons/next-music.svg";
 import PrevMusicSVG from "@/assets/icons/prev-music.svg";
 import parseDuration from "@/utils/parse-duration";
-import { CurrentMusicPlayedData, usePlayerStore } from "@/stores/player";
+import { CurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 
 export default function FloatingMusic(): React.JSX.Element {
-  const currentMusicPlayed: CurrentMusicPlayedData = usePlayerStore(
-    (state) => state.getCurrentMusicPlayed
-  )();
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore(
+    (state) => state.currentMusicPlayed
+  );
   const filename: string = React.useMemo(
     () => currentMusicPlayed?.filename || "What do you like to play?",
     [currentMusicPlayed]
