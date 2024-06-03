@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import Text from "./text";
 import { backgroundColor, borderColor } from "@/constants/colors";
 import { borderRadius } from "@/constants/styles";
@@ -9,12 +15,13 @@ import PlaySVG from "@/assets/icons/play.svg";
 import NextMusicSVG from "@/assets/icons/next-music.svg";
 import PrevMusicSVG from "@/assets/icons/prev-music.svg";
 import parseDuration from "@/utils/parse-duration";
-import { CurrentMusicPlayed, usePlayerStore } from "@/stores/player";
-import { SoundObject } from "@/interfaces/audio";
+import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
+import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import PauseSVG from "@/assets/icons/pause.svg";
 import { pause } from "@/utils/music-player";
 import playMusic from "@/utils/play-music";
 import { AVPlaybackStatusSuccess } from "expo-av";
+import getPlaybackStatus from "@/utils/get-playback-status";
 
 export default function FloatingMusic(): React.JSX.Element {
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
@@ -25,17 +32,18 @@ export default function FloatingMusic(): React.JSX.Element {
     [currentMusicPlayed]
   );
   const filename: string = React.useMemo(
-    () => currentMusicPlayed?.filename || "What do you like to play?",
+    () => currentMusicPlayed?.music.filename || "What do you like to play?",
     [currentMusicPlayed]
   );
   const parsedDuration: string | null = React.useMemo(
-    () => parseDuration(String(currentMusicPlayed?.duration)),
+    () => parseDuration(String(currentMusicPlayed?.music.duration)),
     [currentMusicPlayed]
   );
   const modificationTime: string | null = React.useMemo(
     () =>
-      new Date(currentMusicPlayed?.modificationTime as number).toDateString() ||
-      null,
+      new Date(
+        currentMusicPlayed?.music.modificationTime as number
+      ).toDateString() || null,
     [currentMusicPlayed]
   );
   const musicDescription: string = currentMusicPlayed
@@ -79,7 +87,12 @@ export default function FloatingMusic(): React.JSX.Element {
 }
 
 export function PlayButton(): React.JSX.Element {
-  const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
+  const setCurrentMusicPlayed: SetCurrentMusicPlayed = usePlayerStore(
+    (state) => state.setCurrentMusicPlayed
+  );
+  const [status, setStatus] = React.useState<AVPlaybackStatusSuccess | null>(
+    null
+  );
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
@@ -90,36 +103,41 @@ export function PlayButton(): React.JSX.Element {
     () => !currentMusicPlayed,
     [currentMusicPlayed]
   );
+  const disabledStyles: StyleProp<ViewStyle> = React.useMemo(
+    () => ({
+      opacity: isDisabled ? 0.55 : 1,
+    }),
+    [isDisabled]
+  );
+
+  const handlePause: () => void = React.useCallback(() => {
+    pause(soundObject as SoundObject);
+    setCurrentMusicPlayed({
+      music: currentMusicPlayed.music,
+      currentDuration: status?.positionMillis as number,
+    });
+  }, [soundObject, currentMusicPlayed]);
 
   React.useEffect(() => {
-    soundObject?.sound.setOnPlaybackStatusUpdate(
-      // @ts-expect-error interface conflict
-      (state: AVPlaybackStatusSuccess) => setIsPlaying(state.isPlaying)
-    );
+    getPlaybackStatus((state) => setStatus(state));
   }, [soundObject]);
 
-  return isPlaying ? (
+  return status?.isPlaying ? (
     <IconButton
-      style={{
-        opacity: isDisabled ? 0.55 : 1,
-      }}
+      style={disabledStyles}
       disabled={isDisabled}
-      icon={
-        <PauseSVG
-          width={23}
-          height={23}
-          onPress={() => pause(soundObject as SoundObject)}
-        />
-      }
+      icon={<PauseSVG width={23} height={23} onPress={() => handlePause()} />}
     />
   ) : (
     <IconButton
-      style={{
-        opacity: isDisabled ? 0.55 : 1,
-      }}
+      style={disabledStyles}
       disabled={isDisabled}
       icon={<PlaySVG width={23} height={23} />}
-      onPress={() => playMusic(currentMusicPlayed)}
+      onPress={() =>
+        playMusic(currentMusicPlayed, {
+          positionMillis: currentMusicPlayed.currentDuration,
+        })
+      }
     />
   );
 }
