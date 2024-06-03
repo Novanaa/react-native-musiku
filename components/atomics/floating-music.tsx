@@ -19,7 +19,7 @@ import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import PauseSVG from "@/assets/icons/pause.svg";
 import { pause } from "@/utils/music-player";
-import playMusic from "@/utils/play-music";
+import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
 import { AVPlaybackStatusSuccess } from "expo-av";
 import getPlaybackStatus from "@/utils/get-playback-status";
 
@@ -50,6 +50,13 @@ export default function FloatingMusic(): React.JSX.Element {
     ? `${modificationTime} - ${parsedDuration}`
     : "No music audio history provided!";
 
+  const disabledStyles: StyleProp<ViewStyle> = React.useMemo(
+    () => ({
+      opacity: isDisabled ? 0.55 : 1,
+    }),
+    [isDisabled]
+  );
+
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.9}>
       <View style={styles.wrapper}>
@@ -66,17 +73,15 @@ export default function FloatingMusic(): React.JSX.Element {
         </View>
         <View style={styles.musicActionsWrapper}>
           <IconButton
-            style={{
-              opacity: isDisabled ? 0.55 : 1,
-            }}
+            style={disabledStyles}
             disabled={isDisabled}
             icon={<PrevMusicSVG width={23} height={23} />}
+            onPress={() => playPrevMusic(currentMusicPlayed.music)}
           />
           <PlayButton />
           <IconButton
-            style={{
-              opacity: isDisabled ? 0.55 : 1,
-            }}
+            onPress={() => playNextMusic(currentMusicPlayed.music)}
+            style={disabledStyles}
             disabled={isDisabled}
             icon={<NextMusicSVG width={23} height={23} />}
           />
