@@ -1,27 +1,26 @@
-import {
-  CurrentMusicPlayed,
-  PlayerState,
-  usePlayerStore,
-} from "@/stores/player";
+import { PlayerState, usePlayerStore } from "@/stores/player";
 import PlayerRepository from "@/repository/player.repository";
-import { SoundObject } from "@/interfaces/audio";
+import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import { createMusicPlayerInstance, play } from "./music-player";
+import { AVPlaybackStatusToSet } from "expo-av";
 
 export default async function playMusic(
-  music: CurrentMusicPlayed
+  item: CurrentMusicPlayed,
+  options?: AVPlaybackStatusToSet
 ): Promise<void> {
   const { refreshCurrentMusicPlayed, soundObject }: PlayerState =
     usePlayerStore.getState();
 
-  PlayerRepository.setCurrentMusicPlayed(music);
+  PlayerRepository.setCurrentMusicPlayed(item);
   refreshCurrentMusicPlayed();
 
   // Select other music
-  if (soundObject && soundObject?.status.uri !== music?.uri) {
+  if (soundObject && soundObject?.status.uri !== item.music?.uri) {
     await soundObject?.sound.stopAsync();
     await soundObject?.sound.unloadAsync();
     const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
-      music?.uri as string
+      item.music?.uri as string,
+      options
     );
 
     await play(sound);
@@ -30,7 +29,8 @@ export default async function playMusic(
   // Play music at the first time
   if (!soundObject) {
     const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
-      music?.uri as string
+      item.music?.uri as string,
+      options
     );
 
     await play(sound);
