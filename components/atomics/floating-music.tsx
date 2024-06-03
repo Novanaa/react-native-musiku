@@ -23,14 +23,15 @@ export default function FloatingMusic(): React.JSX.Element {
   const filename: string = React.useMemo(
     () => currentMusicPlayed?.filename || "What do you like to play?",
     [currentMusicPlayed]
-  )!;
+  );
   const parsedDuration: string | null = React.useMemo(
     () => parseDuration(String(currentMusicPlayed?.duration)),
     [currentMusicPlayed]
   );
   const modificationTime: string | null = React.useMemo(
     () =>
-      new Date(currentMusicPlayed?.modificationTime!).toDateString() || null,
+      new Date(currentMusicPlayed?.modificationTime as number).toDateString() ||
+      null,
     [currentMusicPlayed]
   );
   const musicDescription: string = currentMusicPlayed
@@ -80,7 +81,11 @@ export function PlayButton(): React.JSX.Element {
   return isPlaying ? (
     <IconButton
       icon={
-        <PauseSVG width={23} height={23} onPress={() => pause(soundObject!)} />
+        <PauseSVG
+          width={23}
+          height={23}
+          onPress={() => pause(soundObject as SoundObject)}
+        />
       }
     />
   ) : (

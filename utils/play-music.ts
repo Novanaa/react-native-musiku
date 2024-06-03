@@ -21,18 +21,16 @@ export default async function playMusic(
     await soundObject?.sound.stopAsync();
     await soundObject?.sound.unloadAsync();
     const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
-      music?.uri!
+      music?.uri as string
     );
 
     await play(sound);
-
-    return;
   }
 
   // Play music at the first time
   if (!soundObject) {
     const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
-      music?.uri!
+      music?.uri as string
     );
 
     await play(sound);
