@@ -20,6 +20,10 @@ export default function FloatingMusic(): React.JSX.Element {
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore(
     (state) => state.currentMusicPlayed
   );
+  const isDisabled: boolean = React.useMemo(
+    () => !currentMusicPlayed,
+    [currentMusicPlayed]
+  );
   const filename: string = React.useMemo(
     () => currentMusicPlayed?.filename || "What do you like to play?",
     [currentMusicPlayed]
@@ -53,9 +57,21 @@ export default function FloatingMusic(): React.JSX.Element {
           </View>
         </View>
         <View style={styles.musicActionsWrapper}>
-          <IconButton icon={<PrevMusicSVG width={23} height={23} />} />
+          <IconButton
+            style={{
+              opacity: isDisabled ? 0.55 : 1,
+            }}
+            disabled={isDisabled}
+            icon={<PrevMusicSVG width={23} height={23} />}
+          />
           <PlayButton />
-          <IconButton icon={<NextMusicSVG width={23} height={23} />} />
+          <IconButton
+            style={{
+              opacity: isDisabled ? 0.55 : 1,
+            }}
+            disabled={isDisabled}
+            icon={<NextMusicSVG width={23} height={23} />}
+          />
         </View>
       </View>
     </TouchableOpacity>
@@ -70,6 +86,10 @@ export function PlayButton(): React.JSX.Element {
   const soundObject: SoundObject | null = usePlayerStore(
     (state) => state.soundObject
   );
+  const isDisabled: boolean = React.useMemo(
+    () => !currentMusicPlayed,
+    [currentMusicPlayed]
+  );
 
   React.useEffect(() => {
     soundObject?.sound.setOnPlaybackStatusUpdate(
@@ -80,6 +100,10 @@ export function PlayButton(): React.JSX.Element {
 
   return isPlaying ? (
     <IconButton
+      style={{
+        opacity: isDisabled ? 0.55 : 1,
+      }}
+      disabled={isDisabled}
       icon={
         <PauseSVG
           width={23}
@@ -90,6 +114,10 @@ export function PlayButton(): React.JSX.Element {
     />
   ) : (
     <IconButton
+      style={{
+        opacity: isDisabled ? 0.55 : 1,
+      }}
+      disabled={isDisabled}
       icon={<PlaySVG width={23} height={23} />}
       onPress={() => playMusic(currentMusicPlayed)}
     />
