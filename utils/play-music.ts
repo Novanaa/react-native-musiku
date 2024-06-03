@@ -69,3 +69,25 @@ export async function playNextMusic(music: MediaLibrary.Asset): Promise<void> {
     currentDuration: 0,
   });
 }
+
+export async function playPrevMusic(music: MediaLibrary.Asset): Promise<void> {
+  const { refreshCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
+
+  const allMusic: Music = useMusicStore.getState().music as Music;
+  const allMusicLength: number = allMusic?.assets.length - 1;
+  const musicIndex: number =
+    allMusic?.assets.map((state) => state.uri).indexOf(music.uri) - 1;
+  const musicItemIndex: number = musicIndex == -1 ? allMusicLength : musicIndex;
+  const musicItem: MediaLibrary.Asset = allMusic?.assets[musicItemIndex];
+
+  PlayerRepository.setCurrentMusicPlayed({
+    music: musicItem,
+    currentDuration: 0,
+  });
+  refreshCurrentMusicPlayed();
+
+  await playMusic({
+    music: musicItem,
+    currentDuration: 0,
+  });
+}
