@@ -27,6 +27,9 @@ import uuid from "react-native-uuid";
 import { RootSiblingParent } from "react-native-root-siblings";
 import storage from "@/libs/storage";
 import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import PlayerRepository from "@/repository/player.repository";
+import { RefreshCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,6 +39,9 @@ export default function RootLayout() {
   const music: Music | null = useMusicStore((state) => state.music);
   const playlistStackScreenTitle: string = usePlaylistStore(
     (state) => state.playlistTitle
+  );
+  const refreshCurrentMusicPlayed: RefreshCurrentMusicPlayed = usePlayerStore(
+    (state) => state.refreshCurrentMusicPlayed
   );
   const refreshSortByState: RefreshSortByState = useSortByStore(
     (state) => state.refresh
@@ -54,6 +60,12 @@ export default function RootLayout() {
   );
 
   React.useEffect(() => {
+    if (!PlayerRepository.getCurrentMusicPlayed()) {
+      PlayerRepository.setCurrentMusicPlayed(null);
+
+      refreshCurrentMusicPlayed();
+    }
+
     if (!storage.getString(FavoriteRepository.favoriteKey)) {
       FavoriteRepository.setFavorites({
         assets: [],
@@ -90,6 +102,15 @@ export default function RootLayout() {
 
       folderDispatch(folder);
       musicStoreDispatch(state);
+    });
+
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      staysActiveInBackground: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
     });
   }, []);
 

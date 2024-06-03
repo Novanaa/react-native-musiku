@@ -35,6 +35,7 @@ import { Playlist } from "@/interfaces/playlist";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
+import playMusic from "@/utils/play-music";
 
 interface PlaylistMusicProps extends TouchableHighlightProps {
   title: string;
@@ -64,8 +65,7 @@ function PlaylistMusic(props: PlaylistMusicProps): React.JSX.Element {
       <TouchableOpacity
         activeOpacity={0.6}
         style={playlistMusicStyles.container}
-        // Music player action
-        onPress={() => console.log("open")}
+        onPress={() => playMusic(props.musicItem)}
       >
         <View style={playlistMusicStyles.wrapper}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
@@ -124,7 +124,7 @@ export function PlaylistMusicOptions(
           <MusicOptionsList
             title="Play music"
             icon={PlaySVG}
-            onPress={() => console.log("action")}
+            onPress={() => playMusic(props.music)}
           />
           <MusicOptionsList
             title="Add to playlist"

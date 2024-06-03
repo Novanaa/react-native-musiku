@@ -24,7 +24,7 @@
       },
       "package": "com.musiku.app"
     },
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": ["expo-router", "expo-font", "expo-av"],
     "experiments": {
       "typedRoutes": true
     },

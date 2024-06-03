@@ -9,45 +9,118 @@ import PlaySVG from "@/assets/icons/play.svg";
 import NextMusicSVG from "@/assets/icons/next-music.svg";
 import PrevMusicSVG from "@/assets/icons/prev-music.svg";
 import parseDuration from "@/utils/parse-duration";
-import { CurrentMusicPlayedData, usePlayerStore } from "@/stores/player";
+import { CurrentMusicPlayed, usePlayerStore } from "@/stores/player";
+import { SoundObject } from "@/interfaces/audio";
+import PauseSVG from "@/assets/icons/pause.svg";
+import { pause } from "@/utils/music-player";
+import playMusic from "@/utils/play-music";
+import { AVPlaybackStatusSuccess } from "expo-av";
 
 export default function FloatingMusic(): React.JSX.Element {
-  const currentMusicPlayed: CurrentMusicPlayedData = usePlayerStore(
-    (state) => state.getCurrentMusicPlayed
-  )();
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
+    JSON.parse(state.currentMusicPlayed)
+  );
+  const isDisabled: boolean = React.useMemo(
+    () => !currentMusicPlayed,
+    [currentMusicPlayed]
+  );
   const filename: string = React.useMemo(
     () => currentMusicPlayed?.filename || "What do you like to play?",
-    []
-  )!;
-  const parsedDuration: string | null = React.useMemo(
-    () =>
-      currentMusicPlayed?.duration
-        ? parseDuration(String(currentMusicPlayed?.duration))
-        : "No music audio history provided!",
-    []
+    [currentMusicPlayed]
   );
+  const parsedDuration: string | null = React.useMemo(
+    () => parseDuration(String(currentMusicPlayed?.duration)),
+    [currentMusicPlayed]
+  );
+  const modificationTime: string | null = React.useMemo(
+    () =>
+      new Date(currentMusicPlayed?.modificationTime as number).toDateString() ||
+      null,
+    [currentMusicPlayed]
+  );
+  const musicDescription: string = currentMusicPlayed
+    ? `${modificationTime} - ${parsedDuration}`
+    : "No music audio history provided!";
 
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.9}>
       <View style={styles.wrapper}>
         <View style={styles.musicHeaderWrapper}>
-          <MusicSVG width={28} height={28} />
+          <MusicSVG width={29} height={29} />
           <View style={styles.musicMetadataWrapper}>
             <Text style={styles.musicTitle} numberOfLines={1}>
               {filename}
             </Text>
             <Text style={styles.duration} numberOfLines={1}>
-              {parsedDuration}
+              {musicDescription}
             </Text>
           </View>
         </View>
         <View style={styles.musicActionsWrapper}>
-          <IconButton icon={<NextMusicSVG width={23} height={23} />} />
-          <IconButton icon={<PlaySVG width={23} height={23} />} />
-          <IconButton icon={<PrevMusicSVG width={23} height={23} />} />
+          <IconButton
+            style={{
+              opacity: isDisabled ? 0.55 : 1,
+            }}
+            disabled={isDisabled}
+            icon={<PrevMusicSVG width={23} height={23} />}
+          />
+          <PlayButton />
+          <IconButton
+            style={{
+              opacity: isDisabled ? 0.55 : 1,
+            }}
+            disabled={isDisabled}
+            icon={<NextMusicSVG width={23} height={23} />}
+          />
         </View>
       </View>
     </TouchableOpacity>
+  );
+}
+
+export function PlayButton(): React.JSX.Element {
+  const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
+    JSON.parse(state.currentMusicPlayed)
+  );
+  const soundObject: SoundObject | null = usePlayerStore(
+    (state) => state.soundObject
+  );
+  const isDisabled: boolean = React.useMemo(
+    () => !currentMusicPlayed,
+    [currentMusicPlayed]
+  );
+
+  React.useEffect(() => {
+    soundObject?.sound.setOnPlaybackStatusUpdate(
+      // @ts-expect-error interface conflict
+      (state: AVPlaybackStatusSuccess) => setIsPlaying(state.isPlaying)
+    );
+  }, [soundObject]);
+
+  return isPlaying ? (
+    <IconButton
+      style={{
+        opacity: isDisabled ? 0.55 : 1,
+      }}
+      disabled={isDisabled}
+      icon={
+        <PauseSVG
+          width={23}
+          height={23}
+          onPress={() => pause(soundObject as SoundObject)}
+        />
+      }
+    />
+  ) : (
+    <IconButton
+      style={{
+        opacity: isDisabled ? 0.55 : 1,
+      }}
+      disabled={isDisabled}
+      icon={<PlaySVG width={23} height={23} />}
+      onPress={() => playMusic(currentMusicPlayed)}
+    />
   );
 }
 

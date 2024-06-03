@@ -2,22 +2,33 @@
 
 import { create } from "zustand";
 import * as MediaLibrary from "expo-media-library";
+import PlayerRepository from "@/repository/player.repository";
+import { SoundObject } from "@/interfaces/audio";
 
-export type GetCurrentMusicPlayed = () => CurrentMusicPlayedData;
+export type CurrentMusicPlayed = MediaLibrary.Asset | null;
 
-export type SetCurrentMusicPlayed = (music: MediaLibrary.Asset) => void;
+export type RefreshCurrentMusicPlayed = () => void;
 
-export type CurrentMusicPlayedData = MediaLibrary.Asset | null;
+export type IsPlayingSetter = (value: boolean) => void;
 
-interface PlayerState {
-  getCurrentMusicPlayed: GetCurrentMusicPlayed;
-  setCurrentMusicPlayed: SetCurrentMusicPlayed;
+export type SetSoundObject = (sound: SoundObject | null) => void;
+
+export interface PlayerState {
+  currentMusicPlayed: string;
+  refreshCurrentMusicPlayed: RefreshCurrentMusicPlayed;
+  soundObject: SoundObject | null;
+  setSoundObject: SetSoundObject;
 }
 
 export const usePlayerStore = create<PlayerState>((set) => ({
-  getCurrentMusicPlayed: () => null,
-  setCurrentMusicPlayed: (music: MediaLibrary.Asset) =>
+  soundObject: null,
+  currentMusicPlayed: PlayerRepository.getCurrentMusicPlayed(),
+  setSoundObject: (param) =>
+    set({
+      soundObject: param,
+    }),
+  refreshCurrentMusicPlayed: () =>
     set(() => ({
-      getCurrentMusicPlayed: () => music,
+      currentMusicPlayed: PlayerRepository.getCurrentMusicPlayed(),
     })),
 }));
