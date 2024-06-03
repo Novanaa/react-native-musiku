@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
+  AppState,
 } from "react-native";
 import Text from "./text";
 import { backgroundColor, borderColor } from "@/constants/colors";
@@ -114,6 +115,14 @@ export function PlayButton(): React.JSX.Element {
     }),
     [isDisabled]
   );
+
+  React.useEffect(() => {
+    if (AppState.currentState == "background")
+      setCurrentMusicPlayed({
+        music: currentMusicPlayed.music,
+        currentDuration: status?.positionMillis as number,
+      });
+  }, [AppState.currentState]);
 
   const handlePause: () => void = React.useCallback(() => {
     pause(soundObject as SoundObject);
