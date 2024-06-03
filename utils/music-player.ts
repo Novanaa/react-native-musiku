@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import showToast from "./toast";
 import { SoundObject } from "@/interfaces/audio";
 import { SetSoundObject, usePlayerStore } from "@/stores/player";
@@ -41,7 +43,7 @@ export async function createMusicPlayerInstance(
 ): Promise<SoundObject> {
   const playback: Awaited<SoundObject> = (await Audio.Sound.createAsync(
     { uri },
-    options
+    { ...options, isLooping: true }
   )) as SoundObject;
 
   return playback;
