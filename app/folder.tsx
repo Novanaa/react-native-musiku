@@ -25,11 +25,7 @@ export default function FolderScreen(): React.JSX.Element {
       style={styles.container}
       renderItem={(data) => (
         <View style={styles.wrapper}>
-          <Music
-            description="Unknown Artist - Unknown Album"
-            title={data.item.filename}
-            musicItem={data.item}
-          />
+          <Music musicItem={data.item} />
         </View>
       )}
     />

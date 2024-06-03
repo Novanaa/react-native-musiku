@@ -17,13 +17,7 @@ export default function MusicList(): React.JSX.Element {
     <FlatList
       data={music.assets}
       style={styles.container}
-      renderItem={(data) => (
-        <MusicComponent
-          description="Unknown Artist - Unknown Album"
-          title={data.item.filename}
-          musicItem={data.item}
-        />
-      )}
+      renderItem={(data) => <MusicComponent musicItem={data.item} />}
     />
   );
 }
