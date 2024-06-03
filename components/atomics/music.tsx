@@ -32,7 +32,12 @@ function Music(props: MusicProps): React.JSX.Element {
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.container}
-        onPress={() => playMusic(props.musicItem)}
+        onPress={() =>
+          playMusic({
+            music: props.musicItem,
+            currentDuration: 0,
+          })
+        }
       >
         <View style={styles.wrapper}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
