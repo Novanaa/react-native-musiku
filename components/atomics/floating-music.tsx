@@ -19,7 +19,7 @@ import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import PauseSVG from "@/assets/icons/pause.svg";
 import { pause } from "@/utils/music-player";
-import playMusic, { playNextMusic } from "@/utils/play-music";
+import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
 import { AVPlaybackStatusSuccess } from "expo-av";
 import getPlaybackStatus from "@/utils/get-playback-status";
 
@@ -76,6 +76,7 @@ export default function FloatingMusic(): React.JSX.Element {
             style={disabledStyles}
             disabled={isDisabled}
             icon={<PrevMusicSVG width={23} height={23} />}
+            onPress={() => playPrevMusic(currentMusicPlayed.music)}
           />
           <PlayButton />
           <IconButton
