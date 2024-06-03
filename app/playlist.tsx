@@ -37,12 +37,7 @@ export default function Playlist(): React.JSX.Element {
       style={styles.container}
       renderItem={(data) => (
         <View style={styles.wrapper}>
-          <PlaylistMusic
-            playlistItem={playlist}
-            description="Unknown Artist - Unknown Album"
-            title={data.item.filename}
-            musicItem={data.item}
-          />
+          <PlaylistMusic playlistItem={playlist} musicItem={data.item} />
         </View>
       )}
     />
