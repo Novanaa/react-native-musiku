@@ -31,6 +31,7 @@ import Favorites from "@/interfaces/favorites";
 import deleteMusic from "@/utils/delete-music";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
+import playMusic from "@/utils/play-music";
 
 interface MusicOptionsListProps extends TouchableHighlightProps {
   icon: React.FC<SvgProps>;
@@ -69,7 +70,10 @@ export default function MusicOptions(
           <MusicOptionsList
             title="Play music"
             icon={PlaySVG}
-            onPress={() => console.log("action")}
+            onPress={() => {
+              playMusic(props.music);
+              dismissAll();
+            }}
           />
           <MusicOptionsList
             title="Add to playlist"
