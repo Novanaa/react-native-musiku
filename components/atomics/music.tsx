@@ -13,10 +13,9 @@ import * as MediaLibrary from "expo-media-library";
 import MusicSVG from "@/assets/icons/music.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
 import playMusic from "@/utils/play-music";
+import parseDuration from "@/utils/parse-duration";
 
 interface MusicProps extends TouchableHighlightProps {
-  title: string;
-  description: string;
   musicItem: MediaLibrary.Asset;
 }
 
@@ -24,6 +23,10 @@ function Music(props: MusicProps): React.JSX.Element {
   const drawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
     React.useRef(null);
 
+  const musicDuration: string = React.useMemo(
+    () => parseDuration(String(props.musicItem.duration)),
+    [props.musicItem]
+  );
   return (
     <>
       <TouchableOpacity
@@ -36,10 +39,10 @@ function Music(props: MusicProps): React.JSX.Element {
             <MusicSVG width={28} height={28} />
             <View style={styles.metadata}>
               <Text style={styles.title} numberOfLines={1}>
-                {props.title}
+                {props.musicItem.filename}
               </Text>
               <Text numberOfLines={1} style={styles.description}>
-                {props.description}
+                {`(${musicDuration}) - Unknown Artist - Unknown Album`}
               </Text>
             </View>
           </View>
