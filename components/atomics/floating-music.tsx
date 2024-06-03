@@ -10,6 +10,11 @@ import NextMusicSVG from "@/assets/icons/next-music.svg";
 import PrevMusicSVG from "@/assets/icons/prev-music.svg";
 import parseDuration from "@/utils/parse-duration";
 import { CurrentMusicPlayed, usePlayerStore } from "@/stores/player";
+import { SoundObject } from "@/interfaces/audio";
+import PauseSVG from "@/assets/icons/pause.svg";
+import { pause } from "@/utils/music-player";
+import playMusic from "@/utils/play-music";
+import { AVPlaybackStatusSuccess } from "expo-av";
 
 export default function FloatingMusic(): React.JSX.Element {
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore(
@@ -47,12 +52,42 @@ export default function FloatingMusic(): React.JSX.Element {
           </View>
         </View>
         <View style={styles.musicActionsWrapper}>
-          <IconButton icon={<NextMusicSVG width={23} height={23} />} />
-          <IconButton icon={<PlaySVG width={23} height={23} />} />
           <IconButton icon={<PrevMusicSVG width={23} height={23} />} />
+          <PlayButton />
+          <IconButton icon={<NextMusicSVG width={23} height={23} />} />
         </View>
       </View>
     </TouchableOpacity>
+  );
+}
+
+export function PlayButton(): React.JSX.Element {
+  const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore(
+    (state) => state.currentMusicPlayed
+  );
+  const soundObject: SoundObject | null = usePlayerStore(
+    (state) => state.soundObject
+  );
+
+  React.useEffect(() => {
+    soundObject?.sound.setOnPlaybackStatusUpdate(
+      // @ts-expect-error interface conflict
+      (state: AVPlaybackStatusSuccess) => setIsPlaying(state.isPlaying)
+    );
+  }, [soundObject]);
+
+  return isPlaying ? (
+    <IconButton
+      icon={
+        <PauseSVG width={23} height={23} onPress={() => pause(soundObject!)} />
+      }
+    />
+  ) : (
+    <IconButton
+      icon={<PlaySVG width={23} height={23} />}
+      onPress={() => playMusic(currentMusicPlayed)}
+    />
   );
 }
 
