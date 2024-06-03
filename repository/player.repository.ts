@@ -1,5 +1,5 @@
+import { CurrentMusicPlayed } from "@/interfaces/audio";
 import storage from "@/libs/storage";
-import { CurrentMusicPlayed } from "@/stores/player";
 
 export default class PlayerRepository {
   public static playerKey: string = "player";
@@ -8,7 +8,7 @@ export default class PlayerRepository {
     return storage.getString(this.playerKey) as string;
   }
 
-  public static setCurrentMusicPlayed(music: CurrentMusicPlayed): void {
+  public static setCurrentMusicPlayed(music: CurrentMusicPlayed | null): void {
     return storage.set(this.playerKey, JSON.stringify(music));
   }
 }

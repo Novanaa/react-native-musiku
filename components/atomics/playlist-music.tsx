@@ -69,7 +69,9 @@ function PlaylistMusic(props: PlaylistMusicProps): React.JSX.Element {
       <TouchableOpacity
         activeOpacity={0.6}
         style={playlistMusicStyles.container}
-        onPress={() => playMusic(props.musicItem)}
+        onPress={() =>
+          playMusic({ music: props.musicItem, currentDuration: 0 })
+        }
       >
         <View style={playlistMusicStyles.wrapper}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
@@ -128,7 +130,9 @@ export function PlaylistMusicOptions(
           <MusicOptionsList
             title="Play music"
             icon={PlaySVG}
-            onPress={() => playMusic(props.music)}
+            onPress={() =>
+              playMusic({ music: props.music, currentDuration: 0 })
+            }
           />
           <MusicOptionsList
             title="Add to playlist"
