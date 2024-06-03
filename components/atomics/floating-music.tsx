@@ -17,8 +17,8 @@ import playMusic from "@/utils/play-music";
 import { AVPlaybackStatusSuccess } from "expo-av";
 
 export default function FloatingMusic(): React.JSX.Element {
-  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore(
-    (state) => state.currentMusicPlayed
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
+    JSON.parse(state.currentMusicPlayed)
   );
   const isDisabled: boolean = React.useMemo(
     () => !currentMusicPlayed,
@@ -80,8 +80,8 @@ export default function FloatingMusic(): React.JSX.Element {
 
 export function PlayButton(): React.JSX.Element {
   const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
-  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore(
-    (state) => state.currentMusicPlayed
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
+    JSON.parse(state.currentMusicPlayed)
   );
   const soundObject: SoundObject | null = usePlayerStore(
     (state) => state.soundObject

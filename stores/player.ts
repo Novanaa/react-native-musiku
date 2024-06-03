@@ -14,7 +14,7 @@ export type IsPlayingSetter = (value: boolean) => void;
 export type SetSoundObject = (sound: SoundObject | null) => void;
 
 export interface PlayerState {
-  currentMusicPlayed: CurrentMusicPlayed;
+  currentMusicPlayed: string;
   refreshCurrentMusicPlayed: RefreshCurrentMusicPlayed;
   soundObject: SoundObject | null;
   setSoundObject: SetSoundObject;
@@ -22,13 +22,13 @@ export interface PlayerState {
 
 export const usePlayerStore = create<PlayerState>((set) => ({
   soundObject: null,
-  currentMusicPlayed: JSON.parse(PlayerRepository.getCurrentMusicPlayed()),
+  currentMusicPlayed: PlayerRepository.getCurrentMusicPlayed(),
   setSoundObject: (param) =>
     set({
       soundObject: param,
     }),
   refreshCurrentMusicPlayed: () =>
     set(() => ({
-      currentMusicPlayed: JSON.parse(PlayerRepository.getCurrentMusicPlayed()),
+      currentMusicPlayed: PlayerRepository.getCurrentMusicPlayed(),
     })),
 }));
