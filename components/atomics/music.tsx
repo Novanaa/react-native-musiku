@@ -12,6 +12,7 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import * as MediaLibrary from "expo-media-library";
 import MusicSVG from "@/assets/icons/music.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
+import playMusic from "@/utils/play-music";
 
 interface MusicProps extends TouchableHighlightProps {
   title: string;
@@ -28,8 +29,7 @@ function Music(props: MusicProps): React.JSX.Element {
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.container}
-        // Music player action
-        onPress={() => "open"}
+        onPress={() => playMusic(props.musicItem)}
       >
         <View style={styles.wrapper}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
