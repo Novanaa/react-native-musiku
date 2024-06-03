@@ -39,13 +39,7 @@ export default function SearchList(props: SearchListProps): React.JSX.Element {
     <FlatList
       data={filteredMusic}
       style={styles.container}
-      renderItem={(data) => (
-        <MusicComponent
-          musicItem={data.item}
-          description="Unknown Artist - Unknown Album"
-          title={data.item.filename}
-        />
-      )}
+      renderItem={(data) => <MusicComponent musicItem={data.item} />}
     />
   );
 }

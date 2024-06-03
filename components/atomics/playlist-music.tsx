@@ -36,10 +36,9 @@ import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
 import playMusic from "@/utils/play-music";
+import parseDuration from "@/utils/parse-duration";
 
 interface PlaylistMusicProps extends TouchableHighlightProps {
-  title: string;
-  description: string;
   musicItem: MediaLibrary.Asset;
   playlistItem: Playlist;
 }
@@ -60,6 +59,11 @@ function PlaylistMusic(props: PlaylistMusicProps): React.JSX.Element {
   const drawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
     React.useRef(null);
 
+  const musicDuration: string = React.useMemo(
+    () => parseDuration(String(props.musicItem.duration)),
+    [props.musicItem]
+  );
+
   return (
     <>
       <TouchableOpacity
@@ -72,10 +76,10 @@ function PlaylistMusic(props: PlaylistMusicProps): React.JSX.Element {
             <MusicSVG width={28} height={28} />
             <View style={playlistMusicStyles.metadata}>
               <Text style={playlistMusicStyles.title} numberOfLines={1}>
-                {props.title}
+                {props.musicItem.filename}
               </Text>
               <Text numberOfLines={1} style={playlistMusicStyles.description}>
-                {props.description}
+                {`(${musicDuration}) - Unknown Artist - Unknown Album`}
               </Text>
             </View>
           </View>

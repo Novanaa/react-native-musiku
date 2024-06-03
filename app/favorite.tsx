@@ -18,11 +18,7 @@ export default function Favorites(): React.JSX.Element {
       data={favoritedMusic.assets}
       renderItem={(data) => (
         <View style={styles.wrapper}>
-          <Music
-            title={data.item.filename}
-            description="Unknown Artist - Unknown Album"
-            musicItem={data.item}
-          />
+          <Music musicItem={data.item} />
         </View>
       )}
     />
