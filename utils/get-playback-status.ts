@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { usePlayerStore } from "@/stores/player";
 import { AVPlaybackStatusSuccess } from "expo-av";
 import { SoundObject } from "expo-av/build/Audio";
