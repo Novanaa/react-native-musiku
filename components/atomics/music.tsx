@@ -14,30 +14,35 @@ import MusicSVG from "@/assets/icons/music.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
 import playMusic from "@/utils/play-music";
 import parseDuration from "@/utils/parse-duration";
+import MusicPlayer from "./music-player";
 
 interface MusicProps extends TouchableHighlightProps {
   musicItem: MediaLibrary.Asset;
 }
 
 function Music(props: MusicProps): React.JSX.Element {
-  const drawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
+  const optionsDrawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
+    React.useRef(null);
+  const playerDrawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
     React.useRef(null);
 
   const musicDuration: string = React.useMemo(
     () => parseDuration(String(props.musicItem.duration)),
     [props.musicItem]
   );
+
   return (
     <>
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.container}
-        onPress={() =>
+        onPress={() => {
+          playerDrawerRef.current?.present();
           playMusic({
             music: props.musicItem,
             currentDuration: 0,
-          })
-        }
+          });
+        }}
       >
         <View style={styles.wrapper}>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
@@ -52,14 +57,15 @@ function Music(props: MusicProps): React.JSX.Element {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => drawerRef.current?.present()}
+            onPress={() => optionsDrawerRef.current?.present()}
             style={{ width: 30, height: 30 }}
           >
             <MusicOptionsSVG />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
-      <MusicOptions modalRef={drawerRef} music={props.musicItem} />
+      <MusicOptions modalRef={optionsDrawerRef} music={props.musicItem} />
+      <MusicPlayer modalRef={playerDrawerRef} music={props.musicItem} />
     </>
   );
 }
