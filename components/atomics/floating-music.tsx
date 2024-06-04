@@ -67,7 +67,10 @@ export default function FloatingMusic(): React.JSX.Element {
       <TouchableOpacity
         style={styles.container}
         activeOpacity={0.9}
-        onPress={() => playerDrawerRef.current?.present()}
+        onPress={() => {
+          if (!currentMusicPlayed) return;
+          playerDrawerRef.current?.present();
+        }}
       >
         <View style={styles.wrapper}>
           <View style={styles.musicHeaderWrapper}>
@@ -100,7 +103,7 @@ export default function FloatingMusic(): React.JSX.Element {
       </TouchableOpacity>
       <MusicPlayer
         modalRef={playerDrawerRef}
-        music={currentMusicPlayed.music}
+        music={currentMusicPlayed?.music}
       />
     </>
   );
