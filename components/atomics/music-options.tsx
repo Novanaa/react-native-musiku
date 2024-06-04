@@ -71,7 +71,7 @@ export default function MusicOptions(
             title="Play music"
             icon={PlaySVG}
             onPress={() => {
-              playMusic(props.music);
+              playMusic({ music: props.music, currentDuration: 0 });
               dismissAll();
             }}
           />
