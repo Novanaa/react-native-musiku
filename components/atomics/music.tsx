@@ -65,7 +65,11 @@ function Music(props: MusicProps): React.JSX.Element {
         </View>
       </TouchableOpacity>
       <MusicOptions modalRef={optionsDrawerRef} music={props.musicItem} />
-      <MusicPlayer modalRef={playerDrawerRef} music={props.musicItem} />
+      <MusicPlayer
+        modalRef={playerDrawerRef}
+        music={props.musicItem}
+        musicOptionsRef={optionsDrawerRef}
+      />
     </>
   );
 }

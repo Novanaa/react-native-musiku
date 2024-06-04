@@ -25,9 +25,12 @@ import { AVPlaybackStatusSuccess } from "expo-av";
 import getPlaybackStatus from "@/utils/get-playback-status";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import MusicPlayer from "./music-player";
+import MusicOptions from "./music-options";
 
 export default function FloatingMusic(): React.JSX.Element {
   const playerDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
+  const musicOptionsDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
@@ -100,9 +103,14 @@ export default function FloatingMusic(): React.JSX.Element {
           </View>
         </View>
       </TouchableOpacity>
+      <MusicOptions
+        modalRef={musicOptionsDrawerRef}
+        music={currentMusicPlayed?.music}
+      />
       <MusicPlayer
         modalRef={playerDrawerRef}
         music={currentMusicPlayed?.music}
+        musicOptionsRef={musicOptionsDrawerRef}
       />
     </>
   );
