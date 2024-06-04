@@ -32,6 +32,7 @@ interface MusicOptionsInformationProps extends DrawerProps {
 
 interface MusicOptionsAddToPlaylistProps extends DrawerProps {
   music: MediaLibrary.Asset;
+  stackBehavior?: "push" | "replace";
 }
 
 interface RenderMusicOptionsAddToPlaylistItemProps extends DrawerProps {
@@ -118,7 +119,11 @@ export function MusicOptionsAddToPlaylist(
 
   return (
     <>
-      <Drawer modalRef={props.modalRef} snapPoints={["30%", "50%"]}>
+      <Drawer
+        modalRef={props.modalRef}
+        snapPoints={["30%", "50%"]}
+        stackBehavior={props.stackBehavior}
+      >
         <View style={musicOptionsAddToPlaylistStyles.wrapper}>
           <TouchableOpacity
             onPress={() => addPlaylistDrawerRef.current?.present()}
