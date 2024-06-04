@@ -65,13 +65,17 @@ export default function MusicOptions(
 
   return (
     <>
-      <Drawer modalRef={props.modalRef} snapPoints={["40%"]}>
+      <Drawer
+        modalRef={props.modalRef}
+        snapPoints={["40%"]}
+        stackBehavior="push"
+      >
         <View style={styles.wrapper}>
           <MusicOptionsList
             title="Play music"
             icon={PlaySVG}
             onPress={() => {
-              playMusic(props.music);
+              playMusic({ music: props.music, currentDuration: 0 });
               dismissAll();
             }}
           />

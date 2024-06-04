@@ -23,8 +23,15 @@ import { pause } from "@/utils/music-player";
 import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
 import { AVPlaybackStatusSuccess } from "expo-av";
 import getPlaybackStatus from "@/utils/get-playback-status";
+import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import MusicPlayer from "./music-player";
+import MusicOptions from "./music-options";
 
 export default function FloatingMusic(): React.JSX.Element {
+  const playerDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
+  const musicOptionsDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
@@ -59,36 +66,53 @@ export default function FloatingMusic(): React.JSX.Element {
   );
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.9}>
-      <View style={styles.wrapper}>
-        <View style={styles.musicHeaderWrapper}>
-          <MusicSVG width={29} height={29} />
-          <View style={styles.musicMetadataWrapper}>
-            <Text style={styles.musicTitle} numberOfLines={1}>
-              {filename}
-            </Text>
-            <Text style={styles.duration} numberOfLines={1}>
-              {musicDescription}
-            </Text>
+    <>
+      <TouchableOpacity
+        style={styles.container}
+        activeOpacity={0.9}
+        onPress={() => {
+          if (currentMusicPlayed) playerDrawerRef.current?.present();
+        }}
+      >
+        <View style={styles.wrapper}>
+          <View style={styles.musicHeaderWrapper}>
+            <MusicSVG width={29} height={29} />
+            <View style={styles.musicMetadataWrapper}>
+              <Text style={styles.musicTitle} numberOfLines={1}>
+                {filename}
+              </Text>
+              <Text style={styles.duration} numberOfLines={1}>
+                {musicDescription}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.musicActionsWrapper}>
+            <IconButton
+              style={disabledStyles}
+              disabled={isDisabled}
+              icon={<PrevMusicSVG width={23} height={23} />}
+              onPress={() => playPrevMusic(currentMusicPlayed.music)}
+            />
+            <PlayButton />
+            <IconButton
+              onPress={() => playNextMusic(currentMusicPlayed.music)}
+              style={disabledStyles}
+              disabled={isDisabled}
+              icon={<NextMusicSVG width={23} height={23} />}
+            />
           </View>
         </View>
-        <View style={styles.musicActionsWrapper}>
-          <IconButton
-            style={disabledStyles}
-            disabled={isDisabled}
-            icon={<PrevMusicSVG width={23} height={23} />}
-            onPress={() => playPrevMusic(currentMusicPlayed.music)}
-          />
-          <PlayButton />
-          <IconButton
-            onPress={() => playNextMusic(currentMusicPlayed.music)}
-            style={disabledStyles}
-            disabled={isDisabled}
-            icon={<NextMusicSVG width={23} height={23} />}
-          />
-        </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <MusicOptions
+        modalRef={musicOptionsDrawerRef}
+        music={currentMusicPlayed?.music}
+      />
+      <MusicPlayer
+        modalRef={playerDrawerRef}
+        music={currentMusicPlayed?.music}
+        musicOptionsRef={musicOptionsDrawerRef}
+      />
+    </>
   );
 }
 
