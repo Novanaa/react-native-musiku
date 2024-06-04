@@ -26,6 +26,14 @@ import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 import isMusicFavorited from "@/utils/is-music-favorited";
 import addMusicFavorites from "@/utils/add-favorites";
 import removeFavorites from "@/utils/remove-favorites";
+import { AVPlaybackStatusSuccess } from "expo-av";
+import { CurrentMusicPlayed } from "@/interfaces/audio";
+import { usePlayerStore } from "@/stores/player";
+import getPlaybackStatus from "@/utils/get-playback-status";
+import { SoundObject } from "expo-av/build/Audio";
+import PauseSVG from "@/assets/icons/pause.svg";
+import { handlePause } from "@/utils/music-player";
+import playMusic from "@/utils/play-music";
 
 interface MusicPlayerProps extends DrawerProps {
   music: MediaLibrary.Asset;
@@ -34,6 +42,10 @@ interface MusicPlayerProps extends DrawerProps {
 
 interface MusicPlayerFavoritesMusicButtonProps {
   music: MediaLibrary.Asset;
+}
+
+interface MusicPlayerControllerProps {
+  addToPlaylistDrawerRef: React.MutableRefObject<null | BottomSheetModalMethods>;
 }
 
 export default function MusicPlayer(
@@ -100,25 +112,9 @@ export default function MusicPlayer(
             />
             <Text style={styles.musicMetadataDescription}>{musicDuration}</Text>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginTop: 20,
-            }}
-          >
-            <IconButton icon={<ArrowPathSVG width={22.5} height={22.5} />} />
-            <View style={styles.musicControllerWrapper}>
-              <IconButton icon={<SkipBackSVG width={40} height={40} />} />
-              <IconButton icon={<PlaySVG width={40} height={40} />} />
-              <IconButton icon={<SkipForwardSVG width={40} height={40} />} />
-            </View>
-            <IconButton
-              icon={<ListOptionsSVG width={22.5} height={22.5} />}
-              onPress={() => addToPlaylistDrawerRef.current?.present()}
-            />
-          </View>
+          <MusicPlayerController
+            addToPlaylistDrawerRef={addToPlaylistDrawerRef}
+          />
         </DrawerWrapper>
       </Drawer>
       <MusicOptionsAddToPlaylist
@@ -127,6 +123,60 @@ export default function MusicPlayer(
         music={props.music}
       />
     </>
+  );
+}
+
+export function MusicPlayerController(
+  props: MusicPlayerControllerProps
+): React.JSX.Element {
+  const [status, setStatus] = React.useState<AVPlaybackStatusSuccess | null>(
+    null
+  );
+  const soundObject: SoundObject = usePlayerStore(
+    (state) => state.soundObject
+  ) as SoundObject;
+  const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
+    JSON.parse(state.currentMusicPlayed)
+  );
+
+  React.useEffect(() => {
+    getPlaybackStatus((state) => setStatus(state));
+  }, [soundObject]);
+
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginTop: 20,
+      }}
+    >
+      <IconButton icon={<ArrowPathSVG width={22.5} height={22.5} />} />
+      <View style={styles.musicControllerWrapper}>
+        <IconButton icon={<SkipBackSVG width={40} height={40} />} />
+        {status?.isPlaying ? (
+          <IconButton
+            icon={<PauseSVG width={40} height={40} />}
+            onPress={() => handlePause(status)}
+          />
+        ) : (
+          <IconButton
+            icon={<PlaySVG width={40} height={40} />}
+            onPress={() =>
+              playMusic(currentMusicPlayed, {
+                positionMillis: currentMusicPlayed.currentDuration,
+              })
+            }
+          />
+        )}
+        <IconButton icon={<SkipForwardSVG width={40} height={40} />} />
+      </View>
+      <IconButton
+        icon={<ListOptionsSVG width={22.5} height={22.5} />}
+        onPress={() => props.addToPlaylistDrawerRef.current?.present()}
+      />
+    </View>
   );
 }
 
