@@ -1,8 +1,12 @@
 /* eslint-disable no-unused-vars */
 
 import showToast from "./toast";
-import { SoundObject } from "@/interfaces/audio";
-import { SetSoundObject, usePlayerStore } from "@/stores/player";
+import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
+import {
+  SetCurrentMusicPlayed,
+  SetSoundObject,
+  usePlayerStore,
+} from "@/stores/player";
 import { AVPlaybackStatusSuccess, AVPlaybackStatusToSet, Audio } from "expo-av";
 
 export async function play(playback: SoundObject): Promise<void> {
@@ -47,4 +51,22 @@ export async function createMusicPlayerInstance(
   )) as SoundObject;
 
   return playback;
+}
+
+export async function handlePause(
+  status: AVPlaybackStatusSuccess
+): Promise<void> {
+  const soundObject: SoundObject = usePlayerStore.getState()
+    .soundObject as SoundObject;
+  const setCurrentMusicPlayed: SetCurrentMusicPlayed =
+    usePlayerStore.getState().setCurrentMusicPlayed;
+  const currentMusicPlayed: CurrentMusicPlayed = JSON.parse(
+    usePlayerStore.getState().currentMusicPlayed
+  );
+
+  await pause(soundObject);
+  setCurrentMusicPlayed({
+    music: currentMusicPlayed.music,
+    currentDuration: status?.positionMillis as number,
+  });
 }

@@ -99,7 +99,6 @@ function PlaylistMusic(props: PlaylistMusicProps): React.JSX.Element {
       </TouchableOpacity>
       <MusicPlayer
         modalRef={playerDrawerRef}
-        music={props.musicItem}
         musicOptionsRef={optionsDrawerRef}
       />
       <PlaylistMusicOptions
