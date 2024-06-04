@@ -65,7 +65,11 @@ export default function MusicOptions(
 
   return (
     <>
-      <Drawer modalRef={props.modalRef} snapPoints={["40%"]}>
+      <Drawer
+        modalRef={props.modalRef}
+        snapPoints={["40%"]}
+        stackBehavior="push"
+      >
         <View style={styles.wrapper}>
           <MusicOptionsList
             title="Play music"
