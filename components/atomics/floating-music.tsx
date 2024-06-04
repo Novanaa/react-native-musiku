@@ -68,8 +68,7 @@ export default function FloatingMusic(): React.JSX.Element {
         style={styles.container}
         activeOpacity={0.9}
         onPress={() => {
-          if (!currentMusicPlayed) return;
-          playerDrawerRef.current?.present();
+          if (currentMusicPlayed) playerDrawerRef.current?.present();
         }}
       >
         <View style={styles.wrapper}>
