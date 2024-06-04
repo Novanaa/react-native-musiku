@@ -151,7 +151,7 @@ export function PlayButton(): React.JSX.Element {
     getPlaybackStatus((state) => setStatus(state));
   }, [soundObject]);
 
-  return status?.isPlaying ? (
+  return status?.isPlaying && !status?.didJustFinish ? (
     <IconButton
       style={disabledStyles}
       disabled={isDisabled}

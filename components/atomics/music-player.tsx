@@ -162,7 +162,7 @@ export function MusicPlayerController(
           icon={<SkipBackSVG width={40} height={40} />}
           onPress={() => playPrevMusic(currentMusicPlayed.music)}
         />
-        {status?.isPlaying ? (
+        {status?.isPlaying && !status?.didJustFinish ? (
           <IconButton
             icon={<PauseSVG width={40} height={40} />}
             onPress={() => handlePause(status)}
