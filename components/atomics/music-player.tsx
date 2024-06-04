@@ -20,10 +20,20 @@ import ArrowPathSVG from "@/assets/icons/arrow-path.svg";
 import ListOptionsSVG from "@/assets/icons/list-options.svg";
 import { MusicOptionsAddToPlaylist } from "./music-options-actions";
 import OutlineFavoritesSVG from "@/assets/icons/outline-heart.svg";
+import FavoritesSVG from "@/assets/icons/heart.svg";
+import Favorites from "@/interfaces/favorites";
+import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
+import isMusicFavorited from "@/utils/is-music-favorited";
+import addMusicFavorites from "@/utils/add-favorites";
+import removeFavorites from "@/utils/remove-favorites";
 
 interface MusicPlayerProps extends DrawerProps {
   music: MediaLibrary.Asset;
   musicOptionsRef: React.MutableRefObject<null | BottomSheetModalMethods>;
+}
+
+interface MusicPlayerFavoritesMusicButtonProps {
+  music: MediaLibrary.Asset;
 }
 
 export default function MusicPlayer(
@@ -77,9 +87,7 @@ export default function MusicPlayer(
                 {`(${musicDuration}) - Unknown Artist - Unknown Album`}
               </Text>
             </View>
-            <View>
-              <OutlineFavoritesSVG width={25} height={25} />
-            </View>
+            <MusicPlayerFavoritesMusicButton music={props.music} />
           </View>
           <View style={styles.sliderWrapper}>
             {/* Placeholder for right now!! */}
@@ -119,6 +127,43 @@ export default function MusicPlayer(
         music={props.music}
       />
     </>
+  );
+}
+
+export function MusicPlayerFavoritesMusicButton(
+  props: MusicPlayerFavoritesMusicButtonProps
+): React.JSX.Element {
+  const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
+    (state) => state.refresh
+  );
+  const favoritesMusic: Favorites = useFavoritesMusic((state) =>
+    JSON.parse(state.favorites)
+  );
+  const isMusicFavoritedState = React.useMemo(
+    () => isMusicFavorited(favoritesMusic, props.music),
+    [favoritesMusic]
+  );
+
+  return (
+    <View>
+      {isMusicFavoritedState ? (
+        <IconButton
+          icon={<FavoritesSVG width={25} height={25} />}
+          onPress={() => {
+            removeFavorites(props.music);
+            refreshFavoritesMusic();
+          }}
+        />
+      ) : (
+        <IconButton
+          icon={<OutlineFavoritesSVG width={25} height={25} />}
+          onPress={() => {
+            addMusicFavorites(props.music);
+            refreshFavoritesMusic();
+          }}
+        />
+      )}
+    </View>
   );
 }
 
