@@ -109,7 +109,6 @@ export default function FloatingMusic(): React.JSX.Element {
       />
       <MusicPlayer
         modalRef={playerDrawerRef}
-        music={currentMusicPlayed?.music}
         musicOptionsRef={musicOptionsDrawerRef}
       />
     </>

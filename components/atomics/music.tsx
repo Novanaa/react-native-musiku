@@ -67,7 +67,6 @@ function Music(props: MusicProps): React.JSX.Element {
       <MusicOptions modalRef={optionsDrawerRef} music={props.musicItem} />
       <MusicPlayer
         modalRef={playerDrawerRef}
-        music={props.musicItem}
         musicOptionsRef={optionsDrawerRef}
       />
     </>
