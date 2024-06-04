@@ -55,9 +55,9 @@ export function MusicOptionsInformation(
   props: MusicOptionsInformationProps
 ): React.JSX.Element {
   const lastMusicModified: string = new Date(
-    props.music.modificationTime
+    props.music?.modificationTime
   ).toLocaleDateString();
-  const parsedDuration: string = parseDuration(String(props.music.duration));
+  const parsedDuration: string = parseDuration(String(props.music?.duration));
 
   return (
     <Drawer modalRef={props.modalRef} snapPoints={["44%", "53%"]}>
@@ -65,7 +65,7 @@ export function MusicOptionsInformation(
         <View style={musicOptionsInformationStyles.headerWrapper}>
           <MusicSVG width={30} height={30} />
           <Text style={musicOptionsInformationStyles.headerTitle}>
-            {props.music.filename}
+            {props.music?.filename}
           </Text>
         </View>
         <View style={musicOptionsInformationStyles.contentContainer}>
@@ -83,7 +83,7 @@ export function MusicOptionsInformation(
         <View style={musicOptionsInformationStyles.contentContainer}>
           <MusicOptionsInformationContent
             title="Music Location"
-            description={props.music.uri}
+            description={props.music?.uri}
             icon={<LocationSVG />}
           />
         </View>
