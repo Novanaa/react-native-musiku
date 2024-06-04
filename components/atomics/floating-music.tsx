@@ -19,7 +19,7 @@ import parseDuration from "@/utils/parse-duration";
 import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import PauseSVG from "@/assets/icons/pause.svg";
-import { pause } from "@/utils/music-player";
+import { handlePause, pause } from "@/utils/music-player";
 import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
 import { AVPlaybackStatusSuccess } from "expo-av";
 import getPlaybackStatus from "@/utils/get-playback-status";
@@ -148,14 +148,6 @@ export function PlayButton(): React.JSX.Element {
       });
   }, [AppState.currentState]);
 
-  const handlePause: () => void = React.useCallback(() => {
-    pause(soundObject as SoundObject);
-    setCurrentMusicPlayed({
-      music: currentMusicPlayed.music,
-      currentDuration: status?.positionMillis as number,
-    });
-  }, [soundObject, currentMusicPlayed]);
-
   React.useEffect(() => {
     getPlaybackStatus((state) => setStatus(state));
   }, [soundObject]);
@@ -164,7 +156,9 @@ export function PlayButton(): React.JSX.Element {
     <IconButton
       style={disabledStyles}
       disabled={isDisabled}
-      icon={<PauseSVG width={23} height={23} onPress={() => handlePause()} />}
+      icon={
+        <PauseSVG width={23} height={23} onPress={() => handlePause(status)} />
+      }
     />
   ) : (
     <IconButton
