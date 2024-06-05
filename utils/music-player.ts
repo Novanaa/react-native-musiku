@@ -53,9 +53,7 @@ export async function createMusicPlayerInstance(
   return playback;
 }
 
-export async function handlePause(
-  status: AVPlaybackStatusSuccess
-): Promise<void> {
+export function handlePause(status: AVPlaybackStatusSuccess): void {
   const soundObject: SoundObject = usePlayerStore.getState()
     .soundObject as SoundObject;
   const setCurrentMusicPlayed: SetCurrentMusicPlayed =
@@ -64,7 +62,7 @@ export async function handlePause(
     usePlayerStore.getState().currentMusicPlayed
   );
 
-  await pause(soundObject);
+  pause(soundObject);
   setCurrentMusicPlayed({
     music: currentMusicPlayed.music,
     currentDuration: status?.positionMillis as number,
