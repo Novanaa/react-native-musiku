@@ -25,6 +25,10 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import MusicPlayer from "./music-player";
 import MusicOptions from "./music-options";
 
+interface PlayButtonProps {
+  playerDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null>;
+}
+
 export default function FloatingMusic(): React.JSX.Element {
   const playerDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
@@ -78,11 +82,17 @@ export default function FloatingMusic(): React.JSX.Element {
               style={disabledStyles}
               disabled={isDisabled}
               icon={<PrevMusicSVG width={23} height={23} />}
-              onPress={() => playPrevMusic(currentMusicPlayed.music)}
+              onPress={() => {
+                playPrevMusic(currentMusicPlayed.music);
+                playerDrawerRef.current?.present();
+              }}
             />
-            <PlayButton />
+            <PlayButton playerDrawerRef={playerDrawerRef} />
             <IconButton
-              onPress={() => playNextMusic(currentMusicPlayed.music)}
+              onPress={() => {
+                playNextMusic(currentMusicPlayed.music);
+                playerDrawerRef.current?.present();
+              }}
               style={disabledStyles}
               disabled={isDisabled}
               icon={<NextMusicSVG width={23} height={23} />}
@@ -102,7 +112,7 @@ export default function FloatingMusic(): React.JSX.Element {
   );
 }
 
-export function PlayButton(): React.JSX.Element {
+export function PlayButton(props: PlayButtonProps): React.JSX.Element {
   const setCurrentMusicPlayed: SetCurrentMusicPlayed = usePlayerStore(
     (state) => state.setCurrentMusicPlayed
   );
@@ -142,11 +152,12 @@ export function PlayButton(): React.JSX.Element {
       style={disabledStyles}
       disabled={isDisabled}
       icon={<PlaySVG width={23} height={23} />}
-      onPress={() =>
+      onPress={() => {
+        props.playerDrawerRef.current?.present();
         playMusic(currentMusicPlayed, {
           positionMillis: currentMusicPlayed.currentDuration,
-        })
-      }
+        });
+      }}
     />
   );
 }
