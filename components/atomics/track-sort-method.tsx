@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import Drawer, { DrawerWrapper, DrawerProps } from "./drawer";
+import { StyleSheet, View } from "react-native";
+import Drawer, { DrawerProps } from "./drawer";
 import { RadioCheckbox, RadioCheckboxData } from "../molecules/radio-checkbox";
 import React from "react";
 import SparklesSVG from "@/assets/icons/sparkles.svg";
@@ -28,13 +28,13 @@ export default function TrackSortMethod(props: DrawerProps): React.JSX.Element {
 
   return (
     <Drawer modalRef={props.modalRef} stackBehavior="push" snapPoints={["28%"]}>
-      <DrawerWrapper style={styles.wrapper}>
+      <View style={styles.wrapper}>
         <RadioCheckbox
           defaultCheckedId={defaultCheckedId}
           containerStyle={styles.radioCheckboxContainer}
           data={sortMethodList}
         />
-      </DrawerWrapper>
+      </View>
     </Drawer>
   );
 }
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingTop: 17,
     paddingBottom: 12,
+    paddingHorizontal: 6,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",

@@ -82,6 +82,8 @@ export default function MusicPlayer(
     <>
       <Drawer
         modalRef={props.modalRef}
+        activeOffsetY={[-1, 1]}
+        failOffsetX={[-5, 5]}
         snapPoints={["100%"]}
         handleIndicatorStyle={{
           backgroundColor,
@@ -187,24 +189,24 @@ export function MusicPlayerController(
           />
           {soundObject?.status.isPlaying &&
           !soundObject?.status.didJustFinish ? (
-            <IconButton
-              disabled={isDisabled}
-              style={disabledStyles}
-              icon={<PauseSVG width={40} height={40} />}
-              onPress={() => handlePause(soundObject.status)}
-            />
-          ) : (
-            <IconButton
-              disabled={isDisabled}
-              style={disabledStyles}
-              icon={<PlaySVG width={40} height={40} />}
-              onPress={() =>
-                playMusic(currentMusicPlayed, {
-                  positionMillis: currentMusicPlayed.currentDuration,
-                })
-              }
-            />
-          )}
+              <IconButton
+                disabled={isDisabled}
+                style={disabledStyles}
+                icon={<PauseSVG width={40} height={40} />}
+                onPress={() => handlePause(soundObject.status)}
+              />
+            ) : (
+              <IconButton
+                disabled={isDisabled}
+                style={disabledStyles}
+                icon={<PlaySVG width={40} height={40} />}
+                onPress={() =>
+                  playMusic(currentMusicPlayed, {
+                    positionMillis: currentMusicPlayed.currentDuration,
+                  })
+                }
+              />
+            )}
           <IconButton
             disabled={isDisabled}
             style={disabledStyles}
