@@ -39,6 +39,7 @@ import { usePlayerStore } from "@/stores/player";
 import PauseSVG from "@/assets/icons/pause.svg";
 import { handlePause } from "@/utils/music-player";
 import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
+import TrackSortMethod from "./track-sort-method";
 
 interface MusicPlayerProps extends DrawerProps {
   musicOptionsRef: React.MutableRefObject<null | BottomSheetModalMethods>;
@@ -148,6 +149,8 @@ export default function MusicPlayer(
 export function MusicPlayerController(
   props: MusicPlayerControllerProps
 ): React.JSX.Element {
+  const trackSortMethodDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
+    React.useRef<BottomSheetModalMethods | null>(null);
   const soundObject: SoundObject = usePlayerStore(
     (state) => state.soundObject
   ) as SoundObject;
@@ -160,59 +163,64 @@ export function MusicPlayerController(
   };
 
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginTop: 20,
-      }}
-    >
-      <IconButton
-        icon={<ArrowPathSVG width={22.5} height={22.5} />}
-        disabled={isDisabled}
-        style={disabledStyles}
-      />
-      <View style={styles.musicControllerWrapper}>
+    <>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: 20,
+        }}
+      >
         <IconButton
+          icon={<ArrowPathSVG width={22.5} height={22.5} />}
           disabled={isDisabled}
+          onPress={() => trackSortMethodDrawerRef.current?.present()}
           style={disabledStyles}
-          icon={<SkipBackSVG width={40} height={40} />}
-          onPress={() => playPrevMusic(currentMusicPlayed.music)}
         />
-        {soundObject?.status.isPlaying && !soundObject?.status.didJustFinish ? (
+        <View style={styles.musicControllerWrapper}>
           <IconButton
             disabled={isDisabled}
             style={disabledStyles}
-            icon={<PauseSVG width={40} height={40} />}
-            onPress={() => handlePause(soundObject.status)}
+            icon={<SkipBackSVG width={40} height={40} />}
+            onPress={() => playPrevMusic(currentMusicPlayed.music)}
           />
-        ) : (
+          {soundObject?.status.isPlaying &&
+          !soundObject?.status.didJustFinish ? (
+            <IconButton
+              disabled={isDisabled}
+              style={disabledStyles}
+              icon={<PauseSVG width={40} height={40} />}
+              onPress={() => handlePause(soundObject.status)}
+            />
+          ) : (
+            <IconButton
+              disabled={isDisabled}
+              style={disabledStyles}
+              icon={<PlaySVG width={40} height={40} />}
+              onPress={() =>
+                playMusic(currentMusicPlayed, {
+                  positionMillis: currentMusicPlayed.currentDuration,
+                })
+              }
+            />
+          )}
           <IconButton
             disabled={isDisabled}
             style={disabledStyles}
-            icon={<PlaySVG width={40} height={40} />}
-            onPress={() =>
-              playMusic(currentMusicPlayed, {
-                positionMillis: currentMusicPlayed.currentDuration,
-              })
-            }
+            icon={<SkipForwardSVG width={40} height={40} />}
+            onPress={() => playNextMusic(currentMusicPlayed.music)}
           />
-        )}
+        </View>
         <IconButton
           disabled={isDisabled}
           style={disabledStyles}
-          icon={<SkipForwardSVG width={40} height={40} />}
-          onPress={() => playNextMusic(currentMusicPlayed.music)}
+          icon={<ListOptionsSVG width={22.5} height={22.5} />}
+          onPress={() => props.addToPlaylistDrawerRef.current?.present()}
         />
       </View>
-      <IconButton
-        disabled={isDisabled}
-        style={disabledStyles}
-        icon={<ListOptionsSVG width={22.5} height={22.5} />}
-        onPress={() => props.addToPlaylistDrawerRef.current?.present()}
-      />
-    </View>
+      <TrackSortMethod modalRef={trackSortMethodDrawerRef} />
+    </>
   );
 }
 
