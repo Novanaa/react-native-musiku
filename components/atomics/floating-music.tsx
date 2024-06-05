@@ -19,10 +19,8 @@ import parseDuration from "@/utils/parse-duration";
 import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import PauseSVG from "@/assets/icons/pause.svg";
-import { handlePause, pause } from "@/utils/music-player";
+import { handlePause } from "@/utils/music-player";
 import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
-import { AVPlaybackStatusSuccess } from "expo-av";
-import getPlaybackStatus from "@/utils/get-playback-status";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import MusicPlayer from "./music-player";
 import MusicOptions from "./music-options";
@@ -35,35 +33,24 @@ export default function FloatingMusic(): React.JSX.Element {
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
-  const isDisabled: boolean = React.useMemo(
-    () => !currentMusicPlayed,
-    [currentMusicPlayed]
+  const isDisabled: boolean = !currentMusicPlayed;
+  const filename: string =
+    currentMusicPlayed?.music.filename || "What do you like to play?";
+  const parsedDuration: string | null = parseDuration(
+    String(currentMusicPlayed?.music.duration)
   );
-  const filename: string = React.useMemo(
-    () => currentMusicPlayed?.music.filename || "What do you like to play?",
-    [currentMusicPlayed]
-  );
-  const parsedDuration: string | null = React.useMemo(
-    () => parseDuration(String(currentMusicPlayed?.music.duration)),
-    [currentMusicPlayed]
-  );
-  const modificationTime: string | null = React.useMemo(
-    () =>
-      new Date(
-        currentMusicPlayed?.music.modificationTime as number
-      ).toDateString() || null,
-    [currentMusicPlayed]
-  );
+  const modificationTime: string | null =
+    new Date(
+      currentMusicPlayed?.music.modificationTime as number
+    ).toDateString() || null;
+
   const musicDescription: string = currentMusicPlayed
     ? `${modificationTime} - ${parsedDuration}`
     : "No music audio history provided!";
 
-  const disabledStyles: StyleProp<ViewStyle> = React.useMemo(
-    () => ({
-      opacity: isDisabled ? 0.55 : 1,
-    }),
-    [isDisabled]
-  );
+  const disabledStyles: StyleProp<ViewStyle> = {
+    opacity: isDisabled ? 0.55 : 1,
+  };
 
   return (
     <>
@@ -125,16 +112,10 @@ export function PlayButton(): React.JSX.Element {
   const soundObject: SoundObject | null = usePlayerStore(
     (state) => state.soundObject
   );
-  const isDisabled: boolean = React.useMemo(
-    () => !currentMusicPlayed,
-    [currentMusicPlayed]
-  );
-  const disabledStyles: StyleProp<ViewStyle> = React.useMemo(
-    () => ({
-      opacity: isDisabled ? 0.55 : 1,
-    }),
-    [isDisabled]
-  );
+  const isDisabled: boolean = !currentMusicPlayed;
+  const disabledStyles: StyleProp<ViewStyle> = {
+    opacity: isDisabled ? 0.55 : 1,
+  };
 
   React.useEffect(() => {
     if (AppState.currentState == "background")

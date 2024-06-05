@@ -26,10 +26,7 @@ function Music(props: MusicProps): React.JSX.Element {
   const playerDrawerRef: React.MutableRefObject<null | BottomSheetModalMethods> =
     React.useRef(null);
 
-  const musicDuration: string = React.useMemo(
-    () => parseDuration(String(props.musicItem.duration)),
-    [props.musicItem]
-  );
+  const musicDuration: string = parseDuration(String(props.musicItem.duration));
 
   return (
     <>
