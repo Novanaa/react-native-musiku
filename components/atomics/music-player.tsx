@@ -154,8 +154,7 @@ export function MusicPlayerController(
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
-  const isDisabled: boolean =
-    soundObject?.status.isBuffering || !soundObject?.status.isLoaded;
+  const isDisabled: boolean = usePlayerStore((state) => state.isLoading);
   const disabledStyles: StyleProp<ViewStyle> = {
     opacity: isDisabled ? 0.55 : 1,
   };

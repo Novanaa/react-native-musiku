@@ -14,14 +14,18 @@ export default async function playMusic(
   options?: AVPlaybackStatusToSet
 ): Promise<void> {
   try {
-    const { refreshCurrentMusicPlayed, soundObject }: PlayerState =
-      usePlayerStore.getState();
+    const {
+      refreshCurrentMusicPlayed,
+      soundObject,
+      setIsLoading,
+    }: PlayerState = usePlayerStore.getState();
 
     PlayerRepository.setCurrentMusicPlayed(item);
     refreshCurrentMusicPlayed();
 
     // Select other music
     if (soundObject && soundObject?.status.uri !== item.music?.uri) {
+      setIsLoading(true);
       soundObject.sound.stopAsync();
       const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
         item.music?.uri as string,
@@ -29,16 +33,19 @@ export default async function playMusic(
       );
 
       play(sound);
+      setIsLoading(false);
     }
 
     // Play music at the first time
     if (!soundObject) {
+      setIsLoading(true);
       const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
         item.music?.uri as string,
         options
       );
 
       play(sound);
+      setIsLoading(true);
     }
   } catch (err) {
     showToast("Failed to play the music, something wrong happend!");
@@ -46,7 +53,9 @@ export default async function playMusic(
 }
 
 export async function playNextMusic(music: MediaLibrary.Asset): Promise<void> {
-  const { refreshCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
+  const { refreshCurrentMusicPlayed, setIsLoading }: PlayerState =
+    usePlayerStore.getState();
+  setIsLoading(true);
 
   const allMusic: Music = useMusicStore.getState().music as Music;
   const allMusicLength: number = allMusic?.assets.length - 1;
@@ -67,11 +76,14 @@ export async function playNextMusic(music: MediaLibrary.Asset): Promise<void> {
     music: musicItem,
     currentDuration: 0,
   });
+  setIsLoading(false);
 }
 
 export async function playPrevMusic(music: MediaLibrary.Asset): Promise<void> {
-  const { refreshCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
+  const { refreshCurrentMusicPlayed, setIsLoading }: PlayerState =
+    usePlayerStore.getState();
 
+  setIsLoading(true);
   const allMusic: Music = useMusicStore.getState().music as Music;
   const allMusicLength: number = allMusic?.assets.length - 1;
   const musicIndex: number =
@@ -89,4 +101,5 @@ export async function playPrevMusic(music: MediaLibrary.Asset): Promise<void> {
     music: musicItem,
     currentDuration: 0,
   });
+  setIsLoading(false);
 }

@@ -4,6 +4,7 @@ import showToast from "./toast";
 import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import {
   SetCurrentMusicPlayed,
+  SetIsLoading,
   SetSoundObject,
   usePlayerStore,
 } from "@/stores/player";
@@ -54,6 +55,7 @@ export async function createMusicPlayerInstance(
 }
 
 export function handlePause(status: AVPlaybackStatusSuccess): void {
+  const setIsLoading: SetIsLoading = usePlayerStore.getState().setIsLoading;
   const soundObject: SoundObject = usePlayerStore.getState()
     .soundObject as SoundObject;
   const setCurrentMusicPlayed: SetCurrentMusicPlayed =
@@ -62,9 +64,11 @@ export function handlePause(status: AVPlaybackStatusSuccess): void {
     usePlayerStore.getState().currentMusicPlayed
   );
 
+  setIsLoading(true);
   pause(soundObject);
   setCurrentMusicPlayed({
     music: currentMusicPlayed.music,
     currentDuration: status?.positionMillis as number,
   });
+  setIsLoading(false);
 }
