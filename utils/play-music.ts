@@ -22,14 +22,13 @@ export default async function playMusic(
 
     // Select other music
     if (soundObject && soundObject?.status.uri !== item.music?.uri) {
-      await soundObject?.sound.stopAsync();
-      await soundObject?.sound.unloadAsync();
+      soundObject.sound.stopAsync();
       const sound: Awaited<SoundObject> = await createMusicPlayerInstance(
         item.music?.uri as string,
         options
       );
 
-      await play(sound);
+      play(sound);
     }
 
     // Play music at the first time
@@ -39,7 +38,7 @@ export default async function playMusic(
         options
       );
 
-      await play(sound);
+      play(sound);
     }
   } catch (err) {
     showToast("Failed to play the music, something wrong happend!");
@@ -64,7 +63,7 @@ export async function playNextMusic(music: MediaLibrary.Asset): Promise<void> {
   });
   refreshCurrentMusicPlayed();
 
-  await playMusic({
+  playMusic({
     music: musicItem,
     currentDuration: 0,
   });
@@ -86,7 +85,7 @@ export async function playPrevMusic(music: MediaLibrary.Asset): Promise<void> {
   });
   refreshCurrentMusicPlayed();
 
-  await playMusic({
+  playMusic({
     music: musicItem,
     currentDuration: 0,
   });

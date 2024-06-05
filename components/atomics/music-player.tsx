@@ -6,8 +6,10 @@ import {
   BackHandler,
   Image,
   NativeEventSubscription,
+  StyleProp,
   StyleSheet,
   View,
+  ViewStyle,
 } from "react-native";
 import ArrowDownSVG from "@/assets/icons/arrow-down.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
@@ -152,6 +154,11 @@ export function MusicPlayerController(
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
+  const isDisabled: boolean =
+    soundObject?.status.isBuffering || !soundObject?.status.isLoaded;
+  const disabledStyles: StyleProp<ViewStyle> = {
+    opacity: isDisabled ? 0.55 : 1,
+  };
 
   return (
     <View
@@ -162,19 +169,29 @@ export function MusicPlayerController(
         marginTop: 20,
       }}
     >
-      <IconButton icon={<ArrowPathSVG width={22.5} height={22.5} />} />
+      <IconButton
+        icon={<ArrowPathSVG width={22.5} height={22.5} />}
+        disabled={isDisabled}
+        style={disabledStyles}
+      />
       <View style={styles.musicControllerWrapper}>
         <IconButton
+          disabled={isDisabled}
+          style={disabledStyles}
           icon={<SkipBackSVG width={40} height={40} />}
           onPress={() => playPrevMusic(currentMusicPlayed.music)}
         />
         {soundObject?.status.isPlaying && !soundObject?.status.didJustFinish ? (
           <IconButton
+            disabled={isDisabled}
+            style={disabledStyles}
             icon={<PauseSVG width={40} height={40} />}
             onPress={() => handlePause(soundObject.status)}
           />
         ) : (
           <IconButton
+            disabled={isDisabled}
+            style={disabledStyles}
             icon={<PlaySVG width={40} height={40} />}
             onPress={() =>
               playMusic(currentMusicPlayed, {
@@ -184,11 +201,15 @@ export function MusicPlayerController(
           />
         )}
         <IconButton
+          disabled={isDisabled}
+          style={disabledStyles}
           icon={<SkipForwardSVG width={40} height={40} />}
           onPress={() => playNextMusic(currentMusicPlayed.music)}
         />
       </View>
       <IconButton
+        disabled={isDisabled}
+        style={disabledStyles}
         icon={<ListOptionsSVG width={22.5} height={22.5} />}
         onPress={() => props.addToPlaylistDrawerRef.current?.present()}
       />
