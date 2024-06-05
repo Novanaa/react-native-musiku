@@ -42,7 +42,10 @@ function RadioCheckboxButton(
       accessibilityRole="radio"
     >
       <>
-        <Text style={[props.textStyle, styles.text]}>{props.children}</Text>
+        <View style={styles.headerWrapper}>
+          {props.item.icon && <props.item.icon width={23} height={23} />}
+          <Text style={[props.textStyle, styles.text]}>{props.item.title}</Text>
+        </View>
         {props.isChecked ? (
           <View style={styles.checkedWrapper}>
             <View style={styles.checkedIcon}></View>
@@ -68,12 +71,18 @@ const styles = StyleSheet.create({
     borderRadius,
     top: -10,
   },
+  headerWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
   unchecked: {
     borderColor: colors.light.background,
     borderWidth: 1.5,
     height: 17,
     width: 17,
     borderRadius: 50,
+    top: 2,
   },
   checkedWrapper: {
     borderColor: colors.light.background,
@@ -83,6 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
+    top: 2,
   },
   checkedIcon: {
     borderColor: colors.light.background,

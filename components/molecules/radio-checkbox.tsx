@@ -3,6 +3,7 @@
 import { StyleProp, TextStyle, View, ViewProps, ViewStyle } from "react-native";
 import React from "react";
 import RadioCheckboxButton from "../atomics/radio-button";
+import { SvgProps } from "react-native-svg";
 
 interface RadioCheckboxProps extends ViewProps {
   data: Array<RadioCheckboxData>;
@@ -15,7 +16,7 @@ interface RadioCheckboxProps extends ViewProps {
 export interface RadioCheckboxData {
   id: number;
   title: string;
-  default?: boolean;
+  icon?: React.FC<SvgProps>;
 }
 
 export function RadioCheckbox(props: RadioCheckboxProps): React.JSX.Element {
@@ -36,9 +37,7 @@ export function RadioCheckbox(props: RadioCheckboxProps): React.JSX.Element {
               if (props.onChecked) props.onChecked(itemId);
             }}
             isChecked={item.id === selectedItemId}
-          >
-            {item.title}
-          </RadioCheckboxButton>
+          />
         );
       })}
     </View>
