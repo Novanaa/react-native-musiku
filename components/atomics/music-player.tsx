@@ -32,11 +32,8 @@ import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 import isMusicFavorited from "@/utils/is-music-favorited";
 import addMusicFavorites from "@/utils/add-favorites";
 import removeFavorites from "@/utils/remove-favorites";
-import { AVPlaybackStatusSuccess } from "expo-av";
-import { CurrentMusicPlayed } from "@/interfaces/audio";
+import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import { usePlayerStore } from "@/stores/player";
-import getPlaybackStatus from "@/utils/get-playback-status";
-import { SoundObject } from "expo-av/build/Audio";
 import PauseSVG from "@/assets/icons/pause.svg";
 import { handlePause } from "@/utils/music-player";
 import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
@@ -151,19 +148,12 @@ export default function MusicPlayer(
 export function MusicPlayerController(
   props: MusicPlayerControllerProps
 ): React.JSX.Element {
-  const [status, setStatus] = React.useState<AVPlaybackStatusSuccess | null>(
-    null
-  );
   const soundObject: SoundObject = usePlayerStore(
     (state) => state.soundObject
   ) as SoundObject;
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
-
-  React.useEffect(() => {
-    getPlaybackStatus((state) => setStatus(state));
-  }, [soundObject]);
 
   return (
     <View
@@ -180,10 +170,10 @@ export function MusicPlayerController(
           icon={<SkipBackSVG width={40} height={40} />}
           onPress={() => playPrevMusic(currentMusicPlayed.music)}
         />
-        {status?.isPlaying && !status?.didJustFinish ? (
+        {soundObject?.status.isPlaying && !soundObject?.status.didJustFinish ? (
           <IconButton
             icon={<PauseSVG width={40} height={40} />}
-            onPress={() => handlePause(status)}
+            onPress={() => handlePause(soundObject.status)}
           />
         ) : (
           <IconButton

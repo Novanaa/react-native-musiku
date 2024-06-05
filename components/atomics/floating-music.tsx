@@ -119,9 +119,6 @@ export function PlayButton(): React.JSX.Element {
   const setCurrentMusicPlayed: SetCurrentMusicPlayed = usePlayerStore(
     (state) => state.setCurrentMusicPlayed
   );
-  const [status, setStatus] = React.useState<AVPlaybackStatusSuccess | null>(
-    null
-  );
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
@@ -143,20 +140,20 @@ export function PlayButton(): React.JSX.Element {
     if (AppState.currentState == "background")
       setCurrentMusicPlayed({
         music: currentMusicPlayed.music,
-        currentDuration: status?.positionMillis as number,
+        currentDuration: soundObject?.status.positionMillis as number,
       });
   }, [AppState.currentState]);
 
-  React.useEffect(() => {
-    getPlaybackStatus((state) => setStatus(state));
-  }, [soundObject]);
-
-  return status?.isPlaying && !status?.didJustFinish ? (
+  return soundObject?.status.isPlaying && !soundObject?.status.didJustFinish ? (
     <IconButton
       style={disabledStyles}
       disabled={isDisabled}
       icon={
-        <PauseSVG width={23} height={23} onPress={() => handlePause(status)} />
+        <PauseSVG
+          width={23}
+          height={23}
+          onPress={() => handlePause(soundObject?.status)}
+        />
       }
     />
   ) : (
