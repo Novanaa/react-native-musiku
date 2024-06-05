@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     height: 17,
     width: 17,
     borderRadius: 50,
+    top: 2,
   },
   checkedWrapper: {
     borderColor: colors.light.background,
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
+    top: 2,
   },
   checkedIcon: {
     borderColor: colors.light.background,
