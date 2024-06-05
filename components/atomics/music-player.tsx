@@ -2,7 +2,13 @@ import React from "react";
 import Drawer, { DrawerProps, DrawerWrapper } from "./drawer";
 import * as MediaLibrary from "expo-media-library";
 import colors, { backgroundColor, borderColor } from "@/constants/colors";
-import { Image, StyleSheet, View } from "react-native";
+import {
+  BackHandler,
+  Image,
+  NativeEventSubscription,
+  StyleSheet,
+  View,
+} from "react-native";
 import ArrowDownSVG from "@/assets/icons/arrow-down.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
 import { IconButton } from "./button";
@@ -61,6 +67,18 @@ export default function MusicPlayer(
     () => parseDuration(String(currentMusicPlayed?.music.duration)),
     [currentMusicPlayed?.music]
   );
+
+  React.useEffect(() => {
+    const backhandler: NativeEventSubscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        dismissAll();
+        return true;
+      }
+    );
+
+    return () => backhandler.remove();
+  }, []);
 
   return (
     <>
