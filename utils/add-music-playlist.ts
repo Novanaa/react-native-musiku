@@ -3,6 +3,7 @@ import PlaylistRepository from "@/repository/playlist.repository";
 import * as MediaLibrary from "expo-media-library";
 import showToast from "./toast";
 import { usePlaylistStore } from "@/stores/playlist";
+import getPlaylistIndex from "./get-playlist-index";
 
 export default function addMusicPlaylist(
   playlist: Playlist,
@@ -12,9 +13,10 @@ export default function addMusicPlaylist(
     PlaylistRepository.getPlaylist()
   );
 
-  const playlistIndex: number = latestPlaylistState.playlist
-    .map((state) => state.id)
-    .indexOf(playlist.id);
+  const playlistIndex: number = getPlaylistIndex({
+    playlistId: playlist.id,
+    list: latestPlaylistState,
+  });
 
   latestPlaylistState.playlist.splice(playlistIndex, 1, {
     ...playlist,

@@ -2,6 +2,7 @@ import { Playlist, PlaylistScheme } from "@/interfaces/playlist";
 import showToast from "./toast";
 import PlaylistRepository from "@/repository/playlist.repository";
 import * as MediaLibrary from "expo-media-library";
+import getPlaylistIndex from "./get-playlist-index";
 
 export default function removeFromPlaylist(
   playlist: Playlist,
@@ -12,15 +13,14 @@ export default function removeFromPlaylist(
     PlaylistRepository.getPlaylist()
   );
   // Get playlist music array index
-  const playlistIndex: number = latestPlaylistState.playlist
-    .map((state) => state.id)
-    .indexOf(playlist.id);
-
+  const playlistIndex: number = getPlaylistIndex({
+    list: latestPlaylistState,
+    playlistId: playlist.id,
+  });
   // Get music array index
-  const musicIndex: number = latestPlaylistState.playlist[playlistIndex].songs
-    .map((state) => state.uri)
-    .indexOf(music.uri);
-
+  const musicIndex: number = latestPlaylistState.playlist[
+    playlistIndex
+  ].songs.findIndex((state) => state.uri == music.uri);
   // Removes music from playlist
   latestPlaylistState.playlist[playlistIndex].songs.splice(musicIndex, 1);
 

@@ -8,7 +8,7 @@ interface GetPlaylistIndexParams {
 export default function getPlaylistIndex(
   params: GetPlaylistIndexParams
 ): number {
-  return params.list.playlist
-    .map((state) => state.id)
-    .indexOf(params.playlistId);
+  return params.list.playlist.findIndex(
+    (state) => state.id === params.playlistId
+  );
 }
