@@ -59,10 +59,8 @@ export default function MusicPlayer(
   const addToPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
   const { dismissAll }: BottomSheetModalContextType = useBottomSheetModal();
-
-  const musicDuration: string = React.useMemo(
-    () => parseDuration(String(currentMusicPlayed?.music.duration)),
-    [currentMusicPlayed?.music]
+  const musicDuration: string = parseDuration(
+    String(currentMusicPlayed?.music.duration)
   );
 
   React.useEffect(() => {
