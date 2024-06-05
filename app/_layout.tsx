@@ -29,7 +29,13 @@ import storage from "@/libs/storage";
 import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import PlayerRepository from "@/repository/player.repository";
-import { RefreshCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
+import {
+  RefreshCurrentMusicPlayed,
+  SetSoundObject,
+  usePlayerStore,
+} from "@/stores/player";
+import getPlaybackStatus from "@/utils/get-playback-status";
+import { SoundObject } from "@/interfaces/audio";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,6 +45,12 @@ export default function RootLayout() {
   const music: Music | null = useMusicStore((state) => state.music);
   const playlistStackScreenTitle: string = usePlaylistStore(
     (state) => state.playlistTitle
+  );
+  const soundObject: SoundObject = usePlayerStore(
+    (state) => state.soundObject
+  ) as SoundObject;
+  const setSoundObject: SetSoundObject = usePlayerStore(
+    (state) => state.setSoundObject
   );
   const refreshCurrentMusicPlayed: RefreshCurrentMusicPlayed = usePlayerStore(
     (state) => state.refreshCurrentMusicPlayed
@@ -107,10 +119,17 @@ export default function RootLayout() {
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       staysActiveInBackground: true,
-      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      interruptionModeIOS: InterruptionModeIOS.DuckOthers,
       playsInSilentModeIOS: true,
       shouldDuckAndroid: true,
-      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+      interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+    });
+
+    getPlaybackStatus((state) => {
+      setSoundObject({
+        status: state,
+        sound: soundObject.sound,
+      });
     });
   }, []);
 
