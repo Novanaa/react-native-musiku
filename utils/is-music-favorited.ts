@@ -6,6 +6,6 @@ export default function isMusicFavorited(
   music: MediaLibrary.Asset
 ): boolean {
   return (
-    favoritesMusic.assets.filter((state) => state.uri == music.uri).length > 0
+    favoritesMusic.assets.find((state) => state.uri === music.uri) !== undefined
   );
 }
