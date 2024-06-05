@@ -123,8 +123,9 @@ export function PlayButton(props: PlayButtonProps): React.JSX.Element {
     (state) => state.soundObject
   );
   const isDisabled: boolean = !currentMusicPlayed;
-  const isControllerDisabled: boolean =
-    soundObject?.status.isBuffering || !soundObject?.status.isLoaded;
+  const isControllerDisabled: boolean = usePlayerStore(
+    (state) => state.isLoading
+  );
   const disabledStyles: StyleProp<ViewStyle> = {
     opacity: isDisabled ? 0.55 : 1,
   };
