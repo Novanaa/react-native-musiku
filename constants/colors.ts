@@ -34,7 +34,7 @@ export const borderColor: string = "#656569";
 
 export const inputBackgroundColor: string = "#333336";
 
-export const modalBackgroundColor: string = "#232323";
+export const modalBackgroundColor: string = "#191919";
 
 export const headerBackgoundColor: string = "#191919";
 
