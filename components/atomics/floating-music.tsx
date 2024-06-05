@@ -123,6 +123,8 @@ export function PlayButton(props: PlayButtonProps): React.JSX.Element {
     (state) => state.soundObject
   );
   const isDisabled: boolean = !currentMusicPlayed;
+  const isControllerDisabled: boolean =
+    soundObject?.status.isBuffering || !soundObject?.status.isLoaded;
   const disabledStyles: StyleProp<ViewStyle> = {
     opacity: isDisabled ? 0.55 : 1,
   };
@@ -138,7 +140,7 @@ export function PlayButton(props: PlayButtonProps): React.JSX.Element {
   return soundObject?.status.isPlaying && !soundObject?.status.didJustFinish ? (
     <IconButton
       style={disabledStyles}
-      disabled={isDisabled}
+      disabled={isDisabled || isControllerDisabled}
       icon={
         <PauseSVG
           width={23}
@@ -150,7 +152,7 @@ export function PlayButton(props: PlayButtonProps): React.JSX.Element {
   ) : (
     <IconButton
       style={disabledStyles}
-      disabled={isDisabled}
+      disabled={isDisabled || isControllerDisabled}
       icon={<PlaySVG width={23} height={23} />}
       onPress={() => {
         props.playerDrawerRef.current?.present();
