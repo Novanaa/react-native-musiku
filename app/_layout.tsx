@@ -33,7 +33,10 @@ import {
   SetCurrentMusicPlayed,
   usePlayerStore,
 } from "@/stores/player";
-import TrackPlayer, { Event } from "react-native-track-player";
+import TrackPlayer, {
+  Event,
+  useTrackPlayerEvents,
+} from "react-native-track-player";
 import { registerRootComponent } from "expo";
 import setupTrackPlayer from "@/utils/setup-track-player";
 
@@ -73,25 +76,18 @@ export default function RootLayout() {
     (state) => state.setFolder
   );
 
-  React.useEffect(() => {
-    const eventEmitter: EmitterSubscription = TrackPlayer.addEventListener(
-      Event.PlaybackActiveTrackChanged,
-      (event) => {
-        if (music && music.assets && event.track) {
-          const musicIndex: number = music.assets.findIndex(
-            (value) => value.uri == event.track?.url
-          ) as number;
+  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
+    if (music && event.type == Event.PlaybackActiveTrackChanged) {
+      const musicIndex: number = music.assets.findIndex(
+        (state) => state.uri === event.track?.url
+      );
 
-          setCurrentMusicPlayed({
-            music: music.assets[musicIndex] as MediaLibrary.Asset,
-            currentDuration: 0,
-          });
-        }
-      }
-    );
-
-    return () => eventEmitter.remove();
-  }, []);
+      setCurrentMusicPlayed({
+        music: music.assets[musicIndex],
+        currentDuration: 0,
+      });
+    }
+  });
 
   React.useEffect(() => {
     if (!PlayerRepository.getCurrentMusicPlayed()) {
