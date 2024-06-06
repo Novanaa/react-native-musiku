@@ -1,74 +1,95 @@
 /* eslint-disable no-unused-vars */
 
-import showToast from "./toast";
-import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
 import {
+  PlayerState,
   SetCurrentMusicPlayed,
-  SetIsLoading,
-  SetSoundObject,
   usePlayerStore,
 } from "@/stores/player";
-import { AVPlaybackStatusSuccess, AVPlaybackStatusToSet, Audio } from "expo-av";
+import { CurrentMusicPlayed } from "@/interfaces/audio";
+import * as MediaLibrary from "expo-media-library";
+import showToast from "./toast";
+import TrackPlayer from "react-native-track-player";
+import { Music, useMusicStore } from "@/stores/music";
 
-export async function play(playback: SoundObject): Promise<void> {
+export default async function playMusic(
+  item: CurrentMusicPlayed
+): Promise<void> {
   try {
-    const setSoundObject: SetSoundObject =
-      usePlayerStore.getState().setSoundObject;
+    const { setCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
 
-    const status: AVPlaybackStatusSuccess =
-      (await playback.sound.playAsync()) as AVPlaybackStatusSuccess;
-    setSoundObject({
-      ...playback,
-      status,
+    await TrackPlayer.load({
+      url: item.music.uri,
+      duration: item.music.duration,
+      title: item.music.filename,
+      artwork: require("@/assets/images/music-player-placeholder.jpg"),
+      date: new Date().toString(),
+      artist: "Unknown Artist",
     });
+
+    await TrackPlayer.seekTo(item.currentDuration);
+    await TrackPlayer.play();
+
+    setCurrentMusicPlayed(item);
   } catch (err) {
-    showToast("Failed to play the music!");
+    showToast("Failed to play the music, something wrong happend!");
   }
 }
 
-export async function pause(playback: SoundObject): Promise<void> {
-  try {
-    const setSoundObject: SetSoundObject =
-      usePlayerStore.getState().setSoundObject;
+export async function playNextMusic(music: MediaLibrary.Asset): Promise<void> {
+  const { setCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
 
-    const status: AVPlaybackStatusSuccess =
-      (await playback.sound.pauseAsync()) as AVPlaybackStatusSuccess;
-    setSoundObject({
-      ...playback,
-      status,
-    });
-  } catch (err) {
-    showToast("Failed to pause the music!");
-  }
+  const allMusic: Music = useMusicStore.getState().music as Music;
+  const allMusicLength: number = allMusic?.assets.length - 1;
+  const musicIndex: number = allMusic?.assets
+    .map((state) => state.uri)
+    .indexOf(music.uri);
+  const musicItemIndex: number =
+    musicIndex == allMusicLength ? 0 : musicIndex + 1;
+  const musicItem: MediaLibrary.Asset = allMusic?.assets[musicItemIndex];
+
+  setCurrentMusicPlayed({
+    music: musicItem,
+    currentDuration: 0,
+  });
+
+  await playMusic({
+    music: musicItem,
+    currentDuration: 0,
+  });
 }
 
-export async function createMusicPlayerInstance(
-  uri: string,
-  options?: AVPlaybackStatusToSet
-): Promise<SoundObject> {
-  const playback: Awaited<SoundObject> = (await Audio.Sound.createAsync(
-    { uri },
-    { ...options, isLooping: true }
-  )) as SoundObject;
+export async function playPrevMusic(music: MediaLibrary.Asset): Promise<void> {
+  const { setCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
 
-  return playback;
+  const allMusic: Music = useMusicStore.getState().music as Music;
+  const allMusicLength: number = allMusic?.assets.length - 1;
+  const musicIndex: number =
+    allMusic?.assets.map((state) => state.uri).indexOf(music.uri) - 1;
+  const musicItemIndex: number = musicIndex == -1 ? allMusicLength : musicIndex;
+  const musicItem: MediaLibrary.Asset = allMusic?.assets[musicItemIndex];
+
+  setCurrentMusicPlayed({
+    music: musicItem,
+    currentDuration: 0,
+  });
+
+  await playMusic({
+    music: musicItem,
+    currentDuration: 0,
+  });
 }
 
-export function handlePause(status: AVPlaybackStatusSuccess): void {
-  const setIsLoading: SetIsLoading = usePlayerStore.getState().setIsLoading;
-  const soundObject: SoundObject = usePlayerStore.getState()
-    .soundObject as SoundObject;
+export async function pauseMusic(position: number): Promise<void> {
   const setCurrentMusicPlayed: SetCurrentMusicPlayed =
     usePlayerStore.getState().setCurrentMusicPlayed;
   const currentMusicPlayed: CurrentMusicPlayed = JSON.parse(
     usePlayerStore.getState().currentMusicPlayed
   );
 
-  setIsLoading(true);
-  pause(soundObject);
+  await TrackPlayer.pause();
+
   setCurrentMusicPlayed({
     music: currentMusicPlayed.music,
-    currentDuration: status?.positionMillis as number,
+    currentDuration: position,
   });
-  setIsLoading(false);
 }
