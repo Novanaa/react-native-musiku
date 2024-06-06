@@ -38,7 +38,7 @@ import { CurrentMusicPlayed } from "@/interfaces/audio";
 import { usePlayerStore } from "@/stores/player";
 import PauseSVG from "@/assets/icons/pause.svg";
 import TrackSortMethod from "./track-sort-method";
-import {
+import TrackPlayer, {
   PlaybackState,
   Progress,
   State,
@@ -66,6 +66,7 @@ interface MusicPlayerControllerProps {
 export default function MusicPlayer(
   props: MusicPlayerProps
 ): React.JSX.Element {
+  const playbackState: PlaybackState = usePlaybackState() as PlaybackState;
   const { position }: Progress = useProgress();
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
@@ -77,6 +78,9 @@ export default function MusicPlayer(
   const musicDuration: string = parseDuration(
     String(currentMusicPlayed?.music.duration)
   );
+  const isControllerDisabled: boolean =
+    playbackState.state == State.Loading ||
+    playbackState.state == State.Buffering;
 
   React.useEffect(() => {
     const backhandler: NativeEventSubscription = BackHandler.addEventListener(
@@ -140,13 +144,15 @@ export default function MusicPlayer(
               {parsedPosition}
             </Text>
             <Slider
+              disabled={isControllerDisabled}
               style={styles.slider}
               minimumValue={0}
-              value={position}
+              value={position || currentMusicPlayed.currentDuration}
               maximumValue={currentMusicPlayed.music.duration}
               minimumTrackTintColor={colors.dark.text}
               maximumTrackTintColor={colors.dark.text}
               thumbTintColor={colors.dark.text}
+              onSlidingComplete={(value) => TrackPlayer.seekTo(value)}
             />
             <Text style={styles.musicMetadataDescription}>{musicDuration}</Text>
           </View>
