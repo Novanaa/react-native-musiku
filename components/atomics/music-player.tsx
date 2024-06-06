@@ -38,7 +38,7 @@ import { CurrentMusicPlayed } from "@/interfaces/audio";
 import { usePlayerStore } from "@/stores/player";
 import PauseSVG from "@/assets/icons/pause.svg";
 import TrackSortMethod from "./track-sort-method";
-import {
+import TrackPlayer, {
   PlaybackState,
   Progress,
   State,
@@ -147,11 +147,12 @@ export default function MusicPlayer(
               disabled={isControllerDisabled}
               style={styles.slider}
               minimumValue={0}
-              value={position}
+              value={position || currentMusicPlayed.currentDuration}
               maximumValue={currentMusicPlayed.music.duration}
               minimumTrackTintColor={colors.dark.text}
               maximumTrackTintColor={colors.dark.text}
               thumbTintColor={colors.dark.text}
+              onSlidingComplete={(value) => TrackPlayer.seekTo(value)}
             />
             <Text style={styles.musicMetadataDescription}>{musicDuration}</Text>
           </View>
