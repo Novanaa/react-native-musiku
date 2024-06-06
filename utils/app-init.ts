@@ -13,6 +13,7 @@ import { RefreshCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
 import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
 import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
+import showToast from "./toast";
 
 export default function appInit(): void {
   const repeatMode: IRepeatMode = useRepeatModeStore.getState().repeatMode;
@@ -29,11 +30,20 @@ export default function appInit(): void {
   setupTrackPlayer();
 
   if (repeatMode) {
-    const setter: Record<typeof repeatMode, () => void> = {
-      ascending_play: () => TrackPlayer.setRepeatMode(RepeatMode.Queue),
-      play_once: () => TrackPlayer.setRepeatMode(RepeatMode.Off),
-      repeat_play: () => TrackPlayer.setRepeatMode(RepeatMode.Track),
+    const repeatModeState: Record<typeof repeatMode, string> = {
+      ascending_play: "ascending play mode",
+      play_once: "play once mode",
+      repeat_play: "repeat play mode",
     };
+    const setter: Record<typeof repeatMode, () => void> = {
+      ascending_play: async () =>
+        await TrackPlayer.setRepeatMode(RepeatMode.Queue),
+      play_once: async () => await TrackPlayer.setRepeatMode(RepeatMode.Off),
+      repeat_play: async () =>
+        await TrackPlayer.setRepeatMode(RepeatMode.Track),
+    };
+
+    showToast(`Successfully updated to ${repeatModeState[repeatMode]}`);
     setter[repeatMode]();
   }
 
