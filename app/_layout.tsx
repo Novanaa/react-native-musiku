@@ -16,27 +16,20 @@ import getMusic from "@/utils/get-music";
 import { Music, MusicSetter, useMusicStore } from "@/stores/music";
 import { Folder, FolderSetter, useFolderStore } from "@/stores/folder";
 import getFolder from "@/utils/get-folder";
-import SortByRepository from "@/repository/sort-by.repository";
 import * as MediaLibrary from "expo-media-library";
 import { Welcome } from "@/components/molecules/welcome";
-import PlaylistRepository from "@/repository/playlist.repository";
-import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
-import FavoriteRepository from "@/repository/favorite.repository";
-import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
-import uuid from "react-native-uuid";
+import { usePlaylistStore } from "@/stores/playlist";
 import { RootSiblingParent } from "react-native-root-siblings";
-import storage from "@/libs/storage";
-import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
-import PlayerRepository from "@/repository/player.repository";
-import { RefreshCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
-import TrackPlayer from "react-native-track-player";
+import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
+import TrackPlayer, {
+  Event,
+  useTrackPlayerEvents,
+} from "react-native-track-player";
 import { registerRootComponent } from "expo";
-import setupTrackPlayer from "@/utils/setup-track-player";
+import appInit from "@/utils/app-init";
 
 registerRootComponent(RootLayout);
 TrackPlayer.registerPlaybackService(() => require("../services/playback"));
-
-setupTrackPlayer();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,17 +40,8 @@ export default function RootLayout() {
   const playlistStackScreenTitle: string = usePlaylistStore(
     (state) => state.playlistTitle
   );
-  const refreshCurrentMusicPlayed: RefreshCurrentMusicPlayed = usePlayerStore(
-    (state) => state.refreshCurrentMusicPlayed
-  );
-  const refreshSortByState: RefreshSortByState = useSortByStore(
-    (state) => state.refresh
-  );
-  const refreshFavoritesMusic: RefreshFavoritesMusic = useFavoritesMusic(
-    (state) => state.refresh
-  );
-  const refreshPlaylist: RefreshPlaylist = usePlaylistStore(
-    (state) => state.refresh
+  const setCurrentMusicPlayed: SetCurrentMusicPlayed = usePlayerStore(
+    (state) => state.setCurrentMusicPlayed
   );
   const musicStoreDispatch: MusicSetter = useMusicStore(
     (state) => state.setMusic
@@ -66,43 +50,21 @@ export default function RootLayout() {
     (state) => state.setFolder
   );
 
+  useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], (event) => {
+    if (music && event.type == Event.PlaybackActiveTrackChanged) {
+      const musicIndex: number = music.assets.findIndex(
+        (state) => state.uri === event.track?.url
+      );
+
+      setCurrentMusicPlayed({
+        music: music.assets[musicIndex],
+        currentDuration: 0,
+      });
+    }
+  });
+
   React.useEffect(() => {
-    if (!PlayerRepository.getCurrentMusicPlayed()) {
-      PlayerRepository.setCurrentMusicPlayed(null);
-
-      refreshCurrentMusicPlayed();
-    }
-
-    if (!storage.getString(FavoriteRepository.favoriteKey)) {
-      FavoriteRepository.setFavorites({
-        assets: [],
-        total: 0,
-      });
-
-      refreshFavoritesMusic();
-    }
-
-    if (!storage.getString(PlaylistRepository.playlistKey)) {
-      PlaylistRepository.setPlaylist({
-        playlist: [
-          {
-            id: String(uuid.v4()),
-            songs: [],
-            title: "My Playlist",
-            totalSongs: 0,
-            createdAt: new Date().getTime(),
-          },
-        ],
-        totalPlaylist: 1,
-      });
-
-      refreshPlaylist();
-    }
-
-    if (!storage.getString(SortByRepository.sortByKey)) {
-      SortByRepository.setSortByState("recently_added");
-      refreshSortByState();
-    }
+    appInit();
 
     getMusic().then((state) => {
       const folder: Folder = getFolder(state);

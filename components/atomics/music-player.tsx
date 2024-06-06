@@ -147,8 +147,8 @@ export default function MusicPlayer(
               disabled={isControllerDisabled}
               style={styles.slider}
               minimumValue={0}
-              value={position || currentMusicPlayed.currentDuration}
-              maximumValue={currentMusicPlayed.music.duration}
+              value={position || currentMusicPlayed?.currentDuration}
+              maximumValue={currentMusicPlayed?.music.duration}
               minimumTrackTintColor={colors.dark.text}
               maximumTrackTintColor={colors.dark.text}
               thumbTintColor={colors.dark.text}

@@ -1,7 +1,6 @@
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
-  RepeatMode,
 } from "react-native-track-player";
 
 export default async function setupTrackPlayer() {
@@ -15,5 +14,4 @@ export default async function setupTrackPlayer() {
         AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
     },
   });
-  await TrackPlayer.setRepeatMode(RepeatMode.Track);
 }
