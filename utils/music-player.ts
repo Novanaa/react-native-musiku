@@ -16,6 +16,7 @@ export default async function playMusic(
 ): Promise<void> {
   try {
     const { setCurrentMusicPlayed }: PlayerState = usePlayerStore.getState();
+    setCurrentMusicPlayed(item);
 
     await TrackPlayer.load({
       url: item.music.uri,
@@ -28,8 +29,6 @@ export default async function playMusic(
 
     await TrackPlayer.seekTo(item.currentDuration);
     await TrackPlayer.play();
-
-    setCurrentMusicPlayed(item);
   } catch (err) {
     showToast("Failed to play the music, something wrong happend!");
   }
@@ -40,9 +39,9 @@ export async function playNextMusic(music: MediaLibrary.Asset): Promise<void> {
 
   const allMusic: Music = useMusicStore.getState().music as Music;
   const allMusicLength: number = allMusic?.assets.length - 1;
-  const musicIndex: number = allMusic?.assets
-    .map((state) => state.uri)
-    .indexOf(music.uri);
+  const musicIndex: number = allMusic?.assets.findIndex(
+    (value) => value.uri === music.uri
+  );
   const musicItemIndex: number =
     musicIndex == allMusicLength ? 0 : musicIndex + 1;
   const musicItem: MediaLibrary.Asset = allMusic?.assets[musicItemIndex];
@@ -64,7 +63,7 @@ export async function playPrevMusic(music: MediaLibrary.Asset): Promise<void> {
   const allMusic: Music = useMusicStore.getState().music as Music;
   const allMusicLength: number = allMusic?.assets.length - 1;
   const musicIndex: number =
-    allMusic?.assets.map((state) => state.uri).indexOf(music.uri) - 1;
+    allMusic?.assets.findIndex((value) => value.uri === music.uri) - 1;
   const musicItemIndex: number = musicIndex == -1 ? allMusicLength : musicIndex;
   const musicItem: MediaLibrary.Asset = allMusic?.assets[musicItemIndex];
 
