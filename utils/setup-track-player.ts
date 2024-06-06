@@ -15,5 +15,4 @@ export default async function setupTrackPlayer() {
         AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
     },
   });
-  await TrackPlayer.setRepeatMode(RepeatMode.Track);
 }
