@@ -66,6 +66,7 @@ interface MusicPlayerControllerProps {
 export default function MusicPlayer(
   props: MusicPlayerProps
 ): React.JSX.Element {
+  const playbackState: PlaybackState = usePlaybackState() as PlaybackState;
   const { position }: Progress = useProgress();
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
@@ -77,6 +78,9 @@ export default function MusicPlayer(
   const musicDuration: string = parseDuration(
     String(currentMusicPlayed?.music.duration)
   );
+  const isControllerDisabled: boolean =
+    playbackState.state == State.Loading ||
+    playbackState.state == State.Buffering;
 
   React.useEffect(() => {
     const backhandler: NativeEventSubscription = BackHandler.addEventListener(
@@ -140,6 +144,7 @@ export default function MusicPlayer(
               {parsedPosition}
             </Text>
             <Slider
+              disabled={isControllerDisabled}
               style={styles.slider}
               minimumValue={0}
               value={position}
