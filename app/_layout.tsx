@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import { StyleSheet } from "react-native";
+import { EmitterSubscription, StyleSheet } from "react-native";
 import React from "react";
 import fonts from "@/constants/fonts";
 import { useFonts } from "expo-font";
@@ -28,8 +28,12 @@ import { RootSiblingParent } from "react-native-root-siblings";
 import storage from "@/libs/storage";
 import { RefreshSortByState, useSortByStore } from "@/stores/sort-by";
 import PlayerRepository from "@/repository/player.repository";
-import { RefreshCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
-import TrackPlayer from "react-native-track-player";
+import {
+  RefreshCurrentMusicPlayed,
+  SetCurrentMusicPlayed,
+  usePlayerStore,
+} from "@/stores/player";
+import TrackPlayer, { Event } from "react-native-track-player";
 import { registerRootComponent } from "expo";
 import setupTrackPlayer from "@/utils/setup-track-player";
 
@@ -46,6 +50,9 @@ export default function RootLayout() {
   const music: Music | null = useMusicStore((state) => state.music);
   const playlistStackScreenTitle: string = usePlaylistStore(
     (state) => state.playlistTitle
+  );
+  const setCurrentMusicPlayed: SetCurrentMusicPlayed = usePlayerStore(
+    (state) => state.setCurrentMusicPlayed
   );
   const refreshCurrentMusicPlayed: RefreshCurrentMusicPlayed = usePlayerStore(
     (state) => state.refreshCurrentMusicPlayed
@@ -65,6 +72,26 @@ export default function RootLayout() {
   const folderDispatch: FolderSetter = useFolderStore(
     (state) => state.setFolder
   );
+
+  React.useEffect(() => {
+    const eventEmitter: EmitterSubscription = TrackPlayer.addEventListener(
+      Event.PlaybackActiveTrackChanged,
+      (event) => {
+        if (music && music.assets && event.track) {
+          const musicIndex: number = music.assets.findIndex(
+            (value) => value.uri == event.track?.url
+          ) as number;
+
+          setCurrentMusicPlayed({
+            music: music.assets[musicIndex] as MediaLibrary.Asset,
+            currentDuration: 0,
+          });
+        }
+      }
+    );
+
+    return () => eventEmitter.remove();
+  }, []);
 
   React.useEffect(() => {
     if (!PlayerRepository.getCurrentMusicPlayed()) {
