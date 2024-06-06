@@ -42,7 +42,7 @@ export function MusicListHeaderSortByMusicOptions(
   const refreshMusic: RefreshMusic = useMusicStore((state) => state.refresh);
   const [defaultCheckedId, setDefaultCheckedId] = React.useState<number>(1);
   const radioCheckboxData: Array<RadioCheckboxData> = [
-    { id: 1, title: "Recently Music Added", default: true },
+    { id: 1, title: "Recently Music Added" },
     { id: 2, title: "Lately Music Added" },
     { id: 3, title: "By Music Duration" },
     { id: 4, title: "By Alphabet (Ascending)" },
