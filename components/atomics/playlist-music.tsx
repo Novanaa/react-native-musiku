@@ -35,9 +35,9 @@ import { Playlist } from "@/interfaces/playlist";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetModalContextType } from "@gorhom/bottom-sheet/lib/typescript/contexts/modal/external";
 import { RefreshPlaylist, usePlaylistStore } from "@/stores/playlist";
-import playMusic from "@/utils/play-music";
 import parseDuration from "@/utils/parse-duration";
 import MusicPlayer from "./music-player";
+import playMusic from "@/utils/music-player";
 
 interface PlaylistMusicProps extends TouchableHighlightProps {
   musicItem: MediaLibrary.Asset;
