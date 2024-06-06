@@ -34,12 +34,22 @@ import { RefreshFavoritesMusic, useFavoritesMusic } from "@/stores/favorites";
 import isMusicFavorited from "@/utils/is-music-favorited";
 import addMusicFavorites from "@/utils/add-favorites";
 import removeFavorites from "@/utils/remove-favorites";
-import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
+import { CurrentMusicPlayed } from "@/interfaces/audio";
 import { usePlayerStore } from "@/stores/player";
 import PauseSVG from "@/assets/icons/pause.svg";
-import { handlePause } from "@/utils/music-player";
-import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
 import TrackSortMethod from "./track-sort-method";
+import {
+  PlaybackState,
+  Progress,
+  State,
+  usePlaybackState,
+  useProgress,
+} from "react-native-track-player";
+import playMusic, {
+  pauseMusic,
+  playNextMusic,
+  playPrevMusic,
+} from "@/utils/music-player";
 
 interface MusicPlayerProps extends DrawerProps {
   musicOptionsRef: React.MutableRefObject<null | BottomSheetModalMethods>;
@@ -56,12 +66,14 @@ interface MusicPlayerControllerProps {
 export default function MusicPlayer(
   props: MusicPlayerProps
 ): React.JSX.Element {
+  const { position }: Progress = useProgress();
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
   const addToPlaylistDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
   const { dismissAll }: BottomSheetModalContextType = useBottomSheetModal();
+  const parsedPosition: string = parseDuration(String(position));
   const musicDuration: string = parseDuration(
     String(currentMusicPlayed?.music.duration)
   );
@@ -124,10 +136,14 @@ export default function MusicPlayer(
             />
           </View>
           <View style={styles.sliderWrapper}>
-            {/* Placeholder for right now!! */}
-            <Text style={styles.musicMetadataDescription}>{musicDuration}</Text>
+            <Text style={styles.musicMetadataDescription}>
+              {parsedPosition}
+            </Text>
             <Slider
               style={styles.slider}
+              minimumValue={0}
+              value={position}
+              maximumValue={currentMusicPlayed.music.duration}
               minimumTrackTintColor={colors.dark.text}
               maximumTrackTintColor={colors.dark.text}
               thumbTintColor={colors.dark.text}
@@ -151,18 +167,22 @@ export default function MusicPlayer(
 export function MusicPlayerController(
   props: MusicPlayerControllerProps
 ): React.JSX.Element {
+  const playbackState: PlaybackState = usePlaybackState() as PlaybackState;
+  const { position }: Progress = useProgress();
   const trackSortMethodDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null> =
     React.useRef<BottomSheetModalMethods | null>(null);
-  const soundObject: SoundObject = usePlayerStore(
-    (state) => state.soundObject
-  ) as SoundObject;
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
-  const isDisabled: boolean = usePlayerStore((state) => state.isLoading);
+  const isControllerDisabled: boolean =
+    playbackState.state == State.Loading ||
+    playbackState.state == State.Buffering;
   const disabledStyles: StyleProp<ViewStyle> = {
-    opacity: isDisabled ? 0.55 : 1,
+    opacity: isControllerDisabled ? 0.55 : 1,
   };
+
+  const isEnded: boolean = playbackState.state == State.Ended;
+  const isPlaying: boolean = playbackState.state == State.Playing;
 
   return (
     <>
@@ -176,46 +196,41 @@ export function MusicPlayerController(
       >
         <IconButton
           icon={<ArrowPathSVG width={22.5} height={22.5} />}
-          disabled={isDisabled}
+          disabled={isControllerDisabled}
           onPress={() => trackSortMethodDrawerRef.current?.present()}
           style={disabledStyles}
         />
         <View style={styles.musicControllerWrapper}>
           <IconButton
-            disabled={isDisabled}
+            disabled={isControllerDisabled}
             style={disabledStyles}
             icon={<SkipBackSVG width={40} height={40} />}
             onPress={() => playPrevMusic(currentMusicPlayed.music)}
           />
-          {soundObject?.status.isPlaying &&
-          !soundObject?.status.didJustFinish ? (
-              <IconButton
-                disabled={isDisabled}
-                style={disabledStyles}
-                icon={<PauseSVG width={40} height={40} />}
-                onPress={() => handlePause(soundObject.status)}
-              />
-            ) : (
-              <IconButton
-                disabled={isDisabled}
-                style={disabledStyles}
-                icon={<PlaySVG width={40} height={40} />}
-                onPress={() =>
-                  playMusic(currentMusicPlayed, {
-                    positionMillis: currentMusicPlayed.currentDuration,
-                  })
-                }
-              />
-            )}
+          {isPlaying && !isEnded ? (
+            <IconButton
+              disabled={isControllerDisabled}
+              style={disabledStyles}
+              icon={<PauseSVG width={40} height={40} />}
+              onPress={() => pauseMusic(position)}
+            />
+          ) : (
+            <IconButton
+              disabled={isControllerDisabled}
+              style={disabledStyles}
+              icon={<PlaySVG width={40} height={40} />}
+              onPress={() => playMusic(currentMusicPlayed)}
+            />
+          )}
           <IconButton
-            disabled={isDisabled}
+            disabled={isControllerDisabled}
             style={disabledStyles}
             icon={<SkipForwardSVG width={40} height={40} />}
             onPress={() => playNextMusic(currentMusicPlayed.music)}
           />
         </View>
         <IconButton
-          disabled={isDisabled}
+          disabled={isControllerDisabled}
           style={disabledStyles}
           icon={<ListOptionsSVG width={22.5} height={22.5} />}
           onPress={() => props.addToPlaylistDrawerRef.current?.present()}

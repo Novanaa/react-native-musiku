@@ -12,9 +12,9 @@ import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/typ
 import * as MediaLibrary from "expo-media-library";
 import MusicSVG from "@/assets/icons/music.svg";
 import MusicOptionsSVG from "@/assets/icons/music-options.svg";
-import playMusic from "@/utils/play-music";
 import parseDuration from "@/utils/parse-duration";
 import MusicPlayer from "./music-player";
+import playMusic from "@/utils/music-player";
 
 interface MusicProps extends TouchableHighlightProps {
   musicItem: MediaLibrary.Asset;

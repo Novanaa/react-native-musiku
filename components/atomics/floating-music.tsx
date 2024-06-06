@@ -17,13 +17,23 @@ import NextMusicSVG from "@/assets/icons/next-music.svg";
 import PrevMusicSVG from "@/assets/icons/prev-music.svg";
 import parseDuration from "@/utils/parse-duration";
 import { SetCurrentMusicPlayed, usePlayerStore } from "@/stores/player";
-import { CurrentMusicPlayed, SoundObject } from "@/interfaces/audio";
+import { CurrentMusicPlayed } from "@/interfaces/audio";
 import PauseSVG from "@/assets/icons/pause.svg";
-import { handlePause } from "@/utils/music-player";
-import playMusic, { playNextMusic, playPrevMusic } from "@/utils/play-music";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import MusicPlayer from "./music-player";
 import MusicOptions from "./music-options";
+import playMusic, {
+  pauseMusic,
+  playNextMusic,
+  playPrevMusic,
+} from "@/utils/music-player";
+import {
+  PlaybackState,
+  Progress,
+  State,
+  usePlaybackState,
+  useProgress,
+} from "react-native-track-player";
 
 interface PlayButtonProps {
   playerDrawerRef: React.MutableRefObject<BottomSheetModalMethods | null>;
@@ -113,41 +123,38 @@ export default function FloatingMusic(): React.JSX.Element {
 }
 
 export function PlayButton(props: PlayButtonProps): React.JSX.Element {
+  const playbackState: PlaybackState = usePlaybackState() as PlaybackState;
+  const { position }: Progress = useProgress();
   const setCurrentMusicPlayed: SetCurrentMusicPlayed = usePlayerStore(
     (state) => state.setCurrentMusicPlayed
   );
   const currentMusicPlayed: CurrentMusicPlayed = usePlayerStore((state) =>
     JSON.parse(state.currentMusicPlayed)
   );
-  const soundObject: SoundObject | null = usePlayerStore(
-    (state) => state.soundObject
-  );
   const isDisabled: boolean = !currentMusicPlayed;
-  const isControllerDisabled: boolean = usePlayerStore(
-    (state) => state.isLoading
-  );
+  const isControllerDisabled: boolean =
+    playbackState.state == State.Loading ||
+    playbackState.state == State.Buffering;
   const disabledStyles: StyleProp<ViewStyle> = {
     opacity: isDisabled ? 0.55 : 1,
   };
+  const isEnded: boolean = playbackState.state == State.Ended;
+  const isPlaying: boolean = playbackState.state == State.Playing;
 
   React.useEffect(() => {
     if (AppState.currentState == "background")
       setCurrentMusicPlayed({
         music: currentMusicPlayed.music,
-        currentDuration: soundObject?.status.positionMillis as number,
+        currentDuration: position,
       });
   }, [AppState.currentState]);
 
-  return soundObject?.status.isPlaying && !soundObject?.status.didJustFinish ? (
+  return isPlaying && !isEnded ? (
     <IconButton
       style={disabledStyles}
       disabled={isDisabled || isControllerDisabled}
       icon={
-        <PauseSVG
-          width={23}
-          height={23}
-          onPress={() => handlePause(soundObject?.status)}
-        />
+        <PauseSVG width={23} height={23} onPress={() => pauseMusic(position)} />
       }
     />
   ) : (
@@ -157,9 +164,7 @@ export function PlayButton(props: PlayButtonProps): React.JSX.Element {
       icon={<PlaySVG width={23} height={23} />}
       onPress={() => {
         props.playerDrawerRef.current?.present();
-        playMusic(currentMusicPlayed, {
-          positionMillis: currentMusicPlayed.currentDuration,
-        });
+        playMusic(currentMusicPlayed);
       }}
     />
   );
